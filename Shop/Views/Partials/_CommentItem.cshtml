@@ -1,0 +1,25 @@
+﻿@model Shop.Models.Comment
+<div class="s-show-commentItem">
+    <div class="s-show-userInfo">
+        <img src="~/Images/user.png" style="border-radius:50%;max-height: 70px" />
+        <div class="s-show-rightInfo" style="display:block;margin-right:30px;width:120px">
+            <p style="margin-left:50px;margin:0px">@Model.User.username</p>
+            <small style="margin-left:50px;margin:0px;font-size:12px"> امتیاز ثبت شده: @Model.rate</small>
+        </div>
+        <div class="s-show-text">
+            <p style="margin-right:30px">@Model.commentText</p>
+        </div>
+    </div>
+    <div class="s-show-commentText">
+
+        <p style="flex:30%">
+            <span><i class="fa fa-circle" style="color:#00bfd5;font-size:5px"></i></span>
+            @Model.positive
+        </p>
+        <p style="flex:30%">
+            <span><i class="fa fa-circle" style="color:#ef5661;font-size:5px"></i></span>
+            @Model.negative
+        </p>
+        <div class="s-show-underline"></div>
+    </div>
+</div>

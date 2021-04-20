@@ -1,0 +1,362 @@
+﻿@model IEnumerable<Shop.Models.Favorite>
+@{
+    Layout = "~/Views/Shared/_SiteLayout.cshtml";
+
+}
+@*<div class="container">
+    <div class="row">
+        <div id="content" class="col-sm-12">
+            <h1 class="title">لیست علاقه مندی</h1>
+            <div class="table-responsive">
+                @if (Session["UU!#user"] != null)
+                {
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <td class="text-center">تصویر</td>
+                                <td class="text-left">نام محصول</td>
+                                <td class="text-left">مدل</td>
+                                <td class="text-right">موجودی</td>
+                                <td class="text-right">قیمت واحد</td>
+                                <td class="text-right">عملیات</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+
+                                <tr data-id="@item.productID">
+                                    <td class="text-center"><a href="/product/show/@item.productID"><img style="height:100px;height:70px;object-fit:contain" src="~/Images/Product/icon/@(item.productID).jpg" alt="@item.Product.name" title="@item.Product.name" /></a></td>
+                                    <td class="text-left"><a class="text-success" href="/product/show/@item.productID">@item.Product.name</a></td>
+                                    <td class="text-left">محصول @item.Product.productID</td>
+                                    <td class="text-right">
+                                        @if (item.Product.existingCount > 0)
+                                        {
+                                            <p class="text-success">موجود</p>
+                                        }
+                                        else
+                                        {
+                                            <p class="text-danger">@item.Product.ProductState.state </p>
+                                        }
+                                    </td>
+                                    <td class="text-right"><div class="price"> @item.Product.price تومان </div></td>
+                                    <td class="text-right">
+
+                                        @{
+                                            var productColorID = 0;
+                                            if (item.Product.ProductColorAssinments.FirstOrDefault() != null)
+                                            {
+                                                productColorID = item.Product.ProductColorAssinments.FirstOrDefault().ProductColor.productColorID;
+                                            }
+                                        }
+
+                                        @if (item.Product.existingCount > 0)
+                                        {
+                                            <button class="btn btn-primary" title="" data-toggle="tooltip" onClick="addToCart(@item.productID,@(productColorID))" type="button" data-original-title="افزودن به سبد"><i class="fa fa-shopping-cart"></i></button>
+                                        }
+                                        <button class="btn btn-danger" title="" data-toggle="tooltip" onClick="removeOfFavorite(@item.productID)" data-original-title="حذف"><i class="fa fa-times"></i></button>
+                                    </td>
+                                </tr>
+
+
+
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <div style="margin-bottom:500px">
+                        <h2>لطفا <span><a href="/user/login">وارد</a></span> حساب کاربری شوید </h2>
+                        <h5>حساب کاربری ندارید؟<span><a href="/user/register">ایجاد حساب</a></span></h5>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>*@
+@if (Session["UU!#user"] != null)
+{
+    <div class="s-favorite-page">
+        <div class="s-favorite-items-page">
+            @foreach (var item in Model)
+            {
+                <div data-id="@item.productID" class="s-favorite-item">
+                    <div class="s-favorite-item-title">
+                        <span>@item.Product.name</span>
+                    </div>
+                    <div class="s-favorite-readline ">
+                    </div>
+                    <div class="s-favorite-item-body">
+                        @*<div class="s-favorite-item-body-delete">
+                            <div class="s-favorite-deleteicon">
+                                <i class="fa fa-times fa-x"></i>
+                            </div>
+                        </div>*@
+                        <img class="s-favorite-item-body-image" style="object-fit: contain;"
+                             src="~/Images/Product/icon/@(item.productID).jpg" />
+                        <div class="s-favorite-item-body-colorsection">
+                            @foreach (var productColor in item.Product.ProductColorAssinments)
+                            {
+                                <div class="s-favorite-item-info s-favorite-item-body-productcolor"
+                                     style="border: 1px solid @productColor.ProductColor.colorCode ;">
+                                    <span onclick="addToCart(@item.productID,@productColor.productColorID)" style="color : grey; font-size: small;">@productColor.ProductColor.color</span>
+                                </div>
+                            }
+
+                            @*<div class="s-favorite-item-info s-favorite-item-body-productcolor"
+                                     style="border: 1px solid greenyellow;">
+                                    <span style="color : grey; font-size: small;">سبز</span>
+                                </div>
+                                <div class="s-favorite-item-info s-favorite-item-body-productcolor"
+                                     style="border: 1px solid yellow;">
+                                    <span style="color : grey; font-size: small;">زرد</span>
+                                </div>*@
+                        </div>
+                        <div class="s-favorite-item-body-pricesection">
+                            @*<span class="s-favorite-item-body-productlastprice">
+                                    @item.Product.price تومان
+                                </span>
+                                <span class="s-favorite-item-body-productoffer">تخفیف : 250000 تومان</span>*@
+                            <span class="s-favorite-item-body-productfinalprice">@item.Product.price تومان</span>
+                        </div>
+                        <div class="s-favorite-item-body-operations mousetohande">
+                            <div class="s-favorite-item-info s-favorite-delete"
+                                 style=" width: 50px; height: 26px;background-color:#f55c5c;text-align: center;border-radius: 6px;margin-bottom: 8px;">
+                                <span onclick="removeOfFavorite(@item.productID)" style="color : white; font-size: small;">حذف</span>
+                            </div>
+                            <div class="s-favorite-item-info s-favorite-card mousetohande"
+                                 style=" width: 50px; height: 26px;background-color:blue;text-align: center;border-radius: 6px;margin-bottom: 8px;">
+                                <span><a style="color:white;font-size:small;text-decoration:none" href="/product/show/@(item.productID)">مشاهده</a></span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+
+    </div>
+}
+else
+{
+    <div style="margin-bottom:500px">
+        <h2>لطفا <span><a style="color:lightblue !important" href="/user/login">وارد</a></span> حساب کاربری شوید </h2>
+        <h5>حساب کاربری ندارید؟<span><a href="/user/register">ایجاد حساب</a></span></h5>
+    </div>
+}
+
+@*<div class="s-container" style="background-color:orange">
+
+
+        <div class="s-favorite-item">
+            <div class="s-favorite-item-title">
+                <span>پاوربانگ سامسونگ مدل دو هسته ای</span>
+            </div>
+            <div class="s-favorite-readline ">
+            </div>
+            <div class="s-favorite-item-body">
+                <div class="s-favorite-item-body-delete">
+                    <div class="s-favorite-deleteicon">
+                        <i class="fa fa-times fa-x"></i>
+                    </div>
+                </div>
+                <img class="s-favorite-item-body-image" style="object-fit: contain;"
+                     src="https://dkstatics-public.digikala.com/digikala-products/112235571.jpg?x-oss-process=image/resize,m_lfit,h_350,w_350/quality,q_60" />
+
+                <div class="s-favorite-item-body-colorsection">
+                    <div class="s-favorite-item-info s-favorite-item-body-productcolor"
+                         style="border: 1px solid red;">
+                        <span style="color : grey; font-size: small;">قرمز</span>
+                    </div>
+                    <div class="s-favorite-item-info s-favorite-item-body-productcolor"
+                         style="border: 1px solid greenyellow;">
+                        <span style="color : grey; font-size: small;">سبز</span>
+                    </div>
+                    <div class="s-favorite-item-info s-favorite-item-body-productcolor"
+                         style="border: 1px solid yellow;">
+                        <span style="color : grey; font-size: small;">زرد</span>
+                    </div>
+                </div>
+                <div class="s-favorite-item-body-pricesection">
+                    <span class="s-favorite-item-body-productlastprice">
+                        7,800,000 تومان
+                    </span>
+                    <span class="s-favorite-item-body-productoffer">تخفیف : 1,200,000 تومان</span>
+                    <span class="s-favorite-item-body-productfinalprice">6,600,000 تومان</span>
+                </div>
+                <div class="s-favorite-item-body-operations mousetohande">
+                    <div class="s-favorite-item-info s-favorite-delete"
+                         style=" width: 50px; height: 26px;background-color: red;text-align: center;border-radius: 6px;margin-bottom: 8px;">
+                        <span style="color : white; font-size: small;">حذف</span>
+                    </div>
+                    <div class="s-favorite-item-info s-favorite-card mousetohande"
+                         style=" width: 50px; height: 26px;background-color: green;text-align: center;border-radius: 6px;margin-bottom: 8px;">
+                        <span style="color : white; font-size: small;">سبد</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="s-favorite-item">
+            <div class="s-favorite-item-title">
+                <span>پاوربانگ سامسونگ مدل دو هسته ای</span>
+            </div>
+            <div class="s-favorite-readline ">
+            </div>
+            <div class="s-favorite-item-body">
+                <div class="s-favorite-item-body-delete">
+                    <div class="s-favorite-deleteicon">
+                        <i class="fa fa-times fa-x"></i>
+                    </div>
+                </div>
+                <img class="s-favorite-item-body-image" style="object-fit: contain;"
+                     src="https://dkstatics-public.digikala.com/digikala-products/112235571.jpg?x-oss-process=image/resize,m_lfit,h_350,w_350/quality,q_60" />
+
+                <div class="s-favorite-item-body-colorsection">
+                    <div class="s-favorite-item-info s-favorite-item-body-productcolor"
+                         style="border: 1px solid red;">
+                        <span style="color : grey; font-size: small;">قرمز</span>
+                    </div>
+                    <div class="s-favorite-item-info s-favorite-item-body-productcolor"
+                         style="border: 1px solid greenyellow;">
+                        <span style="color : grey; font-size: small;">سبز</span>
+                    </div>
+                    <div class="s-favorite-item-info s-favorite-item-body-productcolor"
+                         style="border: 1px solid yellow;">
+                        <span style="color : grey; font-size: small;">زرد</span>
+                    </div>
+                </div>
+                <div class="s-favorite-item-body-pricesection">
+                    <span class="s-favorite-item-body-productlastprice">
+                        7,800,000 تومان
+                    </span>
+                    <span class="s-favorite-item-body-productoffer">تخفیف : 1,200,000 تومان</span>
+                    <span class="s-favorite-item-body-productfinalprice">6,600,000 تومان</span>
+                </div>
+                <div class="s-favorite-item-body-operations mousetohande">
+                    <div class="s-favorite-item-info s-favorite-delete"
+                         style=" width: 50px; height: 26px;background-color: red;text-align: center;border-radius: 6px;margin-bottom: 8px;">
+                        <span style="color : white; font-size: small;">حذف</span>
+                    </div>
+                    <div class="s-favorite-item-info s-favorite-card mousetohande"
+                         style=" width: 50px; height: 26px;background-color: green;text-align: center;border-radius: 6px;margin-bottom: 8px;">
+                        <span style="color : white; font-size: small;">سبد</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="s-favorite-item">
+            <div class="s-favorite-item-title">
+                <span>پاوربانگ سامسونگ مدل دو هسته ای</span>
+            </div>
+            <div class="s-favorite-readline ">
+            </div>
+            <div class="s-favorite-item-body">
+                <div class="s-favorite-item-body-delete">
+                    <div class="s-favorite-deleteicon">
+                        <i class="fa fa-times fa-x"></i>
+                    </div>
+                </div>
+                <img class="s-favorite-item-body-image" style="object-fit: contain;"
+                     src="https://dkstatics-public.digikala.com/digikala-products/112235571.jpg?x-oss-process=image/resize,m_lfit,h_350,w_350/quality,q_60" />
+
+                <div class="s-favorite-item-body-colorsection">
+                    <div class="s-favorite-item-info s-favorite-item-body-productcolor"
+                         style="border: 1px solid red;">
+                        <span style="color : grey; font-size: small;">قرمز</span>
+                    </div>
+                    <div class="s-favorite-item-info s-favorite-item-body-productcolor"
+                         style="border: 1px solid greenyellow;">
+                        <span style="color : grey; font-size: small;">سبز</span>
+                    </div>
+                    <div class="s-favorite-item-info s-favorite-item-body-productcolor"
+                         style="border: 1px solid yellow;">
+                        <span style="color : grey; font-size: small;">زرد</span>
+                    </div>
+                </div>
+                <div class="s-favorite-item-body-pricesection">
+                    <span class="s-favorite-item-body-productlastprice">
+                        7,800,000 تومان
+                    </span>
+                    <span class="s-favorite-item-body-productoffer">تخفیف : 1,200,000 تومان</span>
+                    <span class="s-favorite-item-body-productfinalprice">6,600,000 تومان</span>
+                </div>
+                <div class="s-favorite-item-body-operations mousetohande">
+                    <div class="s-favorite-item-info s-favorite-delete"
+                         style=" width: 50px; height: 26px;background-color: red;text-align: center;border-radius: 6px;margin-bottom: 8px;">
+                        <span style="color : white; font-size: small;">حذف</span>
+                    </div>
+                    <div class="s-favorite-item-info s-favorite-card mousetohande"
+                         style=" width: 50px; height: 26px;background-color: green;text-align: center;border-radius: 6px;margin-bottom: 8px;">
+                        <span style="color : white; font-size: small;">سبد</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>*@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@section scripts{
+    <script>
+        function addToCart(productID,colorID) {
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("addToCart", "Product")',
+
+                data: { productID: productID , count:1,color:color },
+
+                success: function (data) {
+
+                    //alert(data.data);
+
+                },
+                error: function () { alert('خطا'); }
+            });
+
+
+
+        }
+
+        function removeOfFavorite(productID) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("removeOfFavorite", "favorite")',
+
+                data: { productID: productID },
+                success: function (data) {
+                    $('[data-id='+data.data+']').hide(200);
+
+                },
+                error: function () { alert('A error'); }
+            });
+
+
+
+        }
+
+    </script>
+}
+
+

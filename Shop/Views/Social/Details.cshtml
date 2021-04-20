@@ -1,0 +1,58 @@
+﻿@model Shop.Models.Social
+
+@{
+    ViewBag.Title = "Details";
+}
+
+@*<h2>Details</h2>*@
+
+<div>
+    @*<h4>Social</h4>*@
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.socialIcon)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.socialIcon)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.url)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.url)
+        </dd>
+
+        @*<dt>
+            @Html.DisplayNameFor(model => model.Content.employeText)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Content.employeText)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Employee.employeName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Employee.employeName)
+        </dd>*@
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("ویرایش", "Edit", new { id = Model.socialID }) |
+    @Html.ActionLink("بازگشت به لیست", "Index")
+</p>

@@ -1,0 +1,117 @@
+﻿@model IEnumerable<Shop.Models.Faq>
+@{
+    ViewBag.Title = "سوالات متداول";
+    Layout = "~/Views/Shared/_SiteLayout.cshtml";
+}
+<style>
+</style>
+
+<div class="s-container">
+
+    <div id="faq">
+        @foreach (var item in Model)
+        {
+            <div class="s-faq-box">
+                <div class="s-faq-question" onclick="openAnswer(this)">
+                    <input type="checkbox" style="display:none" />
+                    <p>
+                        @Html.Raw(item.question)
+                    </p>
+                    <span class="fa fa-angle-down"></span>
+                </div>
+                <div id="pep" class="s-faq-answer">
+                    <p>
+                        @Html.Raw(item.answer)
+                    </p>
+                </div>
+            </div>
+            <div class="s-faq-box">
+                <div class="s-faq-question" onclick="openAnswer(this)">
+                    <input type="checkbox" style="display:none" />
+                    <p>
+                        @Html.Raw(item.question)
+                    </p>
+                    <span class="fa fa-angle-down"></span>
+                </div>
+                <div id="pep" class="s-faq-answer">
+                    <p>
+                        @Html.Raw(item.answer)
+                    </p>
+                </div>
+            </div>
+            <div class="s-faq-box">
+                <div class="s-faq-question" onclick="openAnswer(this)">
+                    <input type="checkbox" style="display:none" />
+                    <p>
+                        @Html.Raw(item.question)
+                    </p>
+                    <span class="fa fa-angle-down"></span>
+                </div>
+                <div id="pep" class="s-faq-answer">
+                    <p>
+                        @Html.Raw(item.answer)
+                    </p>
+                </div>
+            </div>
+        }
+
+
+
+    </div>
+
+</div>
+@section Scripts{
+    <script>
+
+        function openAnswer(obj) {
+            if (!obj.children[0].checked) {
+                // document.getElementById('').nextSibling
+                obj.parentNode.children[1].style.maxHeight = "100px";
+                obj.children[2].style.transform = "rotate(180deg)";
+
+                obj.children[0].checked = true;
+
+            } else {
+                obj.parentNode.children[1].style.maxHeight = "0px";
+                obj.children[2].style.transform = "rotate(0deg)";
+
+                obj.children[0].checked = false;
+
+            }
+        }
+    </script>
+
+}
+@*
+        <div class="container">
+        <div class="row">
+            <!--Middle Part Start-->
+            <div id="content" class="col-sm-12">
+                <h1 class="title" style="margin-top:20px"> سوالات متداول</h1>
+                <hr>
+                <div class="row">
+
+                    <div class="col-sm-6">
+                        <div class="faq">
+                            <div>
+                                @foreach (var item in Model)
+                                {
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <a href="#faq@(item.faqID)" data-parent="#accordion" data-toggle="collapse" class="panel-title">@Html.Raw(item.question)<i class="fa fa-caret-down"></i></a>
+                                        <div id="faq@(item.faqID)" class="panel-collapse collapse">
+                                            <div class="panel-body">@Html.Raw(item.answer)</div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+*@
+
+
+

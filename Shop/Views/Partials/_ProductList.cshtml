@@ -1,0 +1,48 @@
+﻿@model List<Shop.Models.Product>
+<div class="side-item ">
+    <div class="panel panel-default" id="brand" style="display:block;position:relative;">
+        <div>
+            <input id="searchBrand" style=" margin-left:10px" onkeyup="searchFunction()" type="text" name="search" value="" placeholder="جستجو" class="form-control input-sm text-right" />
+        </div>
+        <div class="panel-body mostly-customized-scrollbar" style="overflow-y: scroll;min-height:50px;max-height:300px">
+            <div>
+                <div>
+                </div>
+            </div>
+            <ul style="list-style:none;padding-right:0px;" id="myMenu">
+                @if (Model != null)
+                {
+
+                    foreach (var item in Model)
+                    {
+                        @Html.Partial("~/Views/Partials/_ProductListItem.cshtml", item)
+                    }
+                }
+
+            </ul>
+        </div>
+    </div>
+</div>
+<button onclick="sendInfo()" class="btn btn-primary">رسم</button>
+
+
+<script>
+    function searchFunction() {
+        var input, filter, ul, li, a, i, p;
+        input = document.getElementById("searchBrand");
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("myMenu");
+        li = ul.getElementsByTagName("li");
+        for (i = 0; i < li.length; i++) {
+            a = li[i].getElementsByTagName("label")[0];
+            p = li[i].getElementsByTagName("p")[0];
+
+            if (a.innerHTML.toUpperCase().indexOf(filter) > -1 || a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
+                li[i].style.display = "none";
+            }
+        }
+    }
+</script>

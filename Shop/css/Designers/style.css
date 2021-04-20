@@ -1,0 +1,111 @@
+﻿.footer-address h4, .s-footer-address-big h4, .footer-address p, .s-footer-address-big p {
+    padding: 0;
+    margin: 0;
+}
+
+.footer-address p, .s-footer-address-big p {
+    margin: 0;
+    margin-right: 11px;
+    font-size: 13px;
+}
+
+.footer-address h4 > i, .s-footer-address-big h4 > i {
+    margin-left: 5px;
+}
+
+
+.s-footer-address-big {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around
+}
+
+
+
+.s-float-call-box {
+    padding: 4px 17px;
+    position: fixed;
+    right: 27px;
+    bottom: 15px;
+    background-color: #0095d5;
+    border-radius: 30px;
+    padding-right: 56px;
+    z-index: 555;
+    box-shadow: 1px 1px 18px 1px #888;
+    border: 3px solid #fff;
+}
+
+    .s-float-call-box > span {
+        color: #fff;
+        display: block;
+        font-size: small;
+        text-align: center;
+    }
+
+    .s-float-call-box a {
+        color: #fff;
+    }
+
+    .s-float-call-box > span:last-child {
+        font-weight: bold;
+    }
+
+    .s-float-call-box > i {
+        color: #fff;
+        position: absolute;
+        right: 19px;
+        font-size: x-large;
+        top: 16px;
+    }
+
+
+.s-expert-requets {
+    direction: rtl;
+    text-align: right;
+    line-height: 1.7;
+    border: 0px solid #0095d5;
+    border-radius: 12px;
+    padding: 32px 32px;
+    padding-left: 200px;
+    position: relative;
+    background-color: #f7f7f7;
+    color: #444;
+    font-size: 15px;
+    box-shadow: 1px 5px 10px 0px #888;
+    margin: 11px 0px;
+}
+
+    .s-expert-requets > a {
+        position: absolute;
+        left: 23px;
+        background-color: #979d9f;
+        color: #fff;
+        padding: 9px;
+        top: 36px;
+        border-radius: 5px;
+        box-shadow: 1px 1px 11px -2px #666;
+    }
+
+@media (max-width : 768px) {
+    .s-footer-address-big {
+        display: none;
+    }
+
+    .s-expert-requets {
+        margin:9px;
+        margin-top: 74px;
+        padding: 18px;
+    }
+
+        .s-expert-requets > a {
+            position: initial;
+            margin: 10px auto;
+            display: block;
+            max-width: 170px;
+            text-align: center;
+        }
+}
+
+#categorymenu {
+    margin-top: 25% !important;
+}

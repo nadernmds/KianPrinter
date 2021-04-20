@@ -1,0 +1,92 @@
+﻿@model Shop.Models.User
+@{
+    Layout = "~/Views/Shared/_SiteLayout.cshtml";
+
+    string message = ViewBag.message;
+
+}
+
+<section id="s-login">
+    <h3>@ViewBag.loginMessage </h3>
+    <form id="login-form" action="/user/login" method="post">
+        <div class="s-login">
+            <a href=""><img src="~/img/logo.png" alt=""></a>
+            <div class="s-login-box">
+                <div class="s-login-box-total-row s-login-box-row1"><h3>ورود به کیان‌پرینتر</h3></div>
+                <div class="s-login-box-total-row s-login-box-row2-4"><label>ایمیل یا شماره موبایل</label></div>
+                <div class="s-login-box-total-row s-login-box-row3-5"> <i class="fas fa-user"></i><input type="text" name="username" placeholder="ایمیل یا شماره موبایل خود را وارد کنید"></div>
+                <div class="s-login-box-total-row s-login-box-row2-4"><label>رمز عبور</label><a href="">رمز عبور خود را فراموش کرده ام</a></div>
+                <div class="s-login-box-total-row s-login-box-row3-5"><i class="fas fa-lock" aria-haspopup="true"></i><input name="password" type="password" placeholder="رمز عبور خود را وارد کنید"></div>
+                <div class="s-login-box-total-row s-login-box-row6"><i class="fas fa-sign-in-alt"></i><h3>ورود</h3><a href="#!" onclick="submit()"><div class="s-login-box-row6-animated-box"></div></a></div>
+                <div class="s-login-box-total-row s-login-box-row7"><input type="checkbox" checked="checked"> <label>مرا به خاطر داشته باش</label></div>
+                <div class="s-login-box-total-row s-login-box-row8"> کاربر جدید هستید؟ <a href=""> ثبت‌ نام در کیان‌پرینتر</a></div>
+            </div>
+        </div>
+    </form>
+</section>
+
+
+<script>
+
+    function submit() {
+        document.getElementById('login-form').submit();
+    }
+</script>
+@*<div class="container">
+
+        <div class="row">
+            <!--Middle Part Start-->
+            <div id="content" class="col-sm-9">
+                <h1 class="title">حساب کاربری ورود</h1>
+                <div class="row" style="margin-bottom:100px">
+                    <div class="col-sm-6">
+                        <h2 class="subtitle">مشتری جدید</h2>
+                        <p><strong>ثبت نام حساب کاربری</strong></p>
+                        <p>با ایجاد حساب کاربری میتوانید سریعتر خرید کرده، از وضعیت خرید خود آگاه شده و تاریخچه ی سفارشات خود را مشاهده کنید.</p>
+
+                        <a href="/User/Register" class="btn btn-primary">ادامه</a>
+                    </div>
+                    <form action="/User/login" method="post" >
+                        <div class="col-sm-6">
+                            <h2 class="subtitle">مشتری قبلی</h2>
+                            @{
+                                if (message != null)
+                                {
+                        <p class="text-success">@message</p>
+                                    }
+                                }
+                            <div class="form-group">
+                                <label class="control-label" for="input-username">نام کاربری</label>
+                                <input type="text" name="username" value="" placeholder="نام کاربری" id="input-username" class="form-control text-right" />
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="input-password">رمز عبور</label>
+                                <input type="password" name="password" value="" placeholder="رمز عبور" id="input-password" class="form-control  text-right" />
+                                <br />
+                                <a href="/User/sendResetPasswordCode">فراموشی رمز عبور</a>
+                            </div>
+                            <p style="color:red;font-size:12px">@ViewBag.loginMessage</p>
+                            <input type="submit"  value="ورود" class="btn btn-primary" style="float:left;margin:10px" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!--Middle Part End -->
+            <!--Right Part Start -->
+            <aside id="column-right" class="col-sm-3 hidden-xs">
+                <h3 class="subtitle">حساب کاربری</h3>
+                <div class="list-group">
+                    <ul class="list-item">
+                        <li><a href="/user/login">ورود</a></li>
+                        <li><a href="/user/register">ثبت نام</a></li>
+                        <li><a href="/User/sendResetPasswordCode">فراموشی رمز عبور</a></li>
+                        <li><a href="#">حساب کاربری</a></li>
+                        <li><a href="#">تراکنش ها</a></li>
+                    </ul>
+                </div>
+            </aside>
+            <!--Right Part End -->
+
+        </div>
+    </div>*@

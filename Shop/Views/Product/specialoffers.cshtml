@@ -1,0 +1,204 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<Shop.Models.Product>
+@{
+    Layout = "~/Views/Shared/_SiteLayout.cshtml";
+    List<int> productID = new List<int>();
+    foreach (var item in (IPagedList<Shop.Models.Product>)Model)
+    {
+        productID.Add(item.productID);
+    }
+
+
+    string i = "[";
+    foreach (var item in productID)
+    {
+        i += item + ",";
+    }
+    i = i.Substring(0, i.Length - 1);
+    i += "]";
+}
+
+
+
+
+
+
+
+
+
+
+
+
+@*<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <div class="container">
+        <div class="row">
+            <p id="test"></p>
+            <aside id="column-left" class="col-sm-3 hidden-sm hidden-xs ">
+                <div style="margin-top:20px;margin-bottom:20px">
+                    <h3 class="subtitle">پرفروش ها</h3>
+                    @Html.Partial("~/Views/Partials/_ProductColumn.cshtml", (List<Shop.Models.Product>)ViewBag.productsWithHighSales)
+                </div>
+            </aside>
+            <div id="content" class="col-sm-12 col-md-9 col-lg-9">
+                <div class="row">
+                </div>
+                <br>
+                <div style="border-bottom:1px #ddd solid" id="filterDiv">
+                    <div class="row">
+                        <div class=" col-sm-2 col-xs-12 text-right">
+                            <label class="control-label" for="input-sort">مرتب سازی :</label>
+                        </div>
+                        <div class="  col-md-2 col-sm-2 col-xs-4 text-right">
+                            <a class="filter-btn filter-btn-active" onclick="sort('price',0,@i, $('#checkbox').is(':checked'))" href="javascript:void(0)">قیمت(کمتر به بیشتر)</a>
+                        </div>
+
+                        <div class="  col-md-2 col-sm-2 col-xs-4 text-right">
+                            <a class="filter-btn col-md-12 " onclick="sort('pricedesc',0,@i, $('#checkbox').is(':checked'))" href="javascript:void(0)">قیمت(بیشتر به کمتر)</a>
+                        </div>
+
+                        <div class="  col-md-1 col-sm-2 col-xs-4 text-right">
+                            <a class="filter-btn  " onclick="sort('date',0,@i, $('#checkbox').is(':checked'))" href="javascript:void(0)">تاریخ</a>
+                        </div>
+
+                        <div class="  col-md-1 col-sm-2 col-xs-4 text-right">
+                            <a class="filter-btn  " onclick="sort('offer',0,@i, $('#checkbox').is(':checked'))" href="javascript:void(0)">تخفیف</a>
+                        </div>
+
+                        <div class="  col-md-1 col-sm-2 col-xs-4 text-right">
+                            <a class="filter-btn  " onclick="sort('sale',0,@i, $('#checkbox').is(':checked'))" href="javascript:void(0)">فروش</a>
+                        </div>
+
+                        <div class="  col-md-1 col-sm-2 col-xs-4 text-right">
+                            <a class="filter-btn  " onclick="sort('visit',0,@i, $('#checkbox').is(':checked'))" href="javascript:void(0)">بازدید</a>
+                        </div>
+
+                        <div class=" col-md-1 col-sm-2 col-xs-4 text-right">
+                            <a class="filter-btn  " onclick="sort('rate',0,@i, $('#checkbox').is(':checked'))" href="javascript:void(0)">امتیاز</a>
+                        </div>
+
+                    </div>
+
+                </div>
+                <br />
+                <div id="products" class="row products-category">
+                    @if (Model != null)
+                    {
+                        @Html.Partial("~/Views/Partials/_ProductPaginationList.cshtml", (IPagedList<Shop.Models.Product>)Model)
+
+                    }
+                    else
+                    {
+                        <h2>محصولی یافت نشد</h2>
+                    }
+                </div>
+                <!--Middle Part End -->
+            </div>
+        </div>
+    </div>
+
+*@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section id="productlist">
+   
+    <div class="s-productlist-row">
+      
+        <div class="s-productlist-column" style="max-width:unset">
+
+            <div class="s-productlist-product" style="margin:0">
+
+                <ul class="s-productlist-ul">
+                    <li onclick="sort('price',0,@i)">گران ترین</li>
+                    <li onclick="sort('pricedesc',0,@i)">ارزان ترین</li>
+                    <li onclick="sort('sale',0,@i)">پرفروش ترین</li>
+                    <li onclick="sort('offer',0,@i)">بیشترین تخفیف</li>
+                    <li onclick="sort('date',0,@i)">جدید ترین</li>
+                    <li onclick="sort('visit',0,@i)">بیشترین بازدید</li>
+                    <li onclick="sort('rate',0,@i)">بیشترین امتیاز</li>
+                </ul>
+                <div id="products" class="s-productlist-underline" style="margin: 0px !important;display:flex;flex-direction:row;flex-wrap:wrap">
+
+                    @if (Model != null)
+                    {
+                        @Html.Partial("~/Views/Partials/_ProductPaginationList.cshtml", (IPagedList<Shop.Models.Product>)Model)
+                    }
+                    else
+                    {
+                        <h2>محصولی یافت نشد</h2>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section Scripts{
+
+
+    <script>
+        $('.s-productlist-ul li').on('click', function () {
+        
+            $('.s-productlist-ul li').removeClass('s-productlist-active');
+            $(this).addClass('s-productlist-active');
+        });
+
+    function sort(_sortType, _categoryID, productID) {
+
+        var obj = {};
+        obj.sortType = _sortType;
+        obj.categoryID = _categoryID;
+            obj.productID = productID;
+        obj.justAvailable = false;
+
+        console.log(obj)
+
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("sortProductsCategory", "product")',
+
+            data: obj,
+            success: function (data) {
+                $('#products').html(data);
+            },
+            error: function (xpr) { alert(xpr.responseText); }
+        });
+    }
+
+        //var header = document.getElementById("filterDiv");
+        //var btns = header.getElementsByClassName("filter-btn");
+        //for (var i = 0; i < btns.length; i++) {
+        //    btns[i].addEventListener("click", function () {
+        //        var current = document.getElementsByClassName("filter-btn-active");
+        //        current[0].className = current[0].className.replace(" filter-btn-active", "");
+        //        this.className += " filter-btn-active";
+        //    });
+        //}
+
+       
+    </script>
+
+
+
+
+
+}

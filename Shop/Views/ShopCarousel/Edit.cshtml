@@ -1,0 +1,67 @@
+﻿@model Shop.Models.ShopCarousel
+
+@{
+    ViewBag.Title = "Edit";
+    
+}
+
+<h2>ویرایش</h2>
+
+
+@using (Html.BeginForm("Edit","ShopCarousel",FormMethod.Post,new {enctype="multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    @*<h4>ShopCarousel</h4>*@
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.shopCarouselID)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.show, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @*<div class="checkbox">
+            @Html.EditorFor(model => model.show)
+            @Html.ValidationMessageFor(model => model.show, "", new { @class = "text-danger" })
+        </div>*@
+
+
+           
+            @if ((bool)Model.show)
+            {
+                <input type="checkbox"  name="show" value="true" checked="checked" onclick="$(this).attr('value', this.checked ? true : false)"/>
+            }
+            else
+            {
+                <input type="checkbox" value="false" name="show" onclick="$(this).attr('value', this.checked ? true : false)"  />
+            }
+
+
+
+
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <label class="control-label col-md-2" style="padding-right:0px !important">افزودن عکس</label>
+            <input type="file" name="file" value="" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+
+
+            <input type="submit" value="ذخیره" class="btn btn-default" />
+            |
+            @Html.ActionLink("بازگشت به لیست", "Index")
+        </div>
+    </div>
+</div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,41 @@
+﻿@model Shop.Models.ShopCarousel
+
+@{
+    ViewBag.Title = "Delete";
+   
+}
+
+<h2>حذف</h2>
+
+<h3>آیا مطمئن هستید که می خواهید حذف کنید؟</h3>
+<div>
+    @*<h4>ShopCarousel</h4>*@
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.show)
+        </dt>
+
+        <dd>
+            @if (Model.show != null && (bool)Model.show)
+            {
+        <input type="checkbox" style="" name="show" value="true" checked="checked" disabled />
+            }
+            else
+            {
+        <input type="checkbox" style="" name="show" value="false" checked="checked" disabled />
+            }
+            @*@Html.DisplayFor(model => model.show)*@
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="حذف" class="btn btn-default" /> |
+            @Html.ActionLink("بازگشت به لیست", "Index")
+        </div>
+    }
+</div>

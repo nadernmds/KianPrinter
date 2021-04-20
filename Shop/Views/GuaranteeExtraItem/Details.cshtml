@@ -1,0 +1,27 @@
+﻿@model Shop.Models.GuaranteeExtraItem
+
+@{
+    ViewBag.Title = "جزئیات لوازم جانبی";
+    Layout = "~/Views/Shared/_PupularLayout.cshtml";
+}
+
+<h2>مشاهده</h2>
+
+<div>
+    @*<h4>GuaranteeExtraItem</h4>*@
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.itemName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.itemName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("ویرایش", "Edit", new { id = Model.guaranteeExtraItemID }) |
+    @Html.ActionLink("بازگشت به لیست", "Index")
+</p>

@@ -1,0 +1,102 @@
+﻿
+
+@{
+
+    Shop.Models.Rizkaran_SiteEntities db = new Shop.Models.Rizkaran_SiteEntities();
+
+    List<Shop.Models.cartProduct> cartProducts = new List<Shop.Models.cartProduct>();
+
+    var cartCookie = Request.Cookies["uu!@#cart"];
+    if (cartCookie != null)
+    {
+        if (cartCookie.HasKeys)
+        {
+
+            foreach (string value in cartCookie.Values.AllKeys)
+            {
+                string json = value;
+                Shop.Models.cartProduct cartProduct = Newtonsoft.Json.JsonConvert.DeserializeObject<Shop.Models.cartProduct>(json);
+
+                cartProducts.Add(cartProduct);
+
+            }
+
+        }
+
+    }
+
+
+
+}
+<div id="cardpopup" style="z-index:15;min-height:30vh" onmouseover="showshadow()" onmouseout="hideshadow()">
+    <div class="s-cardpopup-header">
+        <span id="cartpopupcounter" style="font-size: medium;" class="s-card-item-info"></span>
+        <a href="/product/showcart" style="color: rgb(72, 140, 230);">مشاهده سبد خرید</a>
+    </div>
+
+    <div id="popupcartitems">
+
+    @foreach (var item in cartProducts)
+    {
+        var pid = item.productID;
+        var s = db.Products.Find(item.productID);
+        var pname = s.name;
+        if (pname.Length > 15)
+        {
+            pname = pname.Substring(0, 15) + "...";
+        }
+
+            <div  id="cp@(item.productID)" class="s-cardpopup-body" data-cart="@item.productID">
+                <img style="object-fit: contain;height: 100% ; max-width:25%"
+                     src="~/Images/Product/icon/@(item.productID).jpg" />
+                <a href="/product/show/@item.productID" class="s-card-item-info">@pname</a>
+                @*<span class="s-card-item-info">@item.count عدد</span>*@
+                @if (item.colorCode != null)
+                {
+                    <div class="s-card-item-info s-card-item-color" style="background-color:@item.colorCode !important;border:1px solid #ebebeb"></div>
+                }
+                <div style="padding-inline-end: 10px;" class="s-card-item-delete"> <a href="javascript:void(0)" onclick="removeOfCardPopup(@item.productID)"><i class="fa fa-times"></i></a></div>
+            </div>
+    
+    }
+
+        </div>
+
+
+
+    <div style="margin-bottom: 2px;" class="s-cardpopup-footer">
+        <span></span>
+        <div class="s-card-salebtn">
+            <a href="/product/showcart" style="color:white">
+                ادامه سفارش
+            </a>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    function removeOfCardPopup(productID) {
+      $.ajax({
+                type: "POST",
+                url: '@Url.Action("removeOfCart", "Product")',
+       
+                                data: { productID: productID },
+
+                                success: function (data) {
+                                    if (data.success) {
+
+                                        $("[data-id=" + data.data + "]").remove();
+                                        $("[data-cart=" + data.data + "]").remove();
+                                          $('.s-card-item-info').html()
+
+                                    }
+
+
+                                },
+                                error: function () { SnakeBar('error'); }
+        });
+   
+                        }
+</script>

@@ -1,0 +1,818 @@
+﻿@model Shop.Models.Product
+
+@{
+    ViewBag.Title = "Edit";
+
+
+
+    List<Shop.Models.ProductColor> productColors = ViewBag.productColors;
+
+    List<Shop.Models.ProductAttributeTemplate> ProductAttributeTemplates = ViewBag.ProductAttributeTemplates;
+}
+
+<style>
+    .chip {
+        display: inline-block;
+        padding: 0 25px;
+        height: 50px;
+        font-size: 18px;
+        line-height: 50px;
+        border-radius: 25px;
+        background-color: #f1f1f1;
+    }
+
+
+    .closebtn {
+        padding-left: 10px;
+        color: #888;
+        font-weight: bold;
+        float: right;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+        .closebtn:hover {
+            color: #000;
+        }
+</style>
+
+<style>
+    .gridlist-container .header {
+	 display: flex;
+	 align-items: center;
+	 justify-content: flex-end;
+	 padding: 0.75rem 1.75rem;
+}
+ .gridlist-container .header i {
+	 margin-left: 8px;
+}
+ .gridlist-container .header input[type="search"] {
+	 background-color: transparent;
+	 font-size: 1rem;
+	 border: none;
+	 border-bottom: 1px solid;
+	 padding-bottom: 3px;
+}
+ .gridlist-container .header placeholder {
+	 color: #aaa;
+}
+ .gridlist {
+	 padding: 15px;
+	 display: flex;
+	 flex-flow: row wrap;
+}
+ .gridlist .item {
+	 margin: 10px;
+	 transition: width 0.3s ease;
+}
+ .gridlist .item .item-container {
+	 display: flex;
+	 width: 100%;
+	 position: relative;
+	 color: inherit;
+	 background-color: #fff;
+	 border-radius: 3px;
+	 -webkit-box-shadow: 0 1px 2px rgba(43, 59, 93, .29);
+	 box-shadow: 0 1px 2px rgba(43, 59, 93, .29);
+	 transition: all 0.2s ease-in-out;
+}
+ .gridlist .item .item-container:after {
+	 transition: all 0.3s ease-in-out;
+}
+ .gridlist .item .item-container .item-cover {
+	 flex: 0;
+}
+ .gridlist .item .item-container .item-cover .avatar {
+	 width: 92px;
+	 height: 92px;
+	 margin: 0 auto;
+	 position: relative;
+	 border-radius: 100%;
+	 border: 1px solid rgba(120, 130, 140, 0.13);
+	 padding: 5px;
+}
+ .gridlist .item .item-container .item-cover .avatar div, .gridlist .item .item-container .item-cover .avatar img {
+	 width: 100%;
+	 height: 100%;
+	 border-radius: 100%;
+	 background-size: cover;
+	 background-repeat: no-repeat;
+	 background-position: center;
+}
+ .gridlist .item .item-container .item-content {
+	 flex: 1;
+	 padding: 1.75rem;
+}
+ .gridlist .item .item-container .item-content .subhead-1 {
+	 color: inherit;
+}
+ .gridlist .item .item-container .item-content .subhead-1:hover {
+	 cursor: pointer;
+}
+ .gridlist .item .item-container .item-content small {
+	 color: #aaa;
+	 text-transform: lowercase;
+}
+ .gridlist .item .item-reveal {
+	 display: flex;
+	 justify-content: center;
+	 align-items: center;
+	 position: relative;
+	 width: 100%;
+	 color: #eceef1;
+	 background-color: #46464a;
+	 transition: all 0.2s ease-in-out;
+}
+ .gridlist .item .item-reveal i {
+	 position: absolute;
+	 top: 10px;
+	 right: 10px;
+	 font-size: 18px;
+	 cursor: pointer;
+}
+ .gridlist .item .item-reveal i:hover {
+	 opacity: 0.9;
+}
+ .gridlist .item.is-collapsed .item-container:after {
+	 content: "";
+	 opacity: 0;
+}
+ .gridlist .item.is-collapsed .item-reveal {
+	 max-height: 0;
+	 min-height: 0;
+	 overflow: hidden;
+	 margin-top: 0;
+	 opacity: 0;
+}
+ .gridlist .item.is-expanded .item-container {
+	 color: rgba(255, 255, 255, 0.57);
+	 background-color: #000;
+}
+ .gridlist .item.is-expanded .item-container .subhead-1 {
+	 color: #fff;
+}
+ .gridlist .item.is-expanded .item-container small {
+	 color: inherit;
+}
+ .gridlist .item.is-expanded .item-container:after {
+	 content: "";
+	 opacity: 1;
+	 display: block;
+	 height: 0;
+	 width: 0;
+	 position: absolute;
+	 bottom: -20px;
+	 left: calc(50% - 15px);
+	 border-left: 15px solid transparent;
+	 border-right: 15px solid transparent;
+	 border-bottom: 15px solid #46464a;
+}
+ .gridlist .item.is-expanded .item-reveal {
+	 max-height: 1000px;
+	 min-height: 200px;
+	 overflow: visible;
+	 margin-top: 20px;
+	 opacity: 1;
+}
+ .gridlist .item.is-expanded:hover .item-container {
+	 -webkit-transform: scale(1);
+	 transform: scale(1);
+}
+ .gridlist .item.is-inactive .item-container {
+	 pointer-events: none;
+	 opacity: 0.5;
+	 color: inherit;
+}
+ .gridlist .item.is-inactive:hover .item-container {
+	 background-color: #d3d3d3;
+	 -webkit-transform: scale(1);
+	 transform: scale(1);
+}
+ .gridlist .item.is-inactive:hover .item-container .subhead-1, .gridlist .item.is-inactive:hover .item-container small {
+	 color: #fff !important;
+}
+ .gridlist .item:hover .item-container {
+	 color: rgba(255, 255, 255, 0.57);
+	 background-color: #fff; 
+	 -webkit-transform: scale(1.05);
+	 transform: scale(1.05);
+
+}
+ 
+ .yyyyy:hover{
+     
+     opacity:0.1;
+
+ }
+ .gridlist .item:hover .item-container .subhead-1 {
+	 color: #fff;
+}
+ .gridlist .item:hover .item-container small {
+	 color: inherit;
+}
+ .gridlist.gridview .item {
+	 width: calc((100% /4) - 20px);
+}
+ .gridlist.gridview .item .item-container {
+	 flex-direction: column;
+	 text-align: center;
+	 padding: 1.75rem 0;
+}
+ .gridlist.gridview .item .item-container .item-cover {
+	 width: 100%;
+	 max-height: 120px;
+}
+@@media screen and (max-width: 991px) {
+	 .gridlist.gridview .item {
+		 width: calc((100% / 2) - 20px);
+	}
+}
+ @@media screen and (max-width: 767px) {
+	 .gridlist.gridview .item {
+		 width: 100%;
+	}
+}
+ @@media screen and (min-width: 992px) {
+	/* .gridlist.gridview .item:nth-of-type(3n+2) .item-reveal {
+		 margin-left: calc(-100% - 30px);
+	}
+	 .gridlist.gridview .item:nth-of-type(3n+3) .item-reveal {
+		 margin-left: calc(-200% - 60px);
+	}
+	 .gridlist.gridview .item:nth-of-type(3n+4) {
+		 clear: left;
+	}
+	 .gridlist.gridview .item-reveal {
+		 width: calc(300% + 60px);
+	}
+	 */
+	 .gridlist.gridview .item:nth-of-type(3n+2) .item-reveal {
+		 margin-left: calc(-100% - 30px);
+	}
+	 .gridlist.gridview .item:nth-of-type(3n+3) .item-reveal {
+		 margin-left: calc(-200% - 60px);
+	}
+	 .gridlist.gridview .item:nth-of-type(3n+4) {
+		 clear: left;
+	}
+	 .gridlist.gridview .item-reveal {
+		 width: calc(300% + 60px);
+	}
+}
+ @@media screen and (min-width: 768px) and (max-width: 991px) {
+	 .gridlist.gridview .item:nth-of-type(2n + 2) .item-reveal {
+		 margin-left: calc(-100% - 20px);
+	}
+	 .gridlist.gridview .item:nth-of-type(2n + 3) {
+		 clear: left;
+	}
+	 .gridlist.gridview .item-reveal {
+		 width: calc(200% + 20px);
+	}
+}
+ .gridlist.listview .item {
+	 width: 100%;
+}
+ .gridlist.listview .item .item-container {
+	 flex-direction: row;
+	 align-items: center;
+	 padding: 0 1.75rem;
+}
+ .gridlist.listview .item .item-container .item-cover {
+	 height: 100%;
+	 max-width: 120px;
+	 margin-right: 1.75rem;
+}
+ @@media screen and (min-width: 992px) {
+	 .gridlist.listview .item:nth-of-type(3n + 2) .item-reveal {
+		 margin-left: 0;
+	}
+	 .gridlist.listview .item:nth-of-type(3n + 3) .item-reveal {
+		 margin-left: 0;
+	}
+	 .gridlist.listview .item:nth-of-type(3n + 4) {
+		 clear: left;
+	}
+	 .gridlist.listview .item-reveal {
+		 width: 100%;
+	}
+}
+ @@media screen and (min-width: 768px) and (max-width: 991px) {
+	 .gridlist.listview .item:nth-of-type(2n + 2) .item-reveal {
+		 margin-left: 0;
+	}
+	 .gridlist.listview .item:nth-of-type(2n + 3) {
+		 clear: left;
+	}
+	 .gridlist.listview .item-reveal {
+		 width: 100%;
+	}
+}
+
+</style>
+
+
+
+
+<h2>ویرایش</h2>
+
+
+@using (Html.BeginForm("Edit", "Product", FormMethod.Post, new { enctype = "multipart/form-data", id = "PeoductForm" }))
+{
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#main">اطلاعات اصلی</a></li>
+        <li><a data-toggle="tab" href="#attributes">ویژگی های محصول</a></li>
+        <li><a data-toggle="tab" href="#colors">رنگ بندی محصول</a></li>
+
+    </ul>
+
+    <div class="tab-content">
+
+        @Html.AntiForgeryToken()
+
+        <div id="main" class="tab-pane fade in active">
+
+            <div class="form-horizontal">
+                @*<h4>Product</h4>*@
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.productID)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.name, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.price, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.price, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.price, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.shortDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.shortDescription, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.shortDescription, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.description, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.description, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("دسته بندی", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("categoryID", null, htmlAttributes: new { @class = "form-control", onchange = "generateAttributes()" })
+                        @Html.ValidationMessageFor(model => model.categoryID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("برند", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("brandID", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.brandID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("وضعیت محصول", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("productStateID", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.productStateID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.vitrin, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+
+
+                        @if (Model.vitrin != null && (bool)Model.vitrin)
+            {
+                <input type="checkbox" name="vitrin" value="true" checked="checked" onclick="$(this).attr('value', this.checked ? true : false)" />
+}
+else
+{
+            <input type="checkbox" value="false" name="vitrin" onclick="$(this).attr('value', this.checked ? true : false)" />
+}
+
+
+                        @*@Html.EditorFor(model => model.vitrin, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.vitrin, "", new { @class = "text-danger" })*@
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">کلمات کلیدی</label>
+                    <div class="col-md-10">
+
+                        <div class="col-md-8">
+                            <input id="textinp" class="form-control" type="text" />
+                        </div>
+                        <div class="col-md-2">
+                            <input class="btn btn-success" style="position:absolute;left:200px;margin-top:2px" type="button" onclick="addchips()" value="افزودن" />
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="form-group">
+                    <div class="col-md-2">
+
+                    </div>
+                    <div id="keywordsshow" class="col-md-10">
+
+                        @{
+                List<Shop.Models.ProductKeyword> productKeywords = ViewBag.productKeywords;
+                        }
+
+                        @foreach (var item in productKeywords)
+            {
+                <div id='@("divchips" + item.text)' class="chip">@item.text<span class="closebtn" onclick="deletechips('@item.text')">×</span></div>
+}
+
+
+                    </div>
+                </div>
+
+
+
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.existingCount, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.existingCount, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.existingCount, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">آیکون</label>
+
+                    <div class="col-md-8">
+                        <input type="file" name="file" value="" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">تصاویر</label>
+                    <div class="col-md-8">
+                        <input type="file" multiple name="images" value="" />
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <div class="container">
+                    <div class="gridlist-container">
+
+
+                        <div class="gridlist gridview col-md-10">
+
+                            @{
+                    foreach (var item in (List<Shop.Models.ProductImage>)ViewBag.productImages)
+                    {
+                        <div class="item is-collapsed" onclick="$(this).hide();   deleteimg(@item.productImageID) " style="background: url(../../Images/delete.png) center no-repeat">
+                            <div class="item-container yyyyy">
+                                <img style="max-height:100% ; max-width:100%" src="~/Images/Product/Images/@(item.productImageID).jpg" />
+                            </div>
+                        </div>
+
+        }
+                            }
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+                <div class="form-group">
+                    @{
+                        var seo = Model.Seos.FirstOrDefault();
+                       
+                     }
+                    @Html.Partial("~/Views/Seo/_Seo.cshtml", seo!=null ?seo : new Shop.Models.Seo())
+                </div>
+
+
+
+
+
+
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="ذخیره" class="btn btn-default" />
+                        |
+                        @Html.ActionLink("بازگشت به لیست", "Index")
+                    </div>
+                </div>
+
+
+                @foreach (var item in productKeywords)
+    {
+            <input name="keywords" type="hidden" value="@item.text" id='@("inputchips" + item.text)'>
+}
+
+
+
+
+
+
+
+            </div>
+
+
+            @*<div>
+            @Html.ActionLink("بازگشت به لیست", "Index")
+        </div>*@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+
+        <div id="attributes" class="tab-pane fade">
+            <h3>ویژگی ها</h3>
+            <div id="attributeContents" class="col-lg-12 col-md-12 col-sm-12">
+                @{
+                    var s = new ViewDataDictionary<int>();
+                    s.Add("productID", Model.productID);
+                }
+                @Html.Partial("~/Views/partials/_ProductAttributesForm.cshtml", ProductAttributeTemplates, s)
+
+            </div>
+
+        </div>
+        <div id="colors" class="tab-pane fade">
+
+
+
+            <br />
+            <div>
+                @if (ViewBag.productColors != null)
+                {
+                    <form method="post" action="/product/create">
+                        @foreach (var item in (List<Shop.Models.ProductColor>)ViewBag.productColors)
+                        {
+                            var productColorID = Model.ProductColorAssinments.Select(p => p.productColorID).ToList();
+
+                            if (productColorID.Contains(item.productColorID))
+                            {
+                                <div class="col-md-2 form-group">
+                                <input type="checkbox" checked data-id="@item.productColorID" name="" />
+                                <input name="colorID" type="hidden" value="@item.productColorID" />
+                                <span style="font-size:20px">@item.color</span>
+                                <br />
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-md-2 form-group">
+                                    <input type="checkbox" data-id="@item.productColorID" name="" />
+                                    <input name="colorID" type="hidden" value="" />
+                                    <span style="font-size:20px">@item.color</span>
+                                    <br />
+                                </div>
+                            }
+
+                        }
+
+                    </form>
+
+                }
+            </div>
+        </div>
+
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        CKEDITOR('#description');
+
+
+        function generateAttributes() {
+            let id = $('#categoryID').val()
+            $.ajax({
+                url: '/product/getAttributes/' + id,
+                method: 'get',
+                success: function (data) {
+                    console.log(data);
+                    $('#attributeContents').html(data);
+                }
+                , error: function (e) {
+                    SnakeBar("خطایی رخ داده")
+                }, dataType: 'html'
+
+            });
+        }
+
+
+
+
+
+
+    </script>
+    <script>
+        $(function () {
+
+            $("input[type=checkbox]").change(function () {
+                let state = $(this).is(':checked');
+                if (state) {
+                    let ID = $(this).attr('data-id');
+                    $(this).next('input[type=hidden]').val(ID);
+                }
+                else {
+                    $(this).next('input[type=hidden]').val('');
+                }
+
+            });
+        });
+
+    </script>
+
+    <script>
+
+        function addchips() {
+            var p = document.getElementById("textinp").value;
+
+            document.getElementById("keywordsshow").innerHTML += '<div id="divchips' + p + '" class="chip">' + p + '<span class="closebtn" onclick="deletechips(' + "'" + p + "'" + ')">&times;</span></div>';
+            document.getElementById("PeoductForm").innerHTML += '<input name="keywords" type="hidden" value="' + p + '" id="inputchips' + p + '">';
+        }
+
+        function deletechips(p) {
+
+            var div = document.getElementById("divchips" + p);
+            div.parentNode.removeChild(div);
+
+
+            var inp = document.getElementById("inputchips" + p);
+            inp.parentNode.removeChild(inp);
+
+        }
+
+
+        function CreateElement() {
+            $.ajax({
+                url: '/product/CreateColorFormElement',
+                method: 'get',
+                success: (data) => {
+                    $('#AttributeForm').append(data);
+                },
+                error: () => { }
+            })
+        }
+
+
+        function deleteimg(id) {
+            
+
+            $.ajax({
+                url: '/product/deleteProductImage',
+                method: 'post',
+                data: { 'id': id },
+
+                success: (data) => {
+                   
+                },
+                error: () => { }
+            })
+          
+        }
+
+    </script>
+
+
+
+    <script>
+
+        var $gridlistItem = $('.item');
+
+//open and close item when clicked on name
+$gridlistItem.find(".activator").click(function() {
+	var $self = $(this).closest('.item');
+
+	if ($self.hasClass("is-collapsed")) {
+		$gridlistItem.not($self).removeClass("is-expanded").addClass("is-collapsed").addClass("is-inactive");
+		$self.removeClass("is-collapsed").addClass("is-expanded");
+
+		if ($gridlistItem.not($self).hasClass("is-inactive")) {
+			//do nothing
+		} else {
+			$gridlistItem.not($self).addClass("is-inactive");
+		}
+	} else {
+		$self.removeClass("is-expanded").addClass("is-collapsed");
+		$gridlistItem.not($self).removeClass("is-inactive");
+	}
+});
+
+//close card when click on cross
+$gridlistItem.find(".js-collapser").click(function() {
+	var $self = $(this).closest(".item");
+	$self.removeClass("is-expanded").addClass("is-collapsed");
+	$gridlistItem.not($self).removeClass("is-inactive");
+});
+
+// -----------------------
+var container = $(".gridlist");
+var listButton = $(".gridlist-listview");
+var gridButton = $(".gridlist-gridview");
+
+listButton.on("click", function() {
+	gridButton.removeClass("on");
+	listButton.addClass("on");
+	container.removeClass("gridview").addClass("listview");
+});
+
+gridButton.on("click", function() {
+	listButton.removeClass("on");
+	gridButton.addClass("on");
+	container.removeClass("listview").addClass("gridview");
+});
+
+// -----------------------
+$('#FilterGridList').keyup(function(){
+
+	var searchTerm = $(this).val().toLowerCase();
+	var items = $('.gridlist > .item');
+	var totalItems = items.length;
+		
+	
+	items.each(function(){
+		var txt = $(this).find('.item-content .subhead-1').text().toLowerCase(),
+			 showItem = txt.indexOf(searchTerm) !== -1;
+
+		$(this).toggle(showItem);
+	});   
+
+	var hiddenItems = $('.gridlist > .item:hidden').length;
+
+	if(hiddenItems === totalItems){
+		//$('.empty-data').show();
+	}else{
+		//$('.empty-data').hide();
+	}
+});
+
+
+
+
+    </script>
+}

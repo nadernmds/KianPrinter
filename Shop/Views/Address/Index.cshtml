@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Shop.Models.Address>
+
+@{
+    ViewBag.Title = "Index";
+   
+}
+
+@*<h2>Index</h2>*@
+
+<p>
+    @Html.ActionLink("جدید", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.addressDetail)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.location)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.postalCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.City.cityName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User.username)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.phone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.mobile)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.addressDetail)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.location)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.postalCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.City.cityName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.User.username)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.phone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.mobile)
+        </td>
+        <td>
+            @Html.ActionLink("ویرایش", "Edit", new { id=item.addressID }) |
+            @Html.ActionLink("مشاهده", "Details", new { id=item.addressID }) |
+            @Html.ActionLink("حذف", "Delete", new { id=item.addressID })
+        </td>
+    </tr>
+}
+
+</table>

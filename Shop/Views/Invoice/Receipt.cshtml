@@ -1,0 +1,342 @@
+﻿@model Shop.Models.Invoice
+@using System.Globalization
+@{
+    ViewBag.Title = "Receipt";
+    Layout = "~/Views/Shared/_PupularLayout.cshtml";
+}
+<style>
+    input[type=text] {
+        width: 250px;
+        height: 35px;
+        border-radius: 4px;
+        outline: none;
+        border: 1px solid #DDDDDD;
+        padding: 8px;
+    }
+
+    input:focus {
+        border-color: #16a7eb;
+        box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+    }
+</style>
+
+<link href="~/css/js-persian-cal.css" rel="stylesheet" />
+
+@if (Model != null)
+{
+    <script>
+        var objCal5 = new AMIB.persianCalendar('pcal5', {
+            extraInputID: 'extra',
+            extraInputFormat: 'YYYY/MM/DD'
+        }
+        );</script>
+    <div class="form-horizontal">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3>صدور رسید</h3></div>
+            <div class="panel-body">
+                <div class="form-group">
+
+                    @{
+                        PersianCalendar pc = new PersianCalendar();
+                        DateTime dt = Model.date.Value;// یا DateTime.Now
+                        string PersianDate = string.Format("{0}/{1}/{2}", pc.GetYear(dt), pc.GetMonth(dt), pc.GetDayOfMonth(dt));
+                    }
+                    <div class="col-md-10">
+                        <label class="control-label col-md-2">تاریخ</label>
+                        <input type="hidden" id="invoiceID" value="@Model.invoiceID" />
+                        <div class="col-sm-6"></div>
+                        <div class="col-sm-4">
+                            <input oninput="this.setCustomValidity('')" type="text" id="pcal5" class="pdate transferdate" value="@PersianDate">
+                            <input type="hidden" id="extra" name="transferdatetime" class="pdate" value="@Model.date">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <label class="control-label col-md-2">توضیحات</label>
+                        <div class="col-sm-6"></div>
+                        <div class="col-sm-4">
+                            <textarea name="description" class="form-control ">@Model.description</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-11">
+            <input type="button" class="btn btn-default" name="name" onclick="updateTrasfer()" value="ذخیره" />
+
+        </div>
+        <div class="col-sm-1">
+            <input onclick="addInvoiceDetailsReciept()" class="btn btn-default" type="button" name="" value="افزودن" />
+        </div>
+        <div class="table ">
+
+
+
+            <table class="col-md-10 table-responsive" style="margin-bottom:200px">
+
+                <thead>
+                    <tr>
+                        <th>به انبار</th>
+                        <th>محصول</th>
+                        <th>رنگ </th>
+                        <th>تعداد</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody id="AttributeForm">
+
+                    @foreach (var item in Model.InvoiceDetails)
+                    {
+                        @Html.Partial("~/Views/Partials/_CreateElementReceipt.cshtml", item)
+                    }
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+    <div class="col-sm-12">
+    </div>
+
+    <script>
+
+        function updateTrasfer() {
+            let increaseID = [];
+            let productID = [];
+            let count = [];
+            let colorID = [];
+            $('.table').find(".inStore").each(function (i, e) {
+                increaseID.push(e.value);
+            });
+            $('.table').find(".product").each(function (i, e) {
+                productID.push(e.value);
+            });
+            $('.table').find(".productColor").each(function (i, e) {
+                colorID.push(e.value);
+            });
+            $('.table').find(".count").each(function (i, e) {
+                count.push(e.value);
+            });
+            $.ajax({
+                url: '/invoice/updateReciept',
+                method: 'post',
+                data: {
+                    description: $('textarea[name=description]').val(),
+                    date: $('input[name=transferdatetime]').val(),
+                    invoiceID: $('#invoiceID').val(),
+                    increaseID: increaseID,
+                    productID: productID,
+                    colorID: colorID,
+                    count: count
+                },
+                success: function (data) {
+                    window.location.href = data;
+
+                },
+                error: (e) => { console.log(e) }
+            });
+        }
+
+    </script>
+
+
+}
+else
+{
+    <div class="form-horizontal">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3>صدور رسید</h3></div>
+
+            <div class="panel-body">
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <label class="control-label col-md-2">تاریخ</label>
+                        <div class="col-sm-6"></div>
+                        <div class="col-sm-4">
+                            <input type="text" id="pcal5" class=" pdate ">
+                            <input type="hidden" id="extra" name="transferdatetime" class="pdate wide">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <label class="control-label col-md-2">توضیحات</label>
+                        <div class="col-sm-6"></div>
+                        <div class="col-sm-4">
+                            <textarea name="description" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-6">
+        </div>
+        <div class="col-sm-6">
+            <input onclick="addInvoiceDetailsReciept()" class="btn btn-default" type="button" name="" value="افزودن" />
+            <button class="btn btn-default " type="button" name="" onclick="saveTransfer()">ثبت</button>
+
+        </div>
+        <div class="table">
+            <table class="col-md-10" style="margin-left:20px;margin-top:20px;margin-bottom:200px">
+
+                <thead>
+                    <tr>
+                        <th>به انبار</th>
+                        <th>محصول</th>
+                        <th>رنگ </th>
+                        <th>تعداد</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="AttributeForm"></tbody>
+            </table>
+        </div>
+    </div>
+}
+<script src="~/js/js-persian-cal.min.js"></script>
+<script>
+function saveTransfer() {
+
+            let increaseID = [];
+            let productID = [];
+            let count = [];
+            let colorID = [];
+            $('.table').find(".inStore").each(function (i, e) {
+                increaseID.push(e.value);
+            });
+            $('.table').find(".product").each(function (i, e) {
+                productID.push(e.value);
+            });
+            $('.table').find(".productColor").each(function (i, e) {
+                colorID.push(e.value);
+            });
+            $('.table').find(".count").each(function (i, e) {
+                count.push(e.value);
+            });
+    $.ajax({
+
+                url: '/invoice/SaveReceipt',
+                method: 'post',
+                data: {
+
+                    description: $('textarea[name=description]').val(),
+                    transferdatetime: $('input[name=transferdatetime]').val(),
+                    increaseID: increaseID,
+                    productID: productID,
+                    colorID:colorID,
+                    colorID: colorID,
+                    count: count
+                },
+                success: function (data) {
+                    window.location.href=data
+
+                },
+                error: (e) => { console.log(e) }
+            });
+        }
+
+
+
+        function addInvoiceDetailsReciept() {
+            // alert("بیلی")
+            //count++;
+            // alert(object)
+
+            $.ajax({
+                url: '/invoice/addInvoiceDetailsReciept',
+                method: 'post',
+                success: (data) => {
+                       $("#AttributeForm").append(data);
+                },
+                error: () => { }
+            });
+        }
+
+    function getStoresReciept(item) {
+            let obj = { storeid: item.options[item.selectedIndex].value }
+            $.ajax({
+                url: '/invoice/getStoresReciept',
+                method: 'post',
+                data: obj,
+                success: function (data) {
+                    var select = item.parentNode.parentNode.children[1].children[0]
+                    select.options.length = 0;
+                    var productName = data.productName.split(",");
+                    var productID = data.productID.split(",");
+                    for (var i = 0; i < productName.length; i++) {
+                        var opt = productName[i];
+                        var val = productID[i];
+                        var el = document.createElement("option");
+                        el.textContent = opt;
+                        el.value = val;
+                        select.appendChild(el);
+                    }
+
+                },
+                error: (e) => { console.log(e) }
+            });
+        }
+    function getcolors(item) {
+
+
+
+
+            //console.log(item.options[item.selectedIndex].value)
+            //alert(item.options[item.selectedIndex].value)
+
+            let obj = { productID: item.options[item.selectedIndex].value }
+            $.ajax({
+                url: '/invoice/getcolors',
+                method: 'post',
+                data: obj,
+                success: function (data) {
+
+
+                    var select = item.parentNode.parentNode.children[2].children[0]
+                    select.options.length = 0;
+                    var colorName = data.colorName.split(",");
+                    var colorID = data.colorID.split(",");
+                    for (var i = 0; i < colorName.length; i++) {
+                        var opt = colorName[i];
+                        var val = colorID[i];
+                        var el = document.createElement("option");
+                        el.textContent = opt;
+                        el.value = val;
+                        select.appendChild(el);
+                    }
+                    var select = item.parentNode.parentNode.children[3].children[0]
+                    select.max = data.productexistingcount;
+
+
+
+                },
+                error: (e) => { console.log(e) }
+            });
+        }
+
+
+    var date = '@ViewBag.persianDate';
+    var objCal5 = new AMIB.persianCalendar('pcal5', {
+        extraInputID: 'extra',
+        extraInputFormat: 'YYYY/MM/DD',
+        initialDate: date
+    }
+    );
+
+</script>
+
+
+
+<script>
+    function deleteRow(row) {
+        var a = $(row).parent().parent().remove();
+    }
+</script>

@@ -1,0 +1,56 @@
+﻿
+@model IEnumerable<Shop.Models.Invoice>
+
+<h2>صدور حواله</h2>
+
+<p>
+    <a href="/invoice/Remittance" class="btn btn-primary">جدید</a>
+</p>
+@if (Model != null)
+{
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.date)
+            </th>
+             
+            <th>
+                @Html.DisplayNameFor(model => model.User.name)
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.name)
+                </td>
+                <td>
+                    <a href="/report/getReports?report=havaleReport&id=@item.invoiceID">چاپ</a>|
+                    <a href="/invoice/Remittance/@item.invoiceID">نمایش جزئیات فاکتور</a>|
+                    @Html.ActionLink("حذف", "Delete", new { id = item.invoiceID })
+
+                </td>
+                <td>
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+else
+{
+    <h1>اطلاعاتی موجود نیست</h1>
+}

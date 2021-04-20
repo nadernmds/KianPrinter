@@ -1,0 +1,61 @@
+﻿@model Shop.Models.ProductColor
+
+@{
+    ViewBag.Title = "Edit";
+
+}
+
+<h2>ویرایش</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @*<h4>ProductColor</h4>*@
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.productColorID)
+
+        @*<div class="form-group">
+                @Html.LabelFor(model => model.colorCode, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.colorCode, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.colorCode, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+
+
+        <div>
+            @Html.Partial("~/Views/product/_CreateColorFormElement.cshtml", Model)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.color, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.color, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.color, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*<div class="form-group">
+                @Html.LabelFor(model => model.exist, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.exist)
+                        @Html.ValidationMessageFor(model => model.exist, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>*@
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="ذخیره" class="btn btn-default" />
+                |
+                @Html.ActionLink("بازگشت به لیست", "Index")
+            </div>
+        </div>
+    </div>
+}
+
+

@@ -1,0 +1,55 @@
+﻿@model Shop.Models.ProductAttributeTemplate
+
+
+
+<tr class="xxxxxxx">
+    <td hidden>
+        <input type="hidden" name="productAtrributeTemplateID" value="@Model.productAtrributeTemplateID" />
+    </td>
+    <td>
+        <input type="text" name="name" class="form-control" placeholder="عنوان" value="@Model.name" />
+    </td>
+    <td>
+        @Html.DropDownList("attributeValueTypeID", null, " ", htmlAttributes: new { @class = "form-control" })
+    </td>
+    <td>
+        @Html.DropDownList("unitID", null, " ", htmlAttributes: new { @class = "form-control" })
+    </td>
+
+
+    <td>
+        @*<input type="checkbox" value="True" name="searchable" class="form-control" , placeholder="قابل جستجو" />*@
+        @*@Html.CheckBox("searchable" ,true, new { @class = "form-control", placeholder = "قابل جستجو" })*@
+        @*<select name="searchable">
+            @if ((bool)Model.searchable)
+            {
+                <option selected value="True">True</option>
+                <option value="False">False</option>
+            }
+            else
+            {
+                <option value="True">True</option>
+                <option selected value="False">False</option>
+            }
+
+        </select>*@
+
+
+
+        
+            @if ((bool)Model.searchable)
+            {
+                <input type="checkbox" name="searchable" value="true" checked="checked" onclick="$(this).attr('value', this.checked ? true : false)" />
+            }
+            else
+            {
+                <input type="checkbox" value="false" name="searchable" onclick="$(this).attr('value', this.checked ? true : false)" />
+            }
+    </td>
+    @*<td>
+        @Html.DropDownList("productAttributeTemplateGroupID", null, " ", htmlAttributes: new { @class = "form-control" })
+    </td>*@
+    <td>
+        <a href="#!" onclick="this.parentNode.parentNode.remove(); removeTemplateAttribute(@Model.productAtrributeTemplateID)">x</a>
+    </td>
+</tr>

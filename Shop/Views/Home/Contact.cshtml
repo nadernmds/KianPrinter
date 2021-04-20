@@ -1,0 +1,16 @@
+﻿@model Shop.Models.Content
+@{
+    Layout = "~/Views/Shared/_SiteLayout.cshtml";
+}
+@*<div class="container">
+        <div class="row">
+
+        </div>
+    </div>*@
+<div class="s-container">
+    <h1>تماس با ما</h1>
+    <p>@Html.Raw(Model.contactUs)</p>
+    <h3>اطلاعات تماس</h3>
+    <p> <span>تلفن تماس:</span> <span>@Model.phones</span> </p>
+    <p><span>ایمیل:</span> @Model.email</p>
+</div>

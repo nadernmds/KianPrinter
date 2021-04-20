@@ -1,0 +1,72 @@
+﻿@model Shop.Models.Comment
+
+@{
+    ViewBag.Title = "Details";
+
+}
+
+<h2>مشاهده</h2>
+<style>
+    dd {
+        margin-right: 60px;
+    }
+</style>
+
+<div>
+    @*<h4>Comment</h4>*@
+    <hr />
+    <dl>
+        <dt>
+            @Html.DisplayNameFor(model => model.commentText)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.commentText)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.positive)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.positive)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.negative)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.negative)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.rate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.rate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Product.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Product.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User.username)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.username)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("ویرایش", "Edit", new { id = Model.commentID }) |
+    @Html.ActionLink("بازگشت به لیست", "Index")
+</p>

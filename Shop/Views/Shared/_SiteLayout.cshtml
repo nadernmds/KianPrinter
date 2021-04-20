@@ -1,0 +1,1090 @@
+﻿@{
+    var db = new Shop.Models.Rizkaran_SiteEntities();
+    var brands = db.Brands.Take(10);
+    var content = db.Contents.FirstOrDefault();
+    var user = (Shop.Models.User)Session["UU!#user"];
+
+}
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-158054527-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-158054527-1');
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="~/img/favicon.png" rel="icon" />
+    <title>@(string.IsNullOrEmpty(ViewBag.title) ? "کیان پرینتر | شارژ انواع کارتریج در ایرانشهر | تعمیر پرینتر در تهران" : ViewBag.title)</title>
+    <meta name="description" content="@(string.IsNullOrEmpty( ViewBag.desc)?"تعمیر انواع پرینتر لیزری و زنگی سریع و در کمترین زمان ممکن به همراه ارسال رایگان و خدمات پس از فروش شارژ انواع کارتریج":ViewBag.desc)">
+
+    <link href="~/css/Shop_Style.css" rel="stylesheet" />
+    <link href="~/css/Shop.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Content/fa/all.css">
+    <link href="~/css/Designers/style.css" rel="stylesheet" />
+</head>
+
+@*
+
+         <head>
+
+        <link rel="stylesheet" type="text/css" href="~/js/bootstrap/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="~/js/bootstrap/css/bootstrap-rtl.min.css" />
+        <link rel="stylesheet" type="text/css" href="~/css/font-awesome/css/font-awesome.min.css" />
+        <link rel="stylesheet" type="text/css" href="~/css/stylesheet.css" />
+        <link rel="stylesheet" type="text/css" href="~/css/owl.carousel.css" />
+        <link rel="stylesheet" type="text/css" href="~/css/owl.transitions.css" />
+        <link rel="stylesheet" type="text/css" href="~/css/responsive.css" />
+        <link rel="stylesheet" type="text/css" href="~/css/stylesheet-rtl.css" />
+        <link rel="stylesheet" type="text/css" href="~/css/responsive-rtl.css" />
+        <link rel="stylesheet" type="text/css" href="~/css/stylesheet-skin3.css" />
+        <link href="~/Content/jquery-ui.theme.min.css" rel="stylesheet" />
+        <link href="~/css/extra-css.css" rel="stylesheet" />
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.3/themes/hot-sneaks/jquery-ui.css" />
+        <link rel="stylesheet" href="~/css/main.css">
+        <link rel="stylesheet" href="~/css/js-persian-cal.css">
+        <script type="text/javascript" src="~/js/js-persian-cal.min.js"></script>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+
+    </head>
+
+*@
+<body style="background-color:#f8f8f8;">
+
+
+
+    <div onclick="closemenu()" id="shadow" style="z-index:15">
+    </div>
+
+
+
+    @Html.Partial("~/Views/Partials/_MenuCategory.cshtml")
+
+
+
+    <div class="s-navbar">
+        <div id="navbar-shops-logo">
+            <a href="/home">
+                <img style="margin-top: 15px;"
+                     src="~/img/logo.png"
+                     class="s-navbar-logo" />
+            </a>
+
+        </div>
+
+        <div class="s-search">
+            <!-- <i style="padding-inline-end: 10px;margin-left: auto;margin-right: 45px;margin-top: 20px;" class="fa fa-search"></i> -->
+            <input style="line-height:5;font-size:medium" onfocus="showshadow(); opensearchbox();" onblur="hideshadow(); closesearchbox();" class="s-search-input" id="search"
+                   type="search" autocomplete="off" onkeyup="sac($('#search').val())" />
+            <div id="search-box">
+
+
+                <div id="s-search-cat" class="s-search-category">
+                    <span style="margin-right:10px;width:30%;text-align:center"> دسته بندی</span><div class="s-search-line"></div>
+                </div>
+
+
+                <div id="category-search" style="display:flex;flex-direction:row;flex-wrap:wrap;justify-content:flex-start">
+                </div>
+
+
+                <div id="s-search-bra" class="s-search-category">
+                    <span style="margin-right:10px;width:30%;text-align:center"> برند</span><div class="s-search-line"></div>
+                </div>
+
+
+                <div id="brand-search" style="display:flex;flex-direction:row;flex-wrap:wrap;justify-content:flex-start">
+                </div>
+
+                <div id="s-search-pro" class="s-search-category">
+                    <span style="margin-right:10px;width:30%;text-align:center"> محصولات</span><div class="s-search-line"></div>
+                </div>
+
+
+                <div id="product-search" style="padding-bottom:20px;display:flex;flex-direction:row;flex-wrap:wrap;justify-content:flex-start">
+                </div>
+
+
+
+            </div>
+        </div>
+
+
+
+
+
+
+        <div class="s-login-section">
+
+            @{
+                if (user != null)
+                {
+                    <div class="s-login-btn">
+                        <a href="/panel" style="font-size:small">@user.name</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="s-login-btn">
+                        <a href="/user/login" style="font-size:small">ورود به حساب کاربری</a>
+                    </div>
+                }
+            }
+
+
+
+
+        </div>
+
+
+        <div class="s-card-link">
+            <a class="fas fa-shopping-bag fa-2x" id="showcard" href="/product/showcart" style="color:rgb(207, 207, 207)"></a>
+        </div>
+
+        @*<i class="fa fa-cart-plus fa-2x"></i>*@
+        @*<i class="fas fa-sign-in-alt fa-2x" style="color:rgb(207, 207, 207)"></i>*@
+
+        @*@{
+
+
+
+
+                List<Shop.Models.cartProduct> cartProducts = new List<Shop.Models.cartProduct>();
+                var cartCookie = Request.Cookies["uu!@#cart"];
+                if (cartCookie != null)
+                {
+                    <div id="card" onmouseover="showshadow()" onmouseout="hideshadow()">
+                        <i class="fas fa-shopping-bag fa-2x" style="color:rgb(207, 207, 207)"></i>
+                    </div>
+
+
+                    if (cartCookie.HasKeys)
+                    {
+                        foreach (string value in cartCookie.Values.AllKeys)
+                        {
+                            string json = value;
+                            Shop.Models.cartProduct cartProduct = Newtonsoft.Json.JsonConvert.DeserializeObject<Shop.Models.cartProduct>(json);
+                            cartProducts.Add(cartProduct);
+                        }
+                    }
+                }
+                else
+                {
+                    <div id="card-empty">
+                        <a href="/product/showcart"><i class="fas fa-shopping-bag fa-2x" style="color:rgb(207, 207, 207)"></i></a>
+                    </div>
+                }
+
+
+            }*@
+
+
+
+
+
+        @{
+
+            List<Shop.Models.cartProduct> cartProducts = new List<Shop.Models.cartProduct>();
+            var cartCookie = Request.Cookies["uu!@#cart"];
+
+            <div id="card" onmouseover="showshadow()" onmouseout="hideshadow()">
+                <i class="fas fa-shopping-bag fa-2x" style="color:rgb(207, 207, 207)"></i>
+            </div>
+
+
+            if (cartCookie != null && cartCookie.HasKeys)
+            {
+                foreach (string value in cartCookie.Values.AllKeys)
+                {
+                    string json = value;
+                    Shop.Models.cartProduct cartProduct = Newtonsoft.Json.JsonConvert.DeserializeObject<Shop.Models.cartProduct>(json);
+                    cartProducts.Add(cartProduct);
+                }
+            }
+
+
+        }
+
+
+
+
+
+
+        @Html.Partial("~/Views/Partials/_CardPopup.cshtml")
+
+
+
+
+
+
+
+    </div>
+    <!---->
+
+    <div class="s-menu">
+
+
+        <div style="text-align:center">
+
+            <i class="fas fa-bars fa-2x" id="openmenu" onclick="openmenu()" style="display: none;width: 45px; height: 30px"></i>
+
+
+
+        </div>
+        <script>
+            function showshadow() {
+
+                document.getElementById("container-shadow").style.display = "block";
+                document.getElementById("container-shadow").style.opacity = "1";
+            }
+            function hideshadow() {
+                document.getElementById("container-shadow").style.display = "none";
+                document.getElementById("container-shadow").style.opacity = "0";
+            }
+        </script>
+
+        <a href="/productcategory/category" class="s-category s-menu-items" onmouseover="showshadow()" onmouseout="hideshadow()"><i class="fas fa-bars" style="padding-right:20px; padding-left:2px"></i> دسته بندی کالا</a>
+        @Html.Partial("~/Views/Partials/_MenuCategoryItem.cshtml")
+
+
+        <a class="s-category s-menu-items">برند</a>
+        @Html.Partial("~/Views/Partials/_MenuBrandItem.cshtml")
+
+        <a href="#" class="s-category s-menu-items">خدمات پرینتر</a>
+        <a href="#" class="s-category s-menu-items">تعمیرات</a>
+
+        <a href="/home/compare" class="s-category s-menu-items">صفحه مقایسه</a>
+        <a href="/favorite/favoriteList" class="s-category s-menu-items">علاقه مندی</a>
+
+
+
+    </div>
+
+    <div style="position:relative;z-index:5">
+        <div id="container-shadow">
+
+        </div>
+        <div class="s-container">
+            @RenderBody()
+        </div>
+    </div>
+    <section id="s-footer">
+        <div class="s-footer">
+            <div class="s-footer-first-row">
+                <div class="a"><img src="~/img/ExpressDelivery.png" alt=""><span>تحویل اکسپرس</span></div>
+                <div class="a"> <img src="~/img/24H-Support.png" alt=""><span> پشتیبانی 24 ساعته</span></div>
+                <div class="a"> <img src="~/img/PayIn.png" alt=""><span>پرداخت در محل</span></div>
+                <div class="a"> <img src="~/img/7D-ReturnGuaranty.png" alt=""><span>7 روز ضمانت بازگشت</span></div>
+                <div class="a"> <img src="~/img/OriginalGuaranty.png" alt=""><span>ضمانت اصل بودن کالا</span></div>
+            </div>
+
+            <hr>
+            <!-- Responsiv-->
+            <div class="s-footer-middle-responsive">
+
+                <div class="s-footer-column2">
+                    @*<span>از تخفیف‌ها و جدیدترین‌های دیجی‌کالا باخبر شوید:</span>*@
+                    @*<div class="s-footer-Emailform">
+                            <input type="text" placeholder="آدرس ایمیل خود را وارد کنید"><input type="submit" value="ارسال">
+
+                        </div>*@
+
+                    <div class="footer-address">
+                        <h4><i class="fa fa-address-book"></i> آدرس </h4>
+                        <p>تهران.میدان فردوسی، خیابان ایرانشهر جنوبی پلاک ۳۹ واحد ۱۴</p>
+                        <h4>
+                            <i class="fa fa-clock"></i> ساعات کاری
+                        </h4>
+                        <p>
+                            از شنبه تا پنجشنبه، 8 تا 19 آماده پاسخگویی به شما هستیم
+                        </p>
+                        <h4>
+                            <i class="fa fa-headphones"></i> شماره تماس
+                        </h4>
+                        <p>
+                            ۸۸۸۶۶۶۰۷ (021)
+                        </p>
+                    </div>
+
+                    <span class="s-footer-socialtext">‌کیان پرینتر را در شبکه‌های اجتماعی دنبال کنید:</span>
+                    <div class="s-footer-socialicons">
+                        <a href=""><i class="fab fa-instagram"></i></a>
+                        <a href=""><i class="fab fa-twitter"></i></a>
+                        <a href=""><i class="fas fa-film"></i></a>
+                        <a href=""> <i class="fab fa-invision"></i></a>
+                    </div>
+                </div>
+            </div>
+            <!-- Responsiv -->
+
+            <div class="s-footer-middle-row">
+                <div class="s-footer-column1">
+                    <ul>
+                        <li><a href="/home">کیان‌پرینتر</a></li>
+                        <li><a href="/home/about">درباره کیان‌پرینتر</a></li>
+                    </ul>
+                </div>
+                <div class="s-footer-column1">
+                    <ul>
+                        <li><a href="">خدمات مشتریان</a></li>
+                        <li><a href="/home/privacy">حریم خصوصی</a></li>
+                        <li><a href="/home/contact">تماس با ما</a></li>
+                    </ul>
+                </div>
+                <div class="s-footer-column1">
+
+                    <ul>
+                        <li><a href="">حساب من</a></li>
+                        <li><a href="/user/login">ورود</a></li>
+                        <li><a href="/user/register">ثبت نام</a></li>
+                        <li><a href="/Favorite/FavoriteList">لیست علاقه‌مندی</a></li>
+                    </ul>
+                </div>
+                <div class="s-footer-row3">
+                    <div class="s-footer-column2">
+
+
+                        <span class="s-footer-socialtext">کیان‌پرینتر را در شبکه‌های اجتماعی دنبال کنید:</span>
+                        <div class="s-footer-socialicons">
+                            <a href=""><i class="fab fa-instagram"></i></a>
+                            <a href=""><i class="fab fa-telegram"></i></a>
+                            <a href=""><i class="fab fa-twitter"></i></a>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+            <div class="s-footer-address-big">
+                <div>
+
+                    <h4><i class="fa fa-address-book"></i> آدرس </h4>
+                    <p>تهران.میدان فردوسی، خیابان ایرانشهر جنوبی پلاک ۳۹ واحد ۱۴</p>
+                </div>
+                <div>
+                    <h4>
+                        <i class="fa fa-clock"></i> ساعات کاری
+                    </h4>
+                    <p>
+                        از شنبه تا پنجشنبه، 8 تا 19 آماده پاسخگویی به شما هستیم
+                    </p>
+                </div>
+                <div>
+
+                    <h4>
+                        <i class="fa fa-headphones"></i> شماره تماس
+                    </h4>
+                    <p>
+                        ۸۸۸۶۶۶۰۷ (021)
+                    </p>
+                </div>
+            </div>
+            <hr>
+
+            <div class="s-footer-bottomust-row">
+                <h4>
+                    <span>شماره تماس :</span>
+                    <span style="direction:ltr !important"><a href="tel:02188866607">02188866607</a></span>
+                    <span>آدرس ایمیل :</span>
+                    <a href="mailto:kianprinterco@gmail.com">kianprinterco@gmail.com</a>
+                </h4>
+
+            </div>
+        </div>
+    </section>
+
+    <p id="snackbar"></p>
+
+    <a href="tel:02188866607">
+        <div class="s-float-call-box">
+            <i class="fa fa-phone"></i>
+            <span>
+                مشاوره رایگان و سفارش تلفنی
+            </span>
+            <span>
+                02188866607
+            </span>
+        </div>
+    </a>
+
+
+
+
+
+    @*<div class="wrapper-wide">
+            <div id="header">
+                <!-- Top Bar Start-->
+                <nav id="top" class="htop">
+                    <div class="container">
+                        <div class="row">
+                            <span class="drop-icon visible-sm visible-xs"><i class="fa fa-align-justify"></i></span>
+                            <div class="pull-left flip left-top">
+                                <div class="links">
+                                    <ul>
+                                        <li class="mobile"><i class="fa fa-phone"></i>@content.phones</li>
+                                        <li class="email"><a href=""><i class="fa fa-envelope"></i>@content.email</a></li>
+
+                                        <li><a href="/Favorite/FavoriteList">لیست علاقه مندی</a></li>
+                                        <li><a href="/product/showcart">تسویه حساب</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div id="top-links" class="nav pull-right flip">
+
+                                @if (user == null)
+
+                                {<ul>
+                                        <li><a href="/user/login">ورود</a></li>
+                                        <li><a href="/user/register">ثبت نام</a></li>
+                                    </ul>
+
+                                }
+
+                                else
+                                {
+                                    <div id="currency" class="btn-group">
+                                        <button class="btn-link dropdown-toggle" data-toggle="dropdown"> <span> @user.name <i class="fa fa-caret-down"></i></span></button>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                @if (user.usergroupID == 2)//Admin
+                                                {
+                                                    <a class="currency-select btn btn-link btn-block" href="/product">ناحیه ی کاربر</a>
+                                                }
+                                                else
+                                                {
+                                                    <a class="currency-select btn btn-link btn-block" href="/panel">ناحیه ی کاربر</a>
+                                                }
+                                            </li>
+                                            <li>
+                                                <a class="currency-select btn btn-link btn-block" href="/user/logout">خروج</a>
+                                            </li>
+                                            <li>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+
+                                }
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+                <!-- Top Bar End-->
+                <!-- Header Start-->
+                <header class="header-row">
+                    <div class="container">
+                        <div class="table-container">
+                            <!-- Logo Start -->
+                            <div class="col-table-cell col-lg-4 col-md-4 col-sm-12 col-xs-12 inner">
+                                <div id="logo"><a href="/"><img class="img-responsive" src="~/img/logo.png" title="MarketShop" alt="MarketShop" /></a></div>
+                            </div>
+                            <!-- Logo End -->
+                            <!-- جستجو Start-->
+                            <div class="serach-responsive col-table-cell col-lg-5 col-md-5 col-md-push-0 col-sm-6 col-sm-pull-3 col-xs-12">
+                                <div style="z-index:20" id="search"  class="input-group">
+
+                                    @using (Html.BeginForm("Search", "Home", FormMethod.Get))
+                                    {
+                                        <input id="_search" style="z-index:20"  type="text" onkeyup="sac($('#_search').val())" name="search" placeholder="جستجو" class="form-control input-lg text-right " />
+                                        <button type="button" class="button-search"><i class="fa fa-search"></i></button>
+
+
+                                    }
+                                </div>
+                            </div>
+                            <!-- جستجو End-->
+                            <!-- Mini Cart Start-->
+                            <div class="col-table-cell col-lg-3 col-md-3 col-md-pull-0 col-sm-6 col-sm-pull-6 col-xs-12 inner">
+                                <div id="cart">
+                                    @if (Request.Cookies["uu!@#cart"] != null)
+                                    {
+                                        <a href="/product/showcart" class="heading "><span id="button-cart" style="font-size:15px;height:25px;width:25px; border-radius:50%;position:absolute;left:-10px;top:-5px;z-index:20;" class="text-center btn-danger">@Request.Cookies["uu!@#cart"].Values.Count</span> <span class="cart-icon pull-left flip"></span> <span id="cart-total"> </span></a>
+                                    }
+                                    else
+                                    {
+                                        <a href="/product/showcart" class="heading"> <span class="cart-icon pull-left flip"></span> <span id="cart-total"> </span></a>
+
+                                    }
+
+
+                                </div>
+                            </div>
+                            <!-- Mini Cart End-->
+                        </div>
+                    </div>
+                </header>
+                <!-- Header End-->
+                <!-- Main آقایانu Start-->
+                <nav id="menu" class="navbar">
+                    <div class="container">
+                        <div class="navbar-header"> <span class="visible-xs visible-sm"> منو <b></b></span></div>
+                        <div class="collapse navbar-collapse navbar-ex1-collapse">
+                            <ul class="nav navbar-nav">
+                                <li><a class="home_link" title="خانه" href="/"><span>خانه</span></a></li>
+
+                                @Html.Partial("~/Views/Partials/_MenuCategory.cshtml")
+
+                                <li class="menu_brands dropdown">
+                                    <a href="#">برند ها</a>
+                                    <div class="dropdown-menu" style="right:0 !important;float:none">
+                                        @foreach (var item in brands)
+                                        {
+                                            <div class="col-lg-1 col-md-2 col-sm-3 col-xs-6"><a href="/productCategory/list/?b=@item.brandID"><img style="height:50px;width:50px" src="~/Images/Brand/@(item.brandID).png" title="@item.brandName" alt="@item.brandName" /></a><a href="#">@item.brandName</a></div>
+
+                                        }
+                                    </div>
+                                </li>
+                                <li class="custom-link"><a href="/home/compare">صفحه مقایسه</a></li>
+
+
+                                <li class="contact-link"><a href="/home/contact">تماس با ما</a></li>
+                                <li class="custom-link-right"><a href="/product/specialOffers" target="_blank">پیشنهاد های ویژه</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+                <!-- Main آقایانu End-->
+            </div>
+            @RenderBody()
+            <!--Footer Start-->
+            <footer id="footer" >
+                <div class="fpart-first">
+                    <div class="container">
+                        <div class="row">
+                            <div class="contact col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                <h5>اطلاعات تماس</h5>
+                                <ul>
+                                    <li class="address"><i class="fa fa-map-marker"></i>@content.adress</li>
+                                    <li class="mobile"><i class="fa fa-phone"></i>@content.phones</li>
+                                </ul>
+                            </div>
+                            <div class="column col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                                <h5>اطلاعات</h5>
+                                <ul>
+                                    <li><a href="/home/about">درباره ما</a></li>
+                                    <li><a href="/home/privacy">حریم خصوصی</a></li>
+                                </ul>
+                            </div>
+                            <div class="column col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                                <h5>خدمات مشتریان</h5>
+                                <ul>
+                                    <li><a href="/home/contact">تماس با ما</a></li>
+                                    <li><a href="/home/faqs">سوالات متداول </a></li>
+                                </ul>
+                            </div>
+                            <div class="column col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                                <h5>حساب من</h5>
+                                <ul>
+                                    <li><a href="/user/login">ورود</a></li>
+                                    <li><a href="/user/register">ثبت نام</a></li>
+                                    <li><a href="/favorite/favoriteList">لیست علاقه مندی</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="fpart-second">
+                    <div class="container">
+                        <div id="" class="clearfix">
+                            @{
+                                var socials = db.Socials.ToList();
+                            }
+                            @foreach (var item in socials)
+                            {
+                                <div class=" col-md-1"> <a href="@item.url" style="font-size:20px" class="@item.socialIcon" target="_blank"></a></div>
+
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div id="back-top"><a data-toggle="tooltip" title="بازگشت به بالا" href="javascript:void(0)" class="backtotop"><i class="fa fa-chevron-up"></i></a></div>
+            </footer>
+            <!--Footer End-->
+            <!-- Facebook Side Block Start -->
+            <!-- Facebook Side Block End -->
+            <!-- Twitter Side Block Start -->
+            <!-- Twitter Side Block End -->
+            <!-- Video Side Block Start -->
+            <!-- Video Side Block End -->
+            <!-- Custom Side Block Start -->
+            <!-- Custom Side Block End -->
+            <p id="snackbar"></p>
+        </div>*@
+    <!-- JS Part Start-->
+    @*<script src="~/Content/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="~/js/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="~/js/bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="~/js/jquery.dcjqaccordion.min.js"></script>
+        <script type="text/javascript" src="~/js/owl.carousel.min.js"></script>
+        <script type="text/javascript" src="~/js/custom.js"></script>
+        <script src="http://code.jquery.com/jquery-2.1.3.js"></script>
+        <script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+        <script src="~/js/js-persian-cal.min.js"></script>
+        <script src="~/js/jquery.elevatezoom.js"></script>*@
+    <!-- JS Part End-->
+    @*<script>
+
+
+
+            function userTracking(productID, categoryID) {
+                //alert("");
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("userTracking", "product")',
+
+                    data: { productID: productID, categoryID : categoryID },
+
+                    success: function (data) {
+
+                    },
+                    error: function () { }
+                });
+            }
+
+            function addToCart(productID, color) {
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("addToCart", "Product")',
+
+                    data: { productID: productID, count: 1, colorID:color },
+
+                    success: function (data) {
+                        $("#cart-total").html('<span id="button-cart" style="font-size:15px;height:25px;width:25px; border-radius:50%;position:absolute;left:-10px;top:-5px;z-index:20;" class="text-center btn-danger">'+data.data+'</span>');
+                        SnakeBar('با موفقیت به سبد اضافه شد')
+                        // addToCart
+
+
+                    },
+                    error: function () { alert('A error'); }
+                });
+            }
+
+            function Favorite(productID) {
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Favorite", "Favorite")',
+                    data: { productID: productID },
+
+                    success: function (data) {
+                        if (data.success) {
+                            if (data.data == 1) {
+                                SnakeBar("به لیست علاقه مندی اضافه شد");
+                                $("[data-heart=" + productID + "]").css("color", "red");
+                            } else {
+                                $("[data-heart=" + productID + "]").css("color", "#777");
+                                SnakeBar("از لیست علاقه مندی حذف شد");
+                            }
+                        }
+                        else {
+                            SnakeBar("ابتدا باید وارد حساب کاربری شوید");
+                        }
+                        //if (date.success) {
+                        //    alert(data.data);
+                        //    alert('kl;rgkn');
+
+                        //}
+                        // else {
+                        //    alert(data.data);
+                        //    alert('kl;rgkn');
+                        //
+                        // }
+                    },
+                    error: function () { alert('A error'); }
+                });
+
+
+            }
+
+
+            function addToCompare(productID) {
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("addToCompare", "Home")',
+
+                    data: { productID: productID },
+
+                    success: function (data) {
+                        SnakeBar(data.data);
+                        //addToCompare
+
+                    },
+                    error: function () { SnakeBar("خطا "); }
+                });
+            }
+
+        function SnakeBar(messege) {
+        // Get the snackbar DIV
+        var x = document.getElementById("snackbar");
+
+
+        // Add the "show" class to DIV
+        x.className = "show";
+        x.innerHTML = messege;
+        // After 3 seconds, remove the show class from DIV
+        setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+            }
+        </script>*@
+
+
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+    <script>
+
+        function showbrand(id) {
+            var y = document.getElementsByClassName("s-brand-secondcat");
+            var i;
+            for (i = 0; i < y.length; i++) {
+                y[i].style.zIndex = "1";
+            }
+            // document.getElementsByClassName("s-category-secondcat").style.zIndex = "2";
+            document.getElementsByClassName("s-brand-secondcat")[id].style.zIndex = "2";
+        }
+
+
+
+
+        function showMenu(id) {
+            var y = document.getElementsByClassName("s-category-secondcat");
+            var i;
+            for (i = 0; i < y.length; i++) {
+                y[i].style.zIndex = "1";
+            }
+            // document.getElementsByClassName("s-category-secondcat").style.zIndex = "2";
+            document.getElementsByClassName("s-category-secondcat")[id].style.zIndex = "2";
+        }
+        //function hideMenu(id) {
+        //    //document.getElementsByClassName("s-category-secondcat")[id].style.display = "none";
+        //}
+        var lastopenmenuid = -1;
+        var lastopenmenuid2 = -1;
+
+
+
+        function openmenu() {
+            document.getElementById("shadow").style.opacity = "0.4";
+            document.getElementById("shadow").style.visibility = "visible";
+            document.getElementById("menu").style.right = "0";
+            //document.getElementById("shadow").style.display = "inline-block";
+            //document.getElementById("shadow").style.opacity = "1";
+        }
+        function closemenu() {
+            document.getElementById("shadow").style.opacity = "0";
+            document.getElementById("shadow").style.visibility = "hidden";
+            //document.getElementById("shadow").style.display = "none";
+            document.getElementById("menu").style.right = "-300px";
+        }
+        function scrollright(item) {
+            //var ele = document.getElementsByClassName("s-product-slider")[id];
+            var ele = item.previousElementSibling;
+
+            ele.scrollBy({
+                left: 800, top: 0, behavior: 'smooth'
+            });
+        }
+        function scrollleft(item) {
+            //var ele = document.getElementsByClassName("s-product-slider")[id];
+            var ele = item.nextElementSibling;
+
+            ele.scrollBy({ left: -800, top: 0, behavior: 'smooth' });
+        }
+
+
+        var gallery = document.getElementsByClassName("s-carosel-galleryimgages");
+        var i = 0;
+        document.getElementsByClassName("s-carosel-galleryimgages")[i].style.display = "block";
+        function hideall() {
+            for (let index = 0; index < gallery.length; index++) {
+                gallery[index].style.display = "none";
+            }
+        }
+        function prevgallery() {
+            hideall();
+            document.getElementsByClassName("s-carosel-galleryimgages")[i].style.display = "block";
+            i--;
+            if (i < 0) {
+                i = gallery.length - 1;
+            }
+        }
+        function nextgallery() {
+            hideall();
+            document.getElementsByClassName("s-carosel-galleryimgages")[i].style.display = "block";
+            i++;
+            if (i >= gallery.length) {
+                i = 0;
+            }
+        }
+        var x = setInterval(function () {
+            hideall();
+            document.getElementsByClassName("s-carosel-galleryimgages")[i].style.display = "block";
+            i++;
+            if (i >= gallery.length) {
+                i = 0;
+            }
+        }, 7000);
+
+
+
+        function openlevel2(id, clicked) {
+            var y = document.getElementsByClassName("level2");
+            var liicons = document.getElementsByClassName("s-closemenulogo");
+            var plusicon = document.getElementsByClassName("s-openmenulogo");
+
+
+
+            var i;
+            for (i = 0; i < y.length; i++) {
+                y[i].style.display = "none";
+
+                liicons[i].style.display = "none";
+
+                plusicon[i].style.display = "block";
+                //console.log(i)
+            }
+            if (lastopenmenuid != id) {
+                document.getElementsByClassName("level2")[id].style.display = "block";
+
+                console.log(clicked.firstElementChild)
+                clicked.firstElementChild.style.setProperty('display', 'block', 'important');
+
+                clicked.firstElementChild.nextElementSibling.style.display = "none";
+
+                lastopenmenuid = id;
+            } else {
+                lastopenmenuid = -1;
+            }
+        }
+
+
+
+
+        function openlevel3(id, clicked) {
+
+            var y = document.getElementsByClassName("level3");
+            var i;
+            for (i = 0; i < y.length; i++) {
+                y[i].style.display = "none";
+            }
+            document.getElementsByClassName("level3")[id].style.display = "block";
+
+
+            var liicons = document.getElementsByClassName("s-closemenulogol2");
+            var plusicon = document.getElementsByClassName("s-openmenulogol2");
+            var i;
+            for (i = 0; i < liicons.length; i++) {
+                y[i].style.display = "none";
+
+                liicons[i].style.display = "none";
+
+                plusicon[i].style.display = "block";
+            }
+            if (lastopenmenuid2 != id) {
+                document.getElementsByClassName("level3")[id].style.display = "block";
+
+                console.log(clicked.firstElementChild)
+                clicked.firstElementChild.style.setProperty('display', 'block', 'important');
+
+                clicked.firstElementChild.nextElementSibling.style.display = "none";
+
+                lastopenmenuid2 = id;
+            } else {
+                lastopenmenuid2 = -1;
+            }
+        }
+
+
+        function SnakeBar(messege) {
+            // Get the snackbar DIV
+            var x = document.getElementById("snackbar");
+
+
+            // Add the "show" class to DIV
+            x.className = "show";
+            x.innerHTML = messege;
+            // After 3 seconds, remove the show class from DIV
+            setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+        }
+
+
+    </script>
+
+
+
+    <script>
+        function sac(searchValue) {
+                 $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("searchAutoComplete", "Home")',
+
+                    data: { searchValue: searchValue },
+
+                    success: function (data) {
+
+                        if (data.success) {
+                            var values = JSON.parse(data.values);
+
+                            //console.log(values.brand)
+
+                            document.getElementById("s-search-cat").style.display = "flex";
+                            document.getElementById("s-search-bra").style.display = "flex";
+                            document.getElementById("s-search-pro").style.display = "flex";
+
+
+
+                            document.getElementById("category-search").innerHTML = "";
+                            document.getElementById("brand-search").innerHTML = "";
+                            document.getElementById("product-search").innerHTML = "";
+
+
+                            if (values.category != null && values.category.length > 0  ) {
+                                values.category.forEach(myFunction);
+                                function myFunction(item, index) {
+
+                                    document.getElementById("category-search").innerHTML +=
+                                        "<div class='s-seacrch-box-item'><a  href='/productcategory/list?c=" + item.itemID + "' style='font-size: 0.8em;  color: rgb(69, 150, 243);'>" + item.name + "</a></div > "
+                                }
+                            } else {
+                                document.getElementById("s-search-cat").style.display = "none";
+                            }
+
+                            if (values.brand != null && values.brand.length > 0) {
+
+                                values.brand.forEach(myFunction);
+                                function myFunction(item, index) {
+
+                                    document.getElementById("brand-search").innerHTML +=
+                                        "<div class='s-seacrch-box-item'><a  href='/productcategory/list?b=" + item.itemID  +"' style='font-size: 0.8em;  color: rgb(69, 150, 243);'>" + item.name + "</a></div > "
+                                }
+                            } else {
+                                document.getElementById("s-search-bra").style.display = "none";
+                            }
+
+                            if (values.product != null && values.product.length > 0) {
+
+                                values.product.forEach(myFunction);
+                                function myFunction(item, index) {
+
+                                    document.getElementById("product-search").innerHTML +=
+                                        "<div class='s-seacrch-box-item'><a href='/product/show/" + item.itemID +"' style='font-size: 0.8em;  color: rgb(69, 150, 243);'>" + item.name + "</a></div > "
+                                }
+                            } else {
+                                document.getElementById("s-search-pro").style.display = "none";
+                            }
+
+
+                            //$("#search").autocomplete({
+                            //    source: values
+                            //    ,
+                            //    select: function (event, ui) {
+                            //        window.location.href = '/Home/Search?search='+ui.item.value;
+                            //    },
+                            //    open: function () {
+                            //        $('.ui-widget-content').css('background-color', '#fff');
+                            //        $('.ui-widget-content').css('z-index', '5000');
+                            //        $('.ui-state-item').css('background-color', '#fff');
+
+                            //}
+                            //})
+
+
+                        }
+                    },
+                    error: function () { SnakeBar("خطا "); }
+                });
+        }
+
+
+
+
+    </script>
+
+
+    <script>
+
+
+        function opensearchbox() {
+
+            if (screen.width < 900) {
+                document.getElementsByClassName("s-login-section")[0].style.display = "none";
+                document.getElementsByClassName("s-search")[0].style.width = "90%";
+            }
+
+
+
+
+
+            var search = document.getElementById("search");
+            var searchbox = document.getElementById("search-box");
+
+            search.style.backgroundColor = "white";
+            search.style.boxShadow = "0 0 0 0 white, 0 0 10px 0 rgba(0, 0, 0, 0.1), 0 0 10px 0 rgba(0, 0, 0, 0.1), 0 0 10px 0 rgba(0, 0, 0, 0.1)"
+
+
+            searchbox.style.zIndex = "20";
+            searchbox.style.transition = "all .4s ease-in-out";
+            searchbox.style.display = "block";
+            searchbox.style.boxShadow = "0 0 10px 0 rgba(0, 0, 0, 0), 0 -9px 0px 0px white, 0 0 10px 0 rgba(0, 0, 0, 0.1), 0 0 10px 0 rgba(0, 0, 0, 0.1)";
+            searchbox.style.borderRadius = "0 0 8px 8px";
+
+
+
+        }
+        function closesearchbox() {
+
+
+
+            setTimeout(() => {
+
+                if (screen.width < 900) {
+                    document.getElementsByClassName("s-login-section")[0].style.display = "flex";
+                    document.getElementsByClassName("s-search")[0].style.width = "70%";
+                }
+
+
+
+
+                var search = document.getElementById("search");
+                var searchbox = document.getElementById("search-box");
+
+                search.style.boxShadow = "0 0 0 0";
+                search.style.backgroundColor = "#f1f0f0"
+
+
+
+                //searchbox.style.zIndex = "";
+                //searchbox.style.transition = "";
+                searchbox.style.display = "none";
+                //searchbox.style.boxShadow = "";
+                //searchbox.style.borderRadius = "";
+
+            }, 300);
+
+
+
+
+
+        }
+    </script>
+
+    @RenderSection("scripts", required: false)
+
+
+
+</body>
+</html>

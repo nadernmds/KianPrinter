@@ -1,0 +1,49 @@
+﻿@model Shop.Models.ProductColor
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>حذف</h2>
+
+<h3>آیا مطمئن هستید که می خواهید حذف کنید؟</h3>
+<div>
+    @*<h4>ProductColor</h4>*@
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.colorCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.colorCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.color)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.color)
+        </dd>
+
+        @*<dt>
+                @Html.DisplayNameFor(model => model.exist)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.exist)
+            </dd>*@
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="حذف" class="btn btn-default" /> |
+            @Html.ActionLink("بازگشت به لیست", "Index")
+        </div>
+    }
+</div>

@@ -1,0 +1,391 @@
+﻿@model IEnumerable<Shop.Models.GuaranteeProduct>
+@using pep;
+@{
+    ViewBag.Title = "کالاهای گارانتی";
+    Layout = "~/Views/Shared/_PupularLayout.cshtml";
+}
+
+@*<h2>Index</h2>*@
+@section styles{
+
+    <style>
+        #print-area {
+            display: none;
+        }
+
+        .title-row {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            width: 100%;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            /*background-color: yellow;*/
+        }
+
+        .date-row {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            margin-right: 350px;
+        }
+
+        .info-row {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            width: 100%;
+            height: auto;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            border: 1px solid;
+            margin-top: 40px;
+        }
+
+        .info-column1 {
+            width: 50%;
+            border-left: 1px solid;
+        }
+
+        .info-column2 {
+            width: 50%;
+            /*border-bottom: 1px solid;*/
+        }
+
+            .info-column2 :nth-child(7) {
+                border: none;
+            }
+
+        .fild {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            padding: 10px 15px 10px 0;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            border-bottom: 1px solid;
+            /*background-color: forestgreen;*/
+        }
+
+        .checkmarkBox {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            width: 100%;
+            /*background-color: red;*/
+        }
+
+        .checkmark {
+            width: 50%;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            margin-top: 20px;
+            /*background-color: palegoldenrod;*/
+        }
+
+            .checkmark > input {
+                margin-right: 10px;
+            }
+
+        .agreement-row {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            margin-right: 15px;
+            height: auto;
+            -webkit-box-align: start;
+            -ms-flex-align: start;
+            align-items: flex-start;
+            margin-bottom:10px;
+        }
+
+            .agreement-row :nth-child(1) {
+                margin-top: 10px;
+            }
+
+            .agreement-row :nth-child(6) {
+                margin-bottom: 10px;
+            }
+
+        .sign-row {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            width: 100%;
+        }
+
+        .sign-column {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            width: 50%;
+            margin-right: 10px;
+            margin-top: 30px;
+        }
+
+        @@media print {
+            #non-printable {
+                display: none;
+            }
+
+            #print-area {
+                display: block !important;
+            }
+        }
+
+        .state1 {
+            background-color: rgb(255, 0, 0);
+            color: rgba(25, 23, 23, 0.98);
+        }
+
+        .state2 {
+            background-color: orange;
+            color: rgba(25, 23, 23, 0.98);
+        }
+
+        /*.state3 {
+            background-color: rgb(255, 106, 0);
+            color: rgba(25, 23, 23, 0.98);
+        }
+
+        .state4 {
+            background-color: rgba(8, 230, 26, 0.2);
+            color: rgba(25, 23, 23, 0.98);
+        }
+
+        .state5 {
+            background-color: rgba(3, 75, 3, 0.2);
+            color: rgba(25, 23, 23, 0.98);
+        }
+
+        .state6 {
+            background-color: rgba(230, 255, 3, 0.2);
+            color: rgba(25, 23, 23, 0.98);
+        }
+
+        .state7 {
+            background-color: rgba(255, 3, 192, 0.2);
+            color: rgba(25, 23, 23, 0.98);
+        }*/
+    </style>
+}
+<link href="~/Content/css/Animate.css" rel="stylesheet" />
+
+<div id="print-area"></div>
+
+<div id="non-printable">
+    <p>
+        <a class="btn btn-danger" href="/GuaranteeProduct/create">جدید</a>
+        @using (Html.BeginForm("Index", "GuaranteeProduct", FormMethod.Get))
+        {
+            <input type="text" placeholder="کدرهگیری یا کد ملی یا موبایل" class="form-control col-md-1" name="search" />
+            <button type="submit" value="جستجو" class="btn-group btn btn-primary" style="margin-right:5px;">جستجو</button>
+        }
+    </p>
+    <table class=" table table-responsive-sm">
+        <tr>
+            <th>#</th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.productName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.model)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.serialNumber)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.deliveryDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.doneDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.customerDeliveryDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GuaranteeCustomer.name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GuaranteeState.stateName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.trackingCode)
+            </th>
+            <th>
+                اقلام همراه دستگاه
+            </th>
+            <th>
+                آخرین ثبت کننده
+            </th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                <div class="animated heartBeat infinite  state@(item.guaranteeStateID)" style="height:30px;width:30px;border-radius:50%"></div>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.productName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.model)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.serialNumber)
+            </td>
+
+            <td>
+                @(item.deliveryDate.HasValue ? item.deliveryDate.Value.toPersianDateString() : "")
+            </td>
+            <td id="done@(item.guaranteeProductID)">
+                @(item.doneDate.HasValue ? item.doneDate.Value.toPersianDateString() : "")
+
+            </td>
+            <td id="del@(item.guaranteeProductID)">
+                @(item.customerDeliveryDate.HasValue ? item.customerDeliveryDate.Value.toPersianDateString() : "")
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.GuaranteeCustomer.name)
+            </td>
+
+            <td>
+
+                @*@Html.DisplayFor(modelItem => item.GuaranteeState.stateName)*@
+                <div style="display:flex">
+                    <select onchange="updateState(this,@item.guaranteeProductID) " class="d-inline-block form-control">
+                        @foreach (var item2 in new Shop.Models.Rizkaran_SiteEntities().GuaranteeStates)
+                {
+                    <option @(item2.guaranteeStateID == item.GuaranteeState?.guaranteeStateID ? "selected" : "") value="@item2.guaranteeStateID">@item2.stateName</option>
+        }
+                    </select>
+
+                    <i class="fa fa-check-circle fa-2x animated jackInTheBox  " style="color:lightgreen;display:none"></i>
+                </div>
+
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.trackingCode)
+            </td>
+            <td>
+                @{
+            string t = "";
+            foreach (var item2 in item.GuaranteeProductExtraItems.Select(c => c.GuaranteeExtraItem))
+            {
+                t += item2.itemName + " , ";
+            }
+            if (t.Length > 0)
+            {
+                t = t.Remove(t.LastIndexOf(","), 1);
+            }
+                }
+                <a href="/GuaranteeProduct/StateHistory/@item.guaranteeProductID" data-toggle="tooltip" data-placement="top" title="@t">بیشتر</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.name)
+            </td>
+
+            <td>
+                @Html.ActionLink("ویرایش", "Edit", new { id = item.guaranteeProductID }) |
+                <a href="javascript:" onclick=" printDeleiveryToCustomer(@item.guaranteeProductID) ">رسید تحویل</a> |
+                <a href="javascript:" onclick="printDeleiveryToCompany(@item.guaranteeProductID)">صورتجلسه تعمیر</a> |
+                @Html.ActionLink("حذف", "Delete", new { id = item.guaranteeProductID })
+            </td>
+        </tr>
+        }
+
+    </table>
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+    <script>
+        function updateState(item, productID) {
+            fetch('/GuaranteeProduct/UpdateState',
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ productID, stateID: item.value }), method: "post"
+                }).then(c => c.json())
+                .then(c => {
+                    if (c.res == "1") {
+
+                        item.nextElementSibling.style.display = 'inline';
+                        document.getElementById('done' + productID).innerHTML = c.doneDate;
+                        document.getElementById('del' + productID).innerHTML = c.customerDeliveryDate
+                    } else {
+                        alert('خطایی رخ داد');
+                    }
+                })
+        }
+
+        function printDeleiveryToCustomer(id) {
+            $.ajax({
+                url: '/GuaranteeProduct/PrintDeliveryToCustomer/' + id, method: 'get', success: (d) => {
+                    $('#print-area').html(d);
+                    setTimeout(() => {
+                        window.print();
+                    }, 500)
+                }
+            })
+        }
+        function printDeleiveryToCompany(id) {
+            $.ajax({
+                url: '/GuaranteeProduct/PrintDeliveryToCompany/' + id, method: 'get', success: (d) => {
+                    $('#print-area').html(d);
+                    setTimeout(() => {
+                        window.print();
+                    }, 500)
+                }
+            })
+        }
+    </script>
+}

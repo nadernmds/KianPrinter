@@ -1,0 +1,136 @@
+﻿@model Shop.Models.GuaranteeProduct
+
+@{
+    ViewBag.Title = "رسید";
+    Layout = "~/Views/Shared/_PupularLayout.cshtml";
+}
+    <h2>مشاهده</h2>
+    <div>
+        @*<h4>GuaranteeProduct</h4>*@
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.productName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.productName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.model)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.model)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.serialNumber)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.serialNumber)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.buyTime)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.buyTime)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.deliveryDate)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.deliveryDate)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.doneDate)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.doneDate)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.customerDeliveryDate)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.customerDeliveryDate)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.description)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.description)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.result)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.result)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.confirmDate)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.confirmDate)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.GuaranteeCustomer.name)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.GuaranteeCustomer.name)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.GuaranteeServiceCompany.companyName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.GuaranteeServiceCompany.companyName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.GuaranteeState.stateName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.GuaranteeState.stateName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.User.username)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.User.username)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.trackingCode)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.trackingCode)
+            </dd>
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("ویرایش", "Edit", new { id = Model.guaranteeProductID }) |
+        @Html.ActionLink("بازگشت به لیست", "Index")
+    </p>

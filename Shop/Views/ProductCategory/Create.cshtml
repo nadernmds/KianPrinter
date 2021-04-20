@@ -1,0 +1,337 @@
+﻿@model Shop.Models.ProductCategory
+
+@{
+    ViewBag.Title = "Create";
+}
+
+
+<script>
+    function SnakeBar(messege) {
+        var x = document.getElementById("snackbar");
+        x.className = "show";
+        x.innerHTML = messege;
+        setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+    }
+</script>
+
+<h2>جدید</h2>
+<p id="snackbar"></p>
+
+@using (Ajax.BeginForm(actionName: "ccc", 
+    controllerName: "ProductCategory", routeValues: null, 
+    ajaxOptions: new AjaxOptions() { HttpMethod = "post", UpdateTargetId = "pep", Url = "/ProductCategory/ccc", OnSuccess = "completed()", OnFailure = "failure()", InsertionMode = InsertionMode.InsertBefore }, 
+    htmlAttributes: new { id = "myForm", enctype = "multipart/form-data" } ))
+{
+
+    @Html.AntiForgeryToken()
+
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a id="a1" data-toggle="tab" href="#t1">اطلاعات اصلی</a></li>
+
+        <li id="infoes" style="margin-top:5px;margin-left:30px" class="fa fa-info-circle" onclick="SnakeBar('لطفا ابتدا نام دسته بندی را ثبت کنید')"></li>
+
+
+        <li id="addattribute" style="pointer-events:none"><a id="a2" data-toggle="tab" href="#t2">ویژگی های دسته بندی</a></li>
+
+    </ul>
+
+
+    <div class="tab-content">
+        <div id="t1" class="tab-pane fade in active">
+            <div class="form-horizontal">
+                @*<h4>ProductCategory</h4>*@
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.categoryName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.categoryName, new { htmlAttributes = new { @class = "form-control", id = "requirmentField" } })
+                        @Html.ValidationMessageFor(model => model.categoryName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="control-label col-md-2">
+                        کد لوگو
+                    </div>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.logo, new { htmlAttributes = new { @class = "form-control", id = "requirmentField" } })
+                        @Html.ValidationMessageFor(model => model.logo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <label class="control-label col-md-2">عکس در منو</label>
+                        <input type="file" name="file" value="" />
+                    </div>
+                </div>
+
+
+
+
+
+
+
+                <div class="form-group">
+                    @Html.Label("گروه", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("parentCategory", null, " ", htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.parentCategory, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+
+            <br />
+            
+
+
+            <div class="form-group">
+                @Html.Partial("~/Views/Seo/_Seo.cshtml")
+            </div>
+
+            <br />
+            <br />
+
+        </div>
+
+
+        <div id="t2" class="tab-pane fade">
+
+
+
+            <input hidden id="pep" name="productCategoryID" value="" />
+            <input type="text" class="form-control col-md-6" name="productAttribiuteTemplateGroupName" value="" style="margin-top:10px" />
+            <button type="button" onclick="saveAttributeGroup()" style="margin:10px" class="btn btn-success ">افزودن دسته بندی ویژگی</button>
+
+
+            <div class="table" id="AttributeForm">
+
+
+            </div>
+
+            
+
+
+
+            <input onclick="saveattribute()" class="btn btn-default" type="button" name="" value="ذخیره" />
+        </div>
+
+
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input id="btnsave" type="submit" value="ثبت" class="btn btn-default" />
+                |
+                @Html.ActionLink("بازگشت به لیست", "Index")
+            </div>
+        </div>
+    </div>
+}
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+
+
+
+    <script>
+
+        function saveAttributeGroup() {
+
+            //alert("1");
+            var productCategoryID = $('#pep').text();
+            var productAttribiuteTemplateGroupName = $('#pep').next().val();
+
+            //alert(productCategoryID);
+            //alert(productAttribiuteTemplateGroupName);
+
+            $.ajax({
+                type: "POST",
+                url: '/productCategory/bbb',
+                data: { productAttribiuteTemplateGroupName: productAttribiuteTemplateGroupName, productCategoryID: productCategoryID },
+
+                success: (data) => {
+
+
+                    $('#AttributeForm').append(data);
+                },
+                error: () => { }
+            })
+        }
+
+
+
+        //function CreateElement() {
+        //    $.ajax({
+        //        url: '/productCategory/CreateAttribueFormElement',
+        //        method: 'get',
+        //        success: (data) => {
+        //            $('#AttributeForm').append(data);
+        //        },
+        //        error: () => { }
+        //    })
+        //}
+
+
+
+        function CreateElementAttribute(id) {
+            //alert(id);
+
+            //$('#t-' + id).css("display","block");
+            $('#t-' + id).removeAttr('hidden');
+
+
+            $.ajax({
+                url: '/productCategory/CreateAttribueTemplateFormElement',
+                method: 'get',
+                success: (data) => {
+                    //$("#" + id).append(data);
+                    $("#tbody" + id).append(data);
+                },
+                error: () => { }
+            })
+        }
+
+
+
+        function completed() {
+
+            document.getElementById("addattribute").style = "pointer-events : auto";
+
+
+            //alert('compeleted')
+            document.getElementById("a2").setAttribute("href", "#t2");
+            document.getElementById("btnsave").remove();
+
+            document.getElementById("infoes").remove();
+        }
+        function failure() {
+            //alert('fail')
+        }
+
+
+
+        function submit() {
+            var value = $('#pep').text();
+
+            if (value > 0) {
+                document.getElementById("a2").setAttribute("href", "#t2");
+                //document.getElementById('myForm').submit();
+
+            } else {
+                // document.getElementById("addgroup").setAttribute("class", "active");
+                // document.getElementById("addattribute").setAttribute("class", "test");
+
+                SnakeBar("لطفا ابتدا نام دسته بندی را ثبت کنید")
+                document.getElementById("a2").setAttribute("href", "#t0");
+            }
+        }
+
+
+
+
+
+        function saveattribute() {
+
+            var objectfinal = [];
+
+            //alert("aaaa");
+            $('.xxxxxxx').each(function (s, e) {
+
+                var name = "";
+                var attributeValueTypeID = "";
+                var unitID = "";
+                var searchable = "";
+
+
+                var parentID = this.parentElement.id;
+                parentID = parentID.replace('tbody', '');
+
+
+                var obj = this.children;
+                //console.log(obj[1]);
+                for (var i = 0; i < obj.length; i++) {
+                    var o = obj[i].children[0];
+
+
+                    if (o.name == "name") {
+                        name = o.value;
+                    } else if (o.name == "attributeValueTypeID") {
+                        attributeValueTypeID = o.value
+                    } else if (o.name == "unitID") {
+                        unitID = o.value
+                    } else if (o.name == "searchable") {
+                        searchable = o.value
+                    }
+
+                }
+
+
+                var ooo = {
+                    categoryID: document.getElementById("pep").innerText,
+                    productAttributeTemplateGroupID: parentID,
+                    name: name, attributeValueTypeID: attributeValueTypeID,
+                    unitID: unitID, searchable: searchable
+                };
+
+                objectfinal.push(ooo);
+                //console.log(obj2);
+                //obj.forEach(function (item) {
+
+                //    //if (!( item.nodeName == "#text")) {
+                //    //    console.log(item.firstChild);
+                //    //}
+
+                //  //  console.log(item);
+                //    //var c = item.firstChild;
+                //    //console.log(c);
+
+                //});
+
+
+
+            });
+
+
+            //console.log(objectfinal);
+
+
+
+
+            $.ajax({
+                url: '/productCategory/aaa',
+                method: 'post',
+                data: { productAttributeTemplates: objectfinal },
+                success: (data) => {
+                    window.location.href = data;
+
+                },
+                error: () => { }
+            })
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+    </script>
+
+
+}

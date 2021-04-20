@@ -1,0 +1,56 @@
+﻿@model List<Shop.Models.customProduct>
+@{
+    //Shop.Models.Rizkaran_SiteEntities db = new Shop.Models.Rizkaran_SiteEntities();
+    var colorfiltered = ViewBag.colorfiltered;
+    int count = 0;
+}
+
+@{
+    <table class="table table-responsive" >
+        <thead>
+            <tr>
+                <th>
+                    ردیف
+                </th>
+                <th>
+                    نام
+                </th>
+                <th>
+                    تعداد
+                </th>
+                @if (colorfiltered)
+                {
+                    <th>
+                       رنگ
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+              @foreach (var item in Model)
+              {
+                     if (colorfiltered)
+                     {
+                            <tr>
+                                @{ count++; }
+                                <td>@count</td>
+                                <td>@item.productName</td>
+                                <td>@item.count</td>
+                                <td>@item.colorName</td>
+                            </tr>
+                     }
+                     else
+                     {
+                           { count++; }
+                            <tr>
+                                <td> @count </td>
+                                <td> @item.productName </td>
+                                <td> @item.count </td>
+                            </tr>
+                     }
+
+            }
+        </tbody>
+    </table>
+
+    }

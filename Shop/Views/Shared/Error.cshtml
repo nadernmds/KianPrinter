@@ -1,0 +1,330 @@
+﻿<!DOCTYPE html>
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>Error</title>
+    </head>
+    <style>
+    /*.s-notFound-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 306px;
+    direction: rtl;
+}*/
+.s-notFound-container {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 46vw;
+    background: #eee;
+    margin-bottom:100px;
+}
+
+.s-notFound-container div {
+    position: absolute;
+}
+
+.s-printer-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40vw;
+    height: 40vw;
+}
+
+.s-printer-top-door {
+    width: 15vw;
+    border-bottom: 4vw solid rgb(20, 28, 31);
+    border-left: 3vw solid transparent;
+    border-right: 3vw solid transparent;
+    top: 14vw;
+}
+
+.s-printer-top-door-border1 {
+    width: 15.9vw;
+    height: 1vw;
+    background-color: #eee;
+    top: 13.5vw;
+}
+
+.s-printer-top-door-border2 {
+    width: 15.9vw;
+    height: 1vw;
+    border-radius: 40vw 40vw 0 0;
+    background-color: rgb(20, 28, 31);
+    top: 13.9vw;
+}
+
+.s-printer-body {
+    width: 80%;
+    height: 14vw;
+    border-radius: 3vw;
+    background-color: darkslategrey;
+    top: 16.5vw;
+    z-index: 4;
+    box-shadow: 0 4vw 2vw -2vw rgba(0, 0, 0, 0.699);
+}
+
+.s-printer-border-top {
+    right: 17.5%;
+    top: 16.5vw;
+    width: 65%;
+    height: 1vw;
+    border-radius: 0 0 2vw 2vw;
+    background-color: rgb(150, 159, 161);
+    z-index: 6;
+}
+
+.s-printer-border-right {
+    width: 2.5%;
+    height: 9vw;
+    top: 19vw;
+    right: 4.1vw;
+    border-radius: 2vw 0 0 0;
+    background-color: rgb(31, 54, 61);
+    z-index: 4;
+}
+
+.s-printer-border-bottom {
+    width: 55%;
+    height: 1vw;
+    top: 29.5vw;
+    right: 11vw;
+    border-radius: 2vw 0 0 0;
+    background-color: rgb(31, 54, 61);
+    z-index: 4;
+}
+
+.s-printer-inner-corner {
+    width: 22.4%;
+    height: 5vw;
+    top: 25.5vw;
+    right: 4.1vw;
+    border-radius: 0 0 3vw 0;
+    background-color: rgb(31, 54, 61);
+    z-index: 4;
+}
+
+.s-printer-upper-corner {
+    width: 18%;
+    height: 4vw;
+    top: 25.4vw;
+    right: 5.1vw;
+    border-radius: 0 0 3vw 1vw;
+    background-color: darkslategrey;
+    z-index: 4;
+}
+
+.s-printer-page-place {
+    width: 35%;
+    height: 10vw;
+    top: 25.9vw;
+    border-radius: 0 0 1vw 1vw;
+    background-color: rgb(30, 42, 46);
+    z-index: 4;
+}
+
+.s-printer-page-place-bottom-door {
+    width: 45%;
+    height: 3.3vw;
+    top: 23vw;
+    border-radius: 1vw;
+    background-color: rgb(20, 28, 31);
+    z-index: 5;
+}
+
+.s-printer-page-place-corner {
+    height: 1vw;
+    width: 2.5%;
+    top: 26.3vw;
+    right: 26.7vw;
+    border-radius: 0 0 0 2vw;
+    background-color: rgb(31, 54, 61);
+    z-index: 4;
+}
+
+.s-printer-button1 {
+    top: 18.5vw;
+    left: 7vw;
+    width: .8vw;
+    height: .8vw;
+    border: .1vw solid rgb(54, 54, 54);
+    border-radius: .8vw;
+    background-color: rgb(253, 1, 1);
+    animation: btn1 .5s forwards;
+    animation-delay: 5s;
+    z-index: 4;
+}
+
+@@-webkit-keyframes btn1 {
+    100% {
+        background-color: rgb(45, 241, 6);
+    }
+}
+
+@@keyframes btn1 {
+    100% {
+        background-color: rgb(45, 241, 6);
+    }
+}
+
+.s-printer-button2 {
+    top: 18.5vw;
+    left: 8.5vw;
+    width: .8vw;
+    height: .8vw;
+    border: .1vw solid rgb(54, 54, 54);
+    border-radius: .8vw;
+    background-color: rgb(45, 241, 6);
+    animation: btn2 .5s forwards;
+    animation-delay: 5s;
+    z-index: 4;
+}
+
+@@-webkit-keyframes btn2 {
+    100% {
+        background-color: rgb(253, 1, 1);
+    }
+}
+
+@@keyframes btn2 {
+    100% {
+        background-color: rgb(253, 1, 1);
+    }
+}
+
+.s-printer-button3 {
+    top: 18.5vw;
+    left: 10vw;
+    width: 2.8vw;
+    height: .8vw;
+    border: .1vw solid rgb(54, 54, 54);
+    border-radius: .8vw;
+    background-color: rgb(71, 71, 70);
+    z-index: 5;
+}
+
+.s-printer-papers {
+    width: 35.5%;
+    height: 8vw;
+    top: 9.9vw;
+    z-index: 0;
+    background-color: white;
+    font-size: 2vw;
+    text-align: center;
+    border: .1vw solid rgba(153, 153, 153, 0.466);
+}
+
+.s-printer-paper1-animated {
+    width: 35%;
+    height: 9vw;
+    top: 9.9vw;
+    z-index: 0;
+    background-color: white;
+    font-size: 2vw;
+    text-align: center;
+    color:red !important;
+    animation: paper-top 5s forwards;
+    animation-timing-function: ease-in-out;
+    border: .1vw solid rgba(153, 153, 153, 0.466);
+}
+.s-printer-paper1-animated > h6 {
+    color: black;
+
+}
+
+@@-webkit-keyframes paper-top {
+    100% {
+        top: 20vw;
+    }
+}
+
+@@keyframes paper-top {
+    100% {
+        top: 20vw;
+    }
+}
+
+.s-printer-paper-Cover {
+    width: 36%;
+    height: 6vw;
+    background-color: darkslategrey;
+    top: 17vw;
+    z-index: 5;
+}
+
+.s-printer-paper2-animated {
+    width: 35%;
+    height: 15vw;
+    font-size: 2vw;
+    font-weight: bolder;
+    text-align: center;
+    top: 16.9vw;
+    background-color: white;
+    z-index: 4;
+    animation: paper-bottom 5s forwards;
+    animation-timing-function: ease-in-out;
+    border: .1vw solid rgba(153, 153, 153, 0.466);
+}
+
+.s-printer-paper2-animated > h3 {
+    margin-top: 5vw;
+    font-size: 1.5vw;
+    font-weight: bolder;
+    display: flex;
+    flex-direction: column;
+    color:black;
+}
+.s-printer-paper2-animated>h3>span{
+    color:black !important;
+}
+
+@@-webkit-keyframes paper-bottom {
+    100% {
+        top: 25vw;
+    }
+}
+
+@@keyframes paper-bottom {
+    100% {
+        top: 25vw;
+    }
+}
+    </style>
+    <body>
+        <div class="s-notFound-page">
+            <div class="s-notFound-container">
+                <div id="printer-box" class="s-printer-box">
+                    <div class="s-printer-top-door"></div>
+                    <div class="s-printer-top-door-border1"></div>
+                    <div class="s-printer-top-door-border2"></div>
+                    <div class="s-printer-body"></div>
+                    <div class="s-printer-border-top"></div>
+                    <div class="s-printer-border-right"></div>
+                    <div class="s-printer-border-bottom"></div>
+                    <div class="s-printer-inner-corner"></div>
+                    <div class="s-printer-upper-corner"></div>
+                    <div class="s-printer-page-place"></div>
+                    <div class="s-printer-paper-Cover"></div>
+                    <div class="s-printer-page-place-bottom-door"></div>
+                    <div class="s-printer-page-place-corner"></div>
+                    <div class="s-printer-button1"></div>
+                    <div class="s-printer-button2"></div>
+                    <div class="s-printer-button3"></div>
+                    <div class="s-printer-papers"></div>
+                    <div class="s-printer-paper1-animated"><h6>www.kiyan-printer.ir</h6></div>
+                    <div class="s-printer-paper2-animated"><h3>404<span> یافت نشد ...</span></h3></div>
+                </div>
+            </div>
+        </div>
+        @*<hgroup>
+            <h1>Error.</h1>
+            <h2>An error occurred while processing your request.</h2>
+        </hgroup>*@
+    </body>
+    </html>
+

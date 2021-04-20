@@ -1,0 +1,22 @@
+﻿@using Stimulsoft.Report.Mvc;
+@{Layout = null;}
+<html>
+<head>
+    <title>گزارش</title>
+</head>
+<body>
+    @*@{ 
+        ViewBag.RID = ViewBag.ReportID;
+    }*@
+    @Html.Stimulsoft().StiMvcViewer(new StiMvcViewerOptions()
+{
+    Theme = StiTheme.Office2003,
+
+    Actions = new StiMvcViewerOptions.ActionOptions() { GetReportSnapshot = @ViewBag.Report, ViewerEvent = "ViewerEvent" },
+
+    //ActionGetReportSnapshot = ViewBag.Report,
+    //ActionViewerEvent = "ViewerEvent"
+})
+    }
+</body>
+</html>

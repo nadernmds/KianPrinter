@@ -1,0 +1,160 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<Shop.Models.User>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<style>
+    input[type=text] {
+        width: 250px;
+        height: 35px;
+        border-radius: 4px;
+        outline: none;
+        border: 1px solid #DDDDDD;
+        padding: 8px;
+    }
+
+    input:focus {
+        border-color: #16a7eb;
+        box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+    }
+</style>
+
+<p>
+    @Html.ActionLink("جدید", "Create")
+</p>
+<p>
+    @using (Html.BeginForm("Index", "User", FormMethod.Get))
+    {
+        <input type="text" name="search" /> <input type="submit" value="جستجو" class="btn-group btn btn-primary" />
+    }
+</p>
+@{ var sort = ViewBag.SortType;}
+<table class="table">
+    <tr>
+        <th>
+            @{ if (sort == "username")
+                {
+                    <a href="/User/Index/?sort=username_desc" style="color:white"> نام کاربری <i class="fa fa-caret-up"></i></a>
+                }
+                else
+                {
+                    <a href="/User/Index/?sort=username" style="color:white">نام کاربری <i class="fa fa-caret-down"></i></a>
+                }
+            }
+        </th>
+        <th>
+            @{ if (sort == "password")
+                {
+                <a href="/User/Index/?sort=password_desc" style="color:white"> رمزعبور <i class="fa fa-caret-up"></i></a>
+                }
+               else
+                {
+                <a href="/User/Index/?sort=password" style="color:white">رمزعبور <i class="fa fa-caret-down"></i></a>
+                }
+            }
+        </th>
+        <th>
+            @{ if (sort == "name")
+                {
+                <a href="/User/Index/?sort=name_desc" style="color:white"> نام <i class="fa fa-caret-up"></i></a>
+                }
+               else
+                {
+                <a href="/User/Index/?sort=name" style="color:white">نام <i class="fa fa-caret-down"></i></a>
+                }
+            }
+        </th>
+        <th>
+            @{ if (sort == "mobile")
+                {
+                <a href="/User/Index/?sort=mobile_desc" style="color:white"> موبایل <i class="fa fa-caret-up"></i></a>
+                }
+               else
+                {
+                <a href="/User/Index/?sort=mobile" style="color:white"> موبایل <i class="fa fa-caret-down"></i></a>
+                }
+            }
+        </th>
+        <th>
+            @{ if (sort == "email")
+                {
+                <a href="/User/Index/?sort=email_desc" style="color:white"> ایمیل <i class="fa fa-caret-up"></i></a>
+                }
+               else
+                {
+                <a href="/User/Index/?sort=email" style="color:white">  ایمیل <i class="fa fa-caret-down"></i></a>
+                }
+            }
+        </th>
+        <th>
+            @{ if (sort == "sex")
+                {
+                <a href="/User/Index/?sort=sex_desc" style="color:white"> جنسیت <i class="fa fa-caret-up"></i></a>
+                }
+               else
+                {
+                <a href="/User/Index/?sort=sex" style="color:white">جنسیت <i class="fa fa-caret-down"></i></a>
+                }
+            }
+        </th>
+        <th>
+            @{ if (sort == "groupName")
+                {
+                <a href="/User/Index/?sort=groupName_desc" style="color:white"> گروه <i class="fa fa-caret-up"></i></a>
+                }
+               else
+                {
+                <a href="/User/Index/?sort=groupName" style="color:white"> گروه <i class="fa fa-caret-down"></i></a>
+                }
+            }
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.password)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.mobile)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.email)
+            </td>
+            <td>
+                @if (item.sex == true)
+                {
+                    <p>مرد</p>
+                }
+                else
+                {
+                    <p>زن</p>
+                }
+                @*@Html.DisplayFor(modelItem => item.sex)*@
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserGroup.groupName)
+            </td>
+            <td>
+                @Html.ActionLink("ویرایش", "Edit", new { id = item.userID }) |
+                @Html.ActionLink("جزِئیات", "Details", new { id = item.userID }) |
+                @Html.ActionLink("حذف", "Delete", new { id = item.userID })
+            </td>
+        </tr>
+    }
+
+</table>
+<div class="panel-body">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+</div>

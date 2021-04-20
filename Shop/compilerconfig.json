@@ -1,0 +1,26 @@
+﻿[
+  {
+    "outputFile": "css/Shop_Style.css",
+    "inputFile": "css/Shop_Style.scss"
+  },
+  {
+    "outputFile": "css/Designers/public.css",
+    "inputFile": "css/Designers/public.scss"
+  },
+  {
+    "outputFile": "css/Designers/ipchi.css",
+    "inputFile": "css/Designers/ipchi.scss"
+  },
+  {
+    "outputFile": "css/Designers/memar.css",
+    "inputFile": "css/Designers/memar.scss"
+  },
+  {
+    "outputFile": "css/Designers/farmani.css",
+    "inputFile": "css/Designers/farmani.scss"
+  },
+  {
+    "outputFile": "css/Designers/pep.css",
+    "inputFile": "css/Designers/pep.scss"
+  }
+]

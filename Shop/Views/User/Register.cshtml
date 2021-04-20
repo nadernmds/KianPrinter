@@ -1,0 +1,180 @@
+﻿@model Shop.Models.User
+@{
+    Layout = "~/Views/Shared/_SiteLayout.cshtml";
+
+}
+
+<link href="~/Content/MdBootstrapPersianDateTimePicker/jquery.Bootstrap-PersianDateTimePicker.css" rel="stylesheet" />
+<section id="s-register">
+    <div class="s-register-column">
+        <div class="s-register-box">
+            <form action="/" method="POST">
+                <input class="s-register-input" id="input-firstname" required oninvalid="this.setCustomValidity('این فیلد را پر کنید')" oninput="this.setCustomValidity('')" type="text" name="name" placeholder="نام">
+                <input class="s-register-input" id="input-lastname" required oninvalid="this.setCustomValidity('این فیلد را پر کنید')" oninput="this.setCustomValidity('')" type="text" name="lastname" placeholder="نام خانوادگی">
+                <input class="s-register-input" id="input-username" required oninvalid="this.setCustomValidity('این فیلد را پر کنید')" oninput="this.setCustomValidity('')" type="text" name="username" placeholder="نام کاربری">
+                <input class="s-register-input pdate" id="pcal5" oninvalid="this.setCustomValidity('این فیلد را پر کنید')" oninput="this.setCustomValidity('')" type="text" placeholder="تاریخ تولد">
+                <input class="s-register-input wide" id="extra" type="hidden" name="birthday">
+                <input class="s-register-input" id="input-email" required oninvalid="this.setCustomValidity('ایمیل نامعتبر است')" oninput="this.setCustomValidity('')" type="text" name="email" placeholder="آدرس ایمیل">
+                <input class="s-register-input" id="input-telephone" required oninvalid="this.setCustomValidity('این فیلد را پر کنید')" oninput="this.setCustomValidity('')" type="text" name="mobile" placeholder="شماره موبایل">
+                <input class="s-register-input" id="input-password" required oninvalid="this.setCustomValidity('این فیلد را پر کنید')" oninput="this.setCustomValidity('')" type="password" name="password" placeholder="رمزعبور">
+                <input class="s-register-input" id="input-confirmPassword" required oninvalid="this.setCustomValidity('این فیلد را پر کنید')" oninput="this.setCustomValidity('')" type="password" name="confirmPassword" placeholder="تکرار رمزعبور">
+                <select class="s-register-input s-register-selectGender" required oninvalid="this.setCustomValidity('این فیلد را پر کنید')" oninput="this.setCustomValidity('')" name="gender">
+                    <option value="True">مرد</option>
+                    <option value="False">زن</option>
+                </select>
+                <button class="s-register-input s-register-submit" type="submit"> ادامه <div class="s-register-animated"></div></button>
+            </form>
+        </div>
+    </div>
+</section>
+
+@*
+    <form action="/" method="post">
+
+        <input required oninvalid="this.setCustomValidity('این فیلد را پر کنید')"
+               oninput="this.setCustomValidity('')" type="text" class="s-login-box-total-row s-login-box-row3-5" id="input-firstname" placeholder="نام" value="" name="name">
+
+        <input required oninvalid="this.setCustomValidity('این فیلد را پر کنید')"
+               oninput="this.setCustomValidity('')" type="text" class="form-control text-right" id="input-lastname" placeholder="نام خانوادگی" value="" name="lastname">
+
+        <input oninvalid="this.setCustomValidity('این فیلد را پر کنید')"
+               oninput="this.setCustomValidity('')" required type="text" class="form-control text-right" id="input-username" placeholder="نام کاربری" value="" name="username">
+
+        <input oninvalid="this.setCustomValidity('این فیلد را پر کنید')" oninput="this.setCustomValidity('')" type="text" id="pcal5" class="pdate">
+
+        <input type="hidden" id="extra" name="birthday" class="pdate wide">
+
+        <input required oninvalid="this.setCustomValidity('ایمیل نامعتبر است')"
+               oninput="this.setCustomValidity('')" type="email" class="form-control text-right" id="input-email" placeholder="آدرس ایمیل" value="" name="email">
+
+        <input required oninvalid="this.setCustomValidity('این فیلد را پر کنید')"
+               oninput="this.setCustomValidity('')" type="tel" class="form-control text-right" id="input-telephone" placeholder="شماره تلفن" value="" name="mobile">
+
+        <input required oninvalid="this.setCustomValidity('این فیلد را پر کنید')"
+               oninput="this.setCustomValidity('')" type="password" class="form-control text-right" id="input-password" placeholder="رمز عبور" value="" name="password">
+
+        <select required class="form-control" oninvalid="this.setCustomValidity('این فیلد را پر کنید')"
+                oninput="this.setCustomValidity('')" name="sex">
+            <option value="True">مرد</option>
+            <option value="False">زن</option>
+        </select>
+        <input required oninvalid="this.setCustomValidity('این فیلد را پر کنید')"
+               oninput="this.setCustomValidity('')" type="password" class="form-control text-right" id="input-confirmPassword" placeholder="تکرار رمز عبور" value="" name="confirmPassword">
+
+        <input type="submit" class="btn btn-primary text-left" style="float:left" value="ادامه">
+
+    </form>*@
+
+
+
+@*<div class="container">
+
+        <div class="row">
+            <!--Middle Part Start-->
+            <div class="col-sm-9" id="content">
+                <h1 class="title">ثبت نام حساب کاربری</h1>
+                <p>اگر قبلا حساب کاربریتان را ایجاد کرد اید جهت ورود به <a href="/User/Login">صفحه لاگین</a> مراجعه کنید.</p>
+                <form onsubmit="" class="form-horizontal" action="/user/register" method="post">
+                    <fieldset id="account">
+                        <legend>اطلاعات شخصی شما</legend>
+                        <div style="display: none;" class="form-group required">
+                            <label class="col-sm-2 control-label">گروه مشتری</label>
+                            <div class="col-sm-10">
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" checked="checked" value="1" name="customer_group_id">
+                                        پیشفرض
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label for="input-firstname" class="col-sm-2 control-label">نام <span style="color:red">*</span></label>
+                            <div class="col-sm-10">
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label for="input-lastname" class="col-sm-2 control-label">نام خانوادگی <span style="color:red">*</span></label>
+                            <div class="col-sm-10">
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label for="input-username" class="col-sm-2 control-label">نام کاربری  <span style="color:red">*</span></label>
+                            <div class="col-sm-10">
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label for="input-birthday" class="col-sm-2 control-label">تاریخ تولد <span style="color:red">*</span></label>
+                            <div class="col-sm-10">
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label for="input-email" class="col-sm-2 control-label ">آدرس ایمیل <span style="color:red">*</span></label>
+                            <div class="col-sm-10">
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label for="input-sex" class="col-sm-2 control-label">جنسیت <span style="color:red">*</span></label>
+                            <div class="col-sm-10">
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label for="input-telephone" class="col-sm-2 control-label"> شماره تلفن <span style="color:red">*</span></label>
+                            <div class="col-sm-10">
+                            </div>
+                        </div>
+
+                    </fieldset>
+                    <fieldset>
+                        <legend>رمز عبور شما</legend>
+                        <div class="form-group ">
+                            <label for="input-password" class="col-sm-2 control-label">رمز عبور <span style="color:red">*</span></label>
+                            <div class="col-sm-10">
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label for="input-confirmPassword" class="col-sm-2 control-label">تکرار رمز عبور  <span style="color:red">*</span></label>
+                            <div class="col-sm-10">
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="buttons">
+                        <div class="pull-left">
+                            <p style="color:red">@ViewBag.registerMessage</p>
+                            <br />
+                            <div style="float:left">
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!--Middle Part End -->
+            <!--Right Part Start -->
+            <aside id="column-right" class="col-sm-3 hidden-xs">
+                <h3 class="subtitle">حساب کاربری</h3>
+                <div class="list-group">
+                    <ul class="list-item">
+                        <li><a href="/user/login">ورود</a></li>
+                        <li><a href="/user/register">ثبت نام</a></li>
+                        <li><a href="/User/sendResetPasswordCode">فراموشی رمز عبور</a></li>
+                        <li><a href="#">حساب کاربری</a></li>
+                        <li><a href="#">تراکنش ها</a></li>
+                    </ul>
+                </div>
+            </aside>
+            <!--Right Part End -->
+
+        </div>
+    </div>*@
+
+@section scripts{
+<script src="~/Scripts/MdBootstrapPersianDateTimePicker/jquery.Bootstrap-PersianDateTimePicker.js"></script>
+<script>
+    var objCal5 = new AMIB.persianCalendar('pcal5', {
+        extraInputID: 'extra',
+        extraInputFormat: 'YYYY/MM/DD'
+    }
+    );
+</script>
+}

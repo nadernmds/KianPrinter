@@ -1,0 +1,196 @@
+﻿@model Shop.Models.GuaranteeProduct
+@using pep;
+@{
+    ViewBag.Title = "ویرایش اطلاعات کالا";
+    Layout = "~/Views/Shared/_PupularLayout.cshtml";
+}
+
+<h2>ویرایش</h2>
+
+
+@using (Html.BeginForm())
+
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    @*<h4>GuaranteeProduct</h4>*@
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.guaranteeProductID)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.productName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.productName, new { htmlAttributes = new { @class = "form-control col-md-2" } })
+            @Html.ValidationMessageFor(model => model.productName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.model, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.model, new { htmlAttributes = new { @class = "form-control col-md-2" } })
+            @Html.ValidationMessageFor(model => model.model, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.serialNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.serialNumber, new { htmlAttributes = new { @class = "form-control col-md-2" } })
+            @Html.ValidationMessageFor(model => model.serialNumber, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.guaranteeStateID, "وضعیت", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("guaranteeStateID", null, htmlAttributes: new { @class = "form-control col-md-2" })
+            @Html.ValidationMessageFor(model => model.guaranteeStateID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.buyTime, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <input data-englishNumber="true" type="text" class="form-control col-md-2" data-mddatetimepicker="true" data-trigger="click" data-fromdate="true" data-enabletimepicker="false" data-placement="left" name="buyTime" value="@(Model.buyTime.HasValue ? Model.buyTime.Value.toPersianDateString() : "" )" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.deliveryDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @*@Html.EditorFor(model => model.deliveryDate, new { htmlAttributes = new { @class = "form-control col-md-2" } })
+                @Html.ValidationMessageFor(model => model.deliveryDate, "", new { @class = "text-danger" })*@
+            <input type="text" class="form-control col-md-2" data-mddatetimepicker="true" data-trigger="click" data-fromdate="true" data-enabletimepicker="false" data-placement="left" style="text-align:center" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.doneDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @*@Html.EditorFor(model => model.doneDate, new { htmlAttributes = new { @class = "form-control col-md-2" } })
+                @Html.ValidationMessageFor(model => model.doneDate, "", new { @class = "text-danger" })*@
+            <input type="text" class="form-control col-md-2" data-mddatetimepicker="true" data-trigger="click" data-fromdate="true" data-enabletimepicker="false" data-placement="left" style="text-align:center" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.customerDeliveryDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @*@Html.EditorFor(model => model.customerDeliveryDate, new { htmlAttributes = new { @class = "form-control col-md-2" } })
+                @Html.ValidationMessageFor(model => model.customerDeliveryDate, "", new { @class = "text-danger" })*@
+            <input type="text" class="form-control col-md-2" data-mddatetimepicker="true" data-trigger="click" data-fromdate="true" data-enabletimepicker="false" data-placement="left" style="text-align:center" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.guaranteeServiceCompanyID, "گارانتی", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("guaranteeServiceCompanyID", null, "بدون گارانتی", htmlAttributes: new { @class = "form-control col-md-2" })
+            @Html.ValidationMessageFor(model => model.guaranteeServiceCompanyID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("اقلام همراه دستگاه", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-5">
+            @foreach (Rizkaran_Site.Models.GuaranteeExtraItem item in ViewBag.extraItems)
+            {
+                <label for="item@(item.guaranteeExtraItemID)">@item.itemName</label>
+                <input id="item@(item.guaranteeExtraItemID)" type="checkbox" @(Model.GuaranteeProductExtraItems.Any(c => c.guaranteeExtraItemID == item.guaranteeExtraItemID) ? "checked" : "") name="extraItem" value="@item.guaranteeExtraItemID" />
+            }
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.guaranteeCustomerID, "نام مشتری", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("guaranteeCustomerID", null, htmlAttributes: new { @class = "form-control col-md-2" })
+            @Html.ValidationMessageFor(model => model.guaranteeCustomerID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.description, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.description, new { htmlAttributes = new { @class = "form-control col-md-2" } })
+            @Html.ValidationMessageFor(model => model.description, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.result, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.result, new { htmlAttributes = new { @class = "form-control col-md-2" } })
+            @Html.ValidationMessageFor(model => model.result, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.customerOpinion, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.customerOpinion, new { htmlAttributes = new { @class = "form-control col-md-2" } })
+            @Html.ValidationMessageFor(model => model.customerOpinion, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.repairManOpinion, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.repairManOpinion, new { htmlAttributes = new { @class = "form-control col-md-2" } })
+            @Html.ValidationMessageFor(model => model.repairManOpinion, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.physicalProblems, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.physicalProblems, new { htmlAttributes = new { @class = "form-control col-md-2" } })
+            @Html.ValidationMessageFor(model => model.physicalProblems, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.include, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextAreaFor(model => model.include,  new { style="width:43.5% ;height:80px" })
+            @Html.ValidationMessageFor(model => model.include, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+
+    @Html.HiddenFor(c => c.trackingCode)
+    <div class="form-group">
+        @Html.LabelFor(model => model.amvalNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.amvalNumber, new { htmlAttributes = new { @class = "form-control col-md-2" } })
+            @Html.ValidationMessageFor(model => model.amvalNumber, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.confirmDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @*@Html.EditorFor(model => model.confirmDate, new { htmlAttributes = new { @class = "form-control col-md-2" } })
+                @Html.ValidationMessageFor(model => model.confirmDate, "", new { @class = "text-danger" })*@
+            <input type="text" class="form-control col-md-2" data-mddatetimepicker="true" data-trigger="click" data-todate="true" data-enabletimepicker="true" data-placement="left" style="text-align:center" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="ذخیره" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("بازگشت به لیست", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

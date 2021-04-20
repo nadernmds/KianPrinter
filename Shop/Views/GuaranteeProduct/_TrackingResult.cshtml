@@ -1,0 +1,224 @@
+﻿@model Shop.Models.GuaranteeProduct
+@using pep
+    <style>
+        #print-area {
+            display: block;
+        }
+
+        .title-row {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            width: 100%;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            /*background-color: yellow;*/
+        }
+
+        .date-row {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            margin-right: 350px;
+        }
+
+        .info-row {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            width: 100%;
+            height: auto;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            border: 1px solid;
+            margin-top: 40px;
+        }
+
+        .info-column1 {
+            width: 50%;
+            border-left: 1px solid;
+        }
+
+        .info-column2 {
+            width: 50%;
+            border-bottom: 1px solid;
+        }
+
+            .info-column2 :nth-child(7) {
+                border: none;
+            }
+
+        .fild {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            padding: 10px 15px 10px 0;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            border-bottom: 1px solid;
+            /*background-color: forestgreen;*/
+        }
+
+        .checkmarkBox {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            width: 100%;
+            /*background-color: red;*/
+        }
+
+        .checkmark {
+            width: 50%;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            margin-top: 20px;
+            /*background-color: palegoldenrod;*/
+        }
+
+            .checkmark > input {
+                margin-right: 10px;
+            }
+
+        .agreement-row {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            margin-right: 15px;
+            height: auto;
+            -webkit-box-align: start;
+            -ms-flex-align: start;
+            align-items: flex-start;
+        }
+
+            .agreement-row :nth-child(1) {
+                margin-top: 10px;
+            }
+
+            .agreement-row :nth-child(6) {
+                margin-bottom: 10px;
+            }
+
+        .sign-row {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            width: 100%;
+        }
+
+        .sign-column {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            width: 50%;
+            margin-right: 10px;
+            margin-top: 30px;
+        }
+
+    </style>
+
+
+@if (Model != null)
+{
+    <div class="date-row"><span style="position:absolute;left:100px;top:30px;">تاریخ:@(Model.customerDeliveryDate.HasValue ? Model.customerDeliveryDate.Value.ToPersianDateShortString() : "")</span> <img src="~/img/logo.png" style="height:60px;width:60px; position:absolute;right:15px;top:0px;" /></div>
+    <div class="info-row">
+        <div class="info-column1">
+            <span class="fild">نام و نام خانوادگی:@Model.GuaranteeCustomer.name</span>
+            <span class="fild">شماره تماس:@Model.GuaranteeCustomer.phone</span>
+            <span class="fild">اداره/شرکت/سازمان:@Model.GuaranteeCustomer.companyName</span>
+            <span class="fild">وضعیت گارانتی:@Model.GuaranteeState.stateName</span>
+            <span class="fild">
+                اقلام همراه دستگاه:
+                <span class="checkmarkBox">
+                    <span class="checkmark">
+                        <input type="checkbox" />
+                        <span>وسیله یک</span>
+                    </span>
+                    <span class="checkmark">
+                        <input type="checkbox" />
+                        <span>وسیله دو</span>
+                    </span>
+                    <span class="checkmark">
+                        <input type="checkbox" />
+                        <span>وسیله سه</span>
+                    </span>
+                    <span class="checkmark">
+                        <input type="checkbox" />
+                        <span>وسیله چهار</span>
+                    </span>
+                    <span class="checkmark">
+                        <input type="checkbox" />
+                        <span>وسیله پنج</span>
+                    </span>
+                    <span class="checkmark">
+                        <input type="checkbox" />
+                        <span>وسیله شش</span>
+                    </span>
+                </span>
+
+            </span>
+        </div>
+        <div class="info-column2">
+            <span class="fild">نام دستگاه:@Model.productName</span>
+            <span class="fild">ایراد دستگاه:</span>
+            <span class="fild">اظهارات مشتری:</span>
+            <span class="fild"> ایرادات مشاهده شده:</span>
+            <span class="fild">ایرادات فیزیکی:</span>
+            <span class="fild">سریال:@Model.serialNumber</span>
+            <span class="fild">شماره اموال:</span>
+
+        </div>
+        <div class="agreement-row">
+            <span>کلیه قطعات تحویل داده شده به شرکت صحیح و سالم تحویل داده شد.</span>
+            <span>کلیه اقلام همراه دستگاه تحویل داده شد.</span>
+            <span>دستگاه از نظر فیزیکی بررسی شده و صحیح و سالم تحویل داده شد.</span>
+            <span>سرویس نرم افزاری شامل 3روز گارانتی می باشد.</span>
+            <span>تعمیر سخت افزاری دارای گارانتی 7 روزه می باشد.</span>
+            <span>شرکت ریزکاران هیچگونه مسئولیتی در قبال از دست رفتن اطلاعات ندارد.</span>
+        </div>
+    </div>
+}
+else
+{
+    <h3 style="text-align:center">مشخصات درخواستی شما در سیستم موجود نمی باشد</h3>
+}

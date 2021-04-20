@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Shop.Models.ShopCarousel>
+
+@{
+    ViewBag.Title = "Index";
+    
+}
+
+@*<h2>Index</h2>*@
+
+<p>
+    @Html.ActionLink("جدید", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.show)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @*@Html.DisplayFor(modelItem => item.show)*@
+            <img style="max-height:200px" src="~/Images/ShopCarousel/@(item.shopCarouselID).JPG" />
+
+        </td>
+        <td style="vertical-align:middle">
+            @Html.ActionLink("ویرایش", "Edit", new { id=item.shopCarouselID }) |
+            @Html.ActionLink("مشاهده", "Details", new { id=item.shopCarouselID }) |
+            @Html.ActionLink("حذف", "Delete", new { id=item.shopCarouselID })
+        </td>
+    </tr>
+}
+
+</table>

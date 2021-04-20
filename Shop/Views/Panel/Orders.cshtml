@@ -1,0 +1,41 @@
+﻿@model List<Shop.Models.Orde>
+@{
+    Layout = "~/Views/Shared/_PanelLayout.cshtml";
+}
+
+    <div id="order-history">
+        <h3 class="subtitle">تاریخچه خرید</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>کد سفارش</th>
+                    <th>تعداد کالا</th>
+                    <th>نوع پرداخت</th>
+                    <th>وضعیت سفارش</th>
+                    <th>شماره موبایل</th>
+                    <th>آدرس</th>
+                    <th>جزئیات</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.orderID</td>
+                        <td>@item.OrderProducts.Count</td>
+                        <td>@item.PaymentType.name</td>
+                        <td>@item.OrderState.state</td>
+                        <td>@item.Address.mobile</td>
+                        <td>@item.Address.addressDetail</td>
+                        <td><a href="/panel/ShowOrder/@item.orderID"><span class="fa fa-angle-left"></span></a> </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+
+
+

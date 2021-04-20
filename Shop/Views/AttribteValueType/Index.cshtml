@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Shop.Models.AttribteValueType>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@*<h2>Index</h2>*@
+
+<p>
+    @Html.ActionLink("جدید", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.valueType)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.valueType)
+        </td>
+        <td>
+            @Html.ActionLink("ویرایش", "Edit", new { id=item.attributeValueTypeID }) |
+            @Html.ActionLink("مشاهده", "Details", new { id=item.attributeValueTypeID }) |
+            @Html.ActionLink("حذف", "Delete", new { id=item.attributeValueTypeID })
+        </td>
+    </tr>
+}
+
+</table>

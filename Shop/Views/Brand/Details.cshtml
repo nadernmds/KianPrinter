@@ -1,0 +1,33 @@
+﻿@model Shop.Models.Brand
+
+@{
+    ViewBag.Title = "Details";
+    
+}
+
+<h2>مشاهده</h2>
+
+<div>
+    @*<h4>Brand</h4>*@
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.brandName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.brandName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model=>model.enBrandName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model=>model.enBrandName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("ویرایش", "Edit", new { id = Model.brandID }) |
+    @Html.ActionLink("بازگشت به لیست", "Index")
+</p>

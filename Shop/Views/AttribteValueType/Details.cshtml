@@ -1,0 +1,26 @@
+﻿@model Shop.Models.AttribteValueType
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>مشاهده</h2>
+
+<div>
+    @*<h4>AttribteValueType</h4>*@
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.valueType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.valueType)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("ویرایش", "Edit", new { id = Model.attributeValueTypeID }) |
+    @Html.ActionLink("بازگشت به لیست", "Index")
+</p>

@@ -1,0 +1,83 @@
+﻿@model Shop.Models.Store
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>مشاهده</h2>
+
+<div>
+    @*<h4>Store</h4>*@
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.phone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.phone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.mobile)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.mobile)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.active)
+        </dt>
+
+        <dd>
+            @if (Model.active.Value)
+            {
+                <input type="checkbox" disabled checked id="active" name="active" value="true" />
+            }
+            else
+            {
+                <input type="checkbox"disabled id="active" name="active" value="false" />
+            }
+
+
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.City.cityName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.City.cityName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User.username)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.username)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("ویرایش", "Edit", new { id = Model.storeID }) |
+    @Html.ActionLink("بازگشت به لیست", "Index")
+</p>

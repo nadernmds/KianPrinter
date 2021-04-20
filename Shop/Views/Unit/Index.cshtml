@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Shop.Models.Unit>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@*<h2>Index</h2>*@
+
+<p>
+    @Html.ActionLink("جدید", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.unitName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.unitName)
+        </td>
+        <td>
+            @Html.ActionLink("ویرایش", "Edit", new { id=item.unitID }) |
+            @Html.ActionLink("مشاهده", "Details", new { id=item.unitID }) |
+            @Html.ActionLink("حذف", "Delete", new { id=item.unitID })
+        </td>
+    </tr>
+}
+
+</table>

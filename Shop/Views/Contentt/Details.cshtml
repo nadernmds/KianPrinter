@@ -1,0 +1,125 @@
+﻿@model Shop.Models.Content
+
+@{
+    ViewBag.Title = "Details";
+
+}
+
+<h2>مشاهده</h2>
+<style>
+    dd{margin-right:60px;}
+</style>
+<div>
+    @*<h4>Content</h4>*@
+    <hr />
+    <dl>
+        <dt>
+            @Html.DisplayNameFor(model => model.employeText)
+        </dt>
+
+        <dd>
+            @Html.Raw(Model.employeText)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.aboutUs)
+        </dt>
+
+        <dd>
+            @Html.Raw(Model.aboutUs)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.title)
+        </dt>
+
+        <dd>
+            @Html.Raw(Model.title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.whyUs)
+        </dt>
+
+        <dd>
+            @Html.Raw(Model.whyUs)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.shortDescription)
+        </dt>
+
+        <dd>
+            @Html.Raw(Model.shortDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.policy)
+        </dt>
+
+        <dd>
+            @Html.Raw(Model.policy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.rules)
+        </dt>
+
+        <dd>
+            @Html.Raw(Model.rules)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.adress)
+        </dt>
+
+        <dd>
+            @Html.Raw(Model.adress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.phones)
+        </dt>
+
+        <dd>
+            @Html.Raw(Model.phones)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.email)
+        </dt>
+
+        <dd>
+            @Html.Raw(Model.email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.contactUs)
+        </dt>
+
+        <dd>
+            @Html.Raw(Model.contactUs)
+        </dd>
+
+        @*<dt>
+            @Html.DisplayNameFor(model => model.hireInfo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.hireInfo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.presentationInfo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.presentationInfo)
+        </dd>*@
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("ویرایش", "Edit", new { id = Model.contentID }) |
+    @Html.ActionLink("بازگشت به لیست", "Index")
+</p>

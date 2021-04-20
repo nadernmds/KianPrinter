@@ -1,0 +1,167 @@
+﻿@model Shop.Models.User
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_PanelLayout.cshtml";
+}
+
+
+<div id="order-history">
+    @if (ViewBag.last5orders != null)
+    {
+        <h3 class="subtitle">آخرین خریدها</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>کد سفارش</th>
+                    <th>تعداد کالا</th>
+                    <th>نوع پرداخت</th>
+                    <th>وضعیت سفارش</th>
+                    <th>شماره موبایل</th>
+                    <th>آدرس</th>
+                    <th>جزئیات</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in (List<Shop.Models.Orde>)ViewBag.last5orders)
+                {
+                    <tr>
+                        <td>@item.orderID</td>
+                        <td>@item.OrderProducts.Count</td>
+                        <td>@item.PaymentType.name</td>
+                        <td>@item.OrderState.state</td>
+                        <td>@item.Address.mobile</td>
+                        <td>@item.Address.addressDetail</td>
+                        <td><a href="/panel/ShowOrder/@item.orderID"><span class="fa fa-angle-left"></span></a> </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+
+
+
+    }
+    <div class="col-sm-12">
+        <div class="panel panel-default">
+            @if (ViewBag.last5products != null)
+            {
+                <div class="panel-body">
+                    <h3 class="subtitle">محصولات خریداری شده</h3>
+                    @Html.Partial("~/Views/Partials/_ProductCarousel.cshtml", (List<Shop.Models.Product>)ViewBag.last5products)
+                </div>
+            }
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h3 class="subtitle">محصولات پیشنهادی</h3>
+                @Html.Partial("~/Views/Partials/_ProductCarousel.cshtml", (List<Shop.Models.Product>)ViewBag.offerForCustomer)
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@*<div style="width:98.9%;background-color:#f5f5f5;">
+        <div class="row">
+            <div class="container-fluid" style="margin-top:30px">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="col-sm-12">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <p> نام : @Model.name</p>
+                                    <p> نام کاربری: @Model.username</p>
+                                    <p> موبایل : @Model.mobile</p>
+                                    <a style="border-radius:50%;position:absolute;top:7px;left:20px" class="btn btn-default" href="/panel/profile"><i class="fa fa-edit "></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <a class="text-primary" href="/panel"><i style="font-size:16px" class="fa fa-user "></i> &ensp; پروفایل </a>
+                                    <br />
+                                    <br />
+                                    <a class="text-primary" href="/panel/changePassword"><i style="font-size:16px" class="fa fa-key "></i>   &ensp; تغییر رمز </a>
+                                    <br />
+                                    <br />
+                                    <a class="text-primary" href="/panel/Orders"><i style="font-size:16px" class="fa fa-cart-arrow-down "></i> &ensp; همه ی سفارش ها </a>
+                                    <br />
+                                    <br />
+                                    <a class="text-primary" href="/panel/addresses"><i style="font-size:16px" class="fa fa-map-marker "></i>   &ensp; آدرس </a>
+                                    <br />
+                                    <br />
+                                    <a class="text-primary" href="/panel/comments"><i style="font-size:16px" class="fa fa-comment "></i>   &ensp; کامنت  </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-9">
+                        @if (ViewBag.last5orders != null)
+                        {
+                            <div class="col-sm-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <h3 class="subtitle">آخرین سفارش ها</h3>
+                                        @foreach (var item in (List<Shop.Models.Orde>)ViewBag.last5orders)
+                                        {
+                                            <div class="col-sm-12" style="border-bottom:1px solid #eaeaea;padding-top:10px;padding-bottom:10px">
+                                                <div class="col-sm-12">
+                                                    <h5 style="font-weight:bold"><a class="text-primary" href="/panel/ShowOrder/@item.orderID"> کد سفارش: @item.orderID  </a></h5>
+                                                </div>
+                                                <div>
+                                                    <div class="col-sm-3">
+                                                        <p> تعداد کالا ها : @item.OrderProducts.Count</p>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <p> نوع پرداخت: @item.PaymentType.name</p>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <p> وضعیت سفارش: @item.OrderState.state</p>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <p> شماره موبایل: @item.Address.mobile</p>
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        <p> آدرس: @item.Address.addressDetail</p>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <div class="col-sm-12">
+                            <div class="panel panel-default">
+                                @if (ViewBag.last5products != null)
+                                {
+                                    <div class="panel-body">
+                                        <h3 class="subtitle">محصولات خریداری شده</h3>
+                                        @Html.Partial("~/Views/Partials/_ProductCarousel.cshtml", (List<Shop.Models.Product>)ViewBag.last5products)
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <h3 class="subtitle">محصولات پیشنهادی</h3>
+                                    @Html.Partial("~/Views/Partials/_ProductCarousel.cshtml", (List<Shop.Models.Product>)ViewBag.offerForCustomer)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>*@
+

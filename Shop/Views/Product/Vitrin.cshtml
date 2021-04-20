@@ -1,0 +1,100 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<Shop.Models.Product>
+@{
+    ViewBag.Title = "Vitrin";
+
+}
+
+<style>
+    input[type=text] {
+        width: 250px;
+        height: 35px;
+        border-radius: 4px;
+        outline: none;
+        border: 1px solid #DDDDDD;
+        padding: 8px;
+    }
+
+    input:focus {
+        border-color: #16a7eb;
+        box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+    }
+</style>
+@*<h2>Vitrin</h2>*@
+@using (Html.BeginForm("Vitrin", "Product", FormMethod.Get))
+{
+<input type="text" name="search" /> <input class="btn-group btn btn-primary" type="submit" value="جستجو" />
+}
+
+<div class="row">
+    <div class="col-lg-12">
+<table class="table">
+    
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.name)
+            </td>
+            <td>
+                @if (item.vitrin == true && item.vitrin != null)
+                {
+            <input data-id="@item.productID" type="button" class="btn btn-danger" value="حذف از ویترین" onclick="addToVitrin(@item.productID)" />
+                }
+                else
+                {
+            <input data-id="@item.productID" type="button" class="btn btn-success" value="افزودن به ویترین" onclick="addToVitrin(@item.productID)" />
+                }
+
+            </td>
+        </tr>
+    }
+</table>
+</div>
+    </div>
+
+<div class="panel-body">
+    @Html.PagedListPager(Model, page => Url.Action("Vitrin", new { page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+</div>
+
+
+
+
+    <script>
+
+        function addToVitrin(id) {
+            
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Vitrin", "Product")',
+
+                data: { id: id },
+
+                success: function (data) {
+
+                    if (data.success) {
+                        if (data.state == "removed") {
+                            //document.getElementById("vitrinbtn").setAttribute("class", "btn btn-success");
+                            $('[data-id=' + id + ']').removeClass();
+                            $('[data-id=' + id + ']').addClass("btn btn-success");
+                            $('[data-id=' + id + ']').val("افزودن به ویترین");
+                            //document.getElementById("vitrinbtn").setAttribute("value", "افزودن به ویترین");
+                        } else {
+                            $('[data-id=' + id + ']').removeClass();
+                            $('[data-id=' + id + ']').addClass("btn btn-danger");
+                            $('[data-id=' + id + ']').val("حذف از ویترین");
+                            //document.getElementById("vitrinbtn").setAttribute("class", "btn btn-danger");
+                            //document.getElementById("vitrinbtn").setAttribute("value", "حذف از ویترین");
+                        }
+
+                    } else {
+                        alert(data.data);
+                    }
+                },
+                error: function () { alert('A error'); }
+            });
+        }
+    </script>
+
+

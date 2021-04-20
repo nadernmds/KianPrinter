@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Shop.Models.Product>
+@{
+    var user = (Shop.Models.User)ViewBag.user;
+    Layout = "~/Views/Shared/_panelLayout.cshtml";
+}
+
+
+    @foreach (var item in Model)
+    {
+        @Html.Partial("~/Views/Partials/_ProductTileItem.cshtml", item)
+
+        <div style="display:block !important" id="showQuestions">
+            <div style="padding:50px;">
+                <form method="post" action="/question/create">
+                    <div style="display:block;margin-bottom:20px;">
+                        <h3>ارسال پرسش</h3>
+                        <input type="hidden" name="productID" value="@item.productID" />
+                        <label>پرسش خود را مطرح کنید <span style="color:red">*</span> </label>
+                        <textarea oninvalid="this.setCustomValidity('این فیلد الزامی است')" required class="s-show-textarea" style="width:100%" id="input-review" rows="2" name="questionText"></textarea>
+                        <div class="buttons">
+                            <div class="pull-right">
+                                <input class="s-BrandCat-button" style="top:0px !important" value="ارسال" id="button-review" type="submit">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                @foreach (var item2 in item.Questions.Where(c => c.userID == user.userID || c.Answers.Any(w => w.userID == user.userID)))
+                {
+                    <div class="s-show-questionItem">
+                        <div class="s-show-question">
+                            <div class="s-show-qusetionuser">
+                                <img src="~/Images/question-mark-icon-free-4.jpg" class="s-show-questionmark" />
+                                <div>@item2.User.name</div>
+                            </div>
+                            <div class="s-show-qusetiontext">
+                                @item2.questionText
+                                <form action="/answer/create" method="post">
+                                    <input type="hidden" name="productID" value="@item2.productID" />
+                                    <input type="hidden" name="questionID" value="@item2.questionID" />
+
+                                    <h3 style="display:none"> ارسال پاسخ<span style="color:red">*</span>  </h3>
+                                    <textarea required rows="2" type="text" class="s-show-textarea" placeholder="ارسال پاسخ" style="display:none;width:100%" oninvalid="this.setCustomValidity('این فیلد الزامی است')" name="answerText"></textarea>
+                                    <a onclick="FormChange(@item2.questionID)" style="float:left" class="s-show-questionbutton" data-answer="@item2.questionID" href="javascript:void(0)">پاسخ</a>
+                                    <button type="submit" style="float:left;display:none;top:0px !important" class="s-BrandCat-button">ارسال</button>
+
+                                </form>
+                            </div>
+                        </div>
+                        @if (item2.Answers.Any())
+                        {
+                            foreach (var item3 in item2.Answers)
+                            {
+                                <div class="s-show-answer">
+                                    <div class="s-show-answernuser">
+                                        <div style="width:90px"></div>
+                                        @item3.User.name
+                                    </div>
+
+                                    <div class="s-show-answertext">
+                                        @item3.answerText
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    }

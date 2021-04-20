@@ -1,0 +1,69 @@
+﻿@model IEnumerable<Shop.Models.DeliveryCost>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_PupularLayout.cshtml";
+    var db = new Shop.Models.Rizkaran_SiteEntities();
+    var states = db.States;
+    var cities = db.Cities;
+
+}
+<div>
+    <label>استان مبدا</label>
+    <select class="form-control" id="stateID">
+        @foreach (var item in states)
+        {
+            <option value="@item.stateID">@item.stateName</option>
+
+        }
+    </select>
+    <label>شهر مبدا</label>
+
+    <select class="form-control" id="cityID">
+    </select>
+
+    <label>مقصد</label>
+    <select class="form-control" onchange="loadStateData(this)">
+        @foreach (var state in states)
+        {
+            <option value="@state.stateID">@state.stateName</option>
+        }
+    </select>
+    <label>قیمت برای کلیه شهر ها</label>
+    <input id="all-price" class="form-control" type="number" name="name" value="" />
+    <br />
+    <button class="btn btn-default">ذخیره برای همه</button>
+</div>
+<br />
+<table class="table">
+    <tr>
+        <th>مقصد</th>
+        <th>هزینه</th>
+        <th>عملیات</th>
+    </tr>
+    <tbody id="res">
+    </tbody>
+
+</table>
+
+
+<script>
+    function loadStateData(data) {
+        fetch('/state/getCities/' + data.value, { method: 'post' })
+            .then(c => c.text())
+            .then(c => document.getElementById('res').innerHTML = c);
+    }
+    function saveCost(toCityID, element, costID) {
+        let deliveryCostID = 0;
+        if (costID != undefined) {
+            deliveryCostID = costID;
+        }
+        console.log(deliveryCostID);
+        const cost = element.parentNode.parentNode.children[1].children[0].value;
+        const fromCityID = document.getElementById('cityID').value;
+        fetch('/DeliveryCost/SaveCost/', { body: JSON.stringify({ fromCityID, cost, toCityID, deliveryCostID }), method: 'post', headers: { "Content-Type": "application/json" } })
+            .then(c => c.ok)
+            .then(c => { if (c) { alert('done'); } })
+    }
+</script>
+

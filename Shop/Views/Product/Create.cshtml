@@ -1,0 +1,335 @@
+﻿@model Shop.Models.Product
+
+@{
+    /**/
+
+    ViewBag.Title = "Create";
+
+}
+
+
+<style>
+    .chip {
+        display: inline-block;
+        padding: 0 25px;
+        height: 50px;
+        font-size: 18px;
+        line-height: 50px;
+        border-radius: 25px;
+        background-color: #f1f1f1;
+    }
+    .closebtn {
+        padding-left: 10px;
+        color: #888;
+        font-weight: bold;
+        float: right;
+        font-size: 20px;
+        cursor: pointer;
+    }
+    .closebtn:hover {
+            color: #000;
+        }
+</style>
+
+
+
+<h2>جدید</h2>
+
+@using (Html.BeginForm("Create", "Product", FormMethod.Post, new { enctype = "multipart/form-data", id = "PeoductForm" }))
+{
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#main">اطلاعات اصلی</a></li>
+        <li><a data-toggle="tab" href="#attributes">ویژگی های محصول</a></li>
+        <li><a data-toggle="tab" href="#colors">رنگ بندی محصول</a></li>
+
+    </ul>
+    <div class="tab-content">
+        <div id="main" class="tab-pane fade in active">
+            <h3>اطلاعات اصلی محصول</h3>
+            <div class="form-horizontal">
+                @*<h4>Product</h4>*@
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.Label("دسته بندی", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("categoryID", null, htmlAttributes: new { @class = "form-control", onchange = "generateAttributes()" })
+                        @Html.ValidationMessageFor(model => model.categoryID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("برند", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("brandID", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.brandID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.name, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.price, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.price, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.price, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.shortDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.shortDescription, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.shortDescription, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.description, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.description, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+
+                <div class="form-group">
+                    @Html.Label("وضعیت", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("productStateID", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.productStateID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.existingCount, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.existingCount, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.existingCount, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.vitrin, htmlAttributes: new { @class = "control-label col-md-2" })
+
+
+
+
+                    <div class="col-md-10">
+                        <input type="checkbox" name="vitrin" value="false" onclick="$(this).attr('value', this.checked ? true : false)" />
+
+                        @*@Html.EditorFor(model => model.vitrin, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.vitrin, "", new { @class = "text-danger" })*@
+                    </div>
+                </div>
+
+
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">کلمات کلیدی</label>
+                    <div class="col-md-10">
+                        <div class="col-md-10">
+                            <input id="textinp" class="form-control" type="text" />
+                        </div>
+                        <div class="">
+                            <input class="btn btn-success" style="position:absolute;left:300px;margin-top:2px" type="button" onclick="addchips()" value="افزودن" />
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="form-group">
+                    <div class="col-md-2">
+
+                    </div>
+                    <div id="keywordsshow" class="col-md-10">
+
+                    </div>
+                </div>
+
+
+
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">آیکون</label>
+                    <div class="col-md-8">
+                        <input type="file" name="file" value="" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">تصاویر</label>
+                    <div class="col-md-8">
+                        <input type="file" multiple name="images" value="" />
+                    </div>
+                </div>
+
+
+
+
+                <div class="form-group">
+                    @Html.Partial("~/Views/Seo/_Seo.cshtml")
+                </div>
+
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="ثبت" class="btn btn-default" />
+                        |
+                        @Html.ActionLink("بازگشت به لیست", "Index")
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="attributes" class="tab-pane fade">
+            <h3>ویژگی ها</h3>
+            <div id="attributeContents" class="col-lg-12 col-md-12 col-sm-12">
+                @Html.Partial("~/Views/Partials/_ProductAttributesForm.cshtml", new Shop.Models.Rizkaran_SiteEntities().ProductCategories.FirstOrDefault().ProductAttributeTemplates)
+            </div>
+
+        </div>
+
+        <div id="colors" class="tab-pane fade">
+
+            @foreach (var item in (List<Shop.Models.ProductColor>)ViewBag.productColors)
+        {
+            <div class="col-md-2 form-group">
+                <input type="checkbox" data-id="@item.productColorID" />
+                <input name="colorID" type="hidden" value="" />
+                <span style="font-size:20px">@item.color</span>
+                <br />
+            </div>
+    }
+
+
+        </div>
+
+
+        @*<div id="colors" class="tab-pane fade">
+
+
+            <button type="button" onclick="CreateElement()" style="margin:10px" class="btn btn-success">افزودن رنگ</button>
+            <br />
+            <div>
+                <table class="table" id="AttributeForm">
+                    <tr>
+                        <th>کد رنگ</th>
+                        <th>نام</th>
+                        <th>موجودی</th>
+                        <th>حذف</th>
+                    </tr>
+                </table>
+            </div>
+        </div>*@
+
+
+       
+
+
+    </div>
+
+    @Html.AntiForgeryToken()
+
+
+}
+
+@*<div class="row">
+    <div class="col-md-12">
+        @Html.ActionLink("بازگشت به لیست", "Index")
+    </div>
+</div>*@
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+        
+        function generateAttributes() {
+            let id = $('#categoryID').val()
+            $.ajax({
+                url: '/product/getAttributes/' + id,
+                method: 'get',
+                success: function (data) {
+                    console.log(data);
+                    $('#attributeContents').html(data);
+                }
+                , error: function (e) {
+                    SnakeBar("خطایی رخ داده")
+                }, dataType: 'html'
+
+            });
+        }
+    </script>
+    <script>
+        $(function () {
+            
+            $("input[type=checkbox]").change(function () {
+                let state = $(this).is(':checked');
+                if (state) {
+                    let ID = $(this).attr('data-id');
+                    $(this).next('input[type=hidden]').val(ID);
+                }
+                else {
+                    $(this).next('input[type=hidden]').val('');
+                }
+
+            });
+        });
+        
+    </script>
+
+    <script>
+
+        function addchips() {
+            var p = document.getElementById("textinp").value;
+
+            document.getElementById("keywordsshow").innerHTML += '<div id="divchips' + p + '" class="chip">' + p + '<span class="closebtn" onclick="deletechips(' + "'" + p + "'" + ')">&times;</span></div>';
+            document.getElementById("PeoductForm").insertAdjacentHTML("beforeend", '<input name="keywords" type="hidden" value="' + p + '" id="inputchips' + p + '">');
+
+            //document.getElementById("PeoductForm").innerHTML += '<input name="keywords" type="hidden" value="' + p + '" id="inputchips' + p + '">';
+        }
+
+        function deletechips(p) {
+
+            var div = document.getElementById("divchips" + p);
+            div.parentNode.removeChild(div);
+
+
+            var inp = document.getElementById("inputchips" + p);
+            inp.parentNode.removeChild(inp);
+
+        }
+
+
+
+
+
+        function CreateElement() {
+            $.ajax({
+                url: '/product/CreateColorFormElement',
+                method: 'get',
+                success: (data) => {
+                    $('#AttributeForm').append(data);
+                },
+                error: () => { }
+            })
+        }
+
+
+
+        generateAttributes()
+
+    </script>
+
+
+
+
+
+}

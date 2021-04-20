@@ -1,0 +1,42 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <link href="~/css/extra-css.css" rel="stylesheet" />
+    <link href="~/css/LoginAdmin.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/js/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/css/stylesheet.css" rel="stylesheet" />
+    <title>LoginAdmin</title>
+</head>
+<body>
+
+    <div style="background-color:white" class="wrapper ">
+        <div id="formContent">
+            <!-- Tabs Titles -->
+            <!-- Icon -->
+            <div style="padding-top:10px" class="fadeIn first">
+                <h2>ورود به سیستم</h2>
+            </div>
+            <!-- Login Form -->
+            <form method="post" action="/user/loginadmin">
+                <input type="text" id="login" class="fadeIn second" name="username" placeholder="نام کاربری">
+                <input type="password" id="password" class="fadeIn third" name="password" placeholder="رمز عبور">
+                <input type="submit"style="font-size:15px;display:block;position:relative;padding:10px;
+                margin:20px;width:100px;left:150px;border-radius:5px;color:white;background-color:#00b8d4" class="fadeIn fourth" value="ورود">
+            </form>
+            <!-- Remind Passowrd -->
+            
+        </div>
+    </div>
+
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/bootstrap/js/bootstrap.js"></script>
+</body>
+</html>

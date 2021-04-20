@@ -1,0 +1,20 @@
+﻿@model IEnumerable<Shop.Models.ProductCategory>
+
+<div class="category-module-content">
+    <ul id="sub-cat" class="tabs">
+        @{ 
+            var list = Model.Take(5);
+        }
+        @foreach (var item in list)
+        {
+            <li><a href="#tab-cat@(item.categoryID)">@item.categoryName</a></li>
+        }
+    </ul>
+    @foreach (var item in list)
+    {
+        
+    <div id="tab-cat@(item.categoryID)" class="tab_content">
+        @Html.Partial("~/Views/Partials/_ProductCarousel.cshtml",new List<Shop.Models.Product>())
+    </div>
+    }
+</div>

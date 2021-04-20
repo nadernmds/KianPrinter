@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Shop.Models.ProductColor>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@*<h2>Index</h2>*@
+
+<p>
+    @Html.ActionLink("جدید", "Create")
+</p>
+<table class="table">
+    <tr>
+        @*<th>
+            @Html.DisplayNameFor(model => model.colorCode)
+        </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.color)
+        </th>
+        @*<th>
+                @Html.DisplayNameFor(model => model.exist)
+            </th>*@
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.colorCode)
+            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.color)
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.exist)
+                </td>*@
+            <td>
+                @Html.ActionLink("ویرایش", "Edit", new { id = item.productColorID }) |
+                @Html.ActionLink("مشاهده", "Details", new { id = item.productColorID }) |
+                @Html.ActionLink("حذف", "Delete", new { id = item.productColorID })
+            </td>
+        </tr>
+    }
+
+</table>

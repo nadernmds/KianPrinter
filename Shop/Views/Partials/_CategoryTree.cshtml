@@ -1,0 +1,18 @@
+﻿@model IEnumerable<Shop.Models.ProductCategory>
+
+<div class="box-category">
+
+        <ul id="cat_accordion">
+            @if (Model!=null)
+            {
+
+            foreach (var item in Model)
+            {
+            <li>
+                @Html.Partial("~/Views/Partials/_CategoryItem.cshtml", item)
+            </li>
+            }
+            }
+
+        </ul>
+    </div>

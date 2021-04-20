@@ -1,0 +1,555 @@
+﻿@model IEnumerable<Shop.Models.Product>
+@{
+    ViewBag.Title = "سبد خرید";
+    Layout = "~/Views/Shared/_SiteLayout.cshtml";
+    List<Shop.Models.cartProduct> cartProduct = ViewBag.cartProduct;
+    decimal totalPrice = 0;
+    decimal disCount = 0;
+    decimal totalDisCount = 0;
+}
+
+
+
+<section id="s-cart">
+    <form action="/product/updateCart" method="post">
+
+        <div class="s-cart">
+            <div class="s-cart-cards">
+
+                <div class="s-cart-itemsCard-column">
+                    @foreach (var item in Model)
+                    {
+
+                        var x = cartProduct.First(cp => cp.productID == item.productID);
+                        int c = x.count;
+
+
+
+                        <div class="s-cart-itemCard" id="itemCard"  data-id="@item.productID"  >
+                            <div class="s-cart-itemCard-title">
+                                <span><a href="/product/show/@item.productID">@item.name</a> </span>
+                            </div>
+                            <div class="s-cart-itemCard-redLine"></div>
+                            <div class="s-cart-itemCard-body">
+                                <div class="s-cart-itemCard-body-delete">
+                                    <div class="s-cart-itemCard-body-deleteIcon"><a href="javascript:void(0)" onclick="removeOfCart(@item.productID)"><i class="fa fa-times fa-x"></i></a></div>
+                                </div>
+                                <input hidden name="productID" value="@item.productID" />
+
+                                <img class="s-cart-itemCard-body-image" src="~/Images/Product/icon/@(item.productID).jpg" />
+
+                                <div class="s-cart-itemCard-body-productCounts">
+                                    <div class="s-productCounts-plus"><a onclick="increaseValue(this)"><i class="fa fa-plus"></i></a></div>
+                                    <input id="number" readonly name="quantity" class="s-productCounts-countinp" value="@c" min="1" max="@item.existingCount" />
+                                    <div class="s-productCounts-minus"><a onclick="decreaseValue(this)"><i class="fa fa-minus"></i></a></div>
+                                </div>
+
+                                @{
+                                   var productColorID = 0;
+                                   if (item.ProductColorAssinments.FirstOrDefault() != null)
+                                   {
+                                    productColorID = item.ProductColorAssinments.FirstOrDefault().ProductColor.productColorID;
+                                   }
+                                }
+                                @if (productColorID > 0)
+                                        {
+                                           <div class="s-cart-itemCard-body-colorSection">
+                                               <div class="s-cart-itemCard-body-info s-cart-itemCard-body-productColor" id="color" style="border-color:@x.colorCode">
+                                                   <span>@x.color</span>
+                                                   <input name="color" hidden value="@x.color" />
+                                                   <input name="colorCode" hidden value="@x.colorCode" />
+                                               </div>
+                                           </div>
+                                        }
+                                        else
+                                        {
+                                           <div class="s-cart-itemCard-body-colorSection">
+
+                                               <input name="color" hidden value=" " />
+                                               <input name="colorCode" hidden value=" " />
+
+                                           </div>
+                                        }
+                                
+                                @{
+
+
+        DateTime now = Convert.ToDateTime(DateTime.Now.ToString());
+        var offers = item.Offers.Where(o => o.startDate < now && o.endDate > now).ToList();
+        decimal offPrice = 0;
+        decimal offPercent = 0;
+        foreach (var item2 in offers)
+        {
+            offPrice += (int)item2.price;
+            offPercent += (int)item2.offPercent;
+        }
+        decimal productPrice = item.price;
+        decimal finalPrice = productPrice;
+        if (offPercent > 0)
+        {
+            finalPrice = finalPrice - (productPrice * (offPercent / 100));
+        }
+        if (offPrice > 0)
+        {
+            finalPrice = finalPrice - offPrice;
+        }
+        disCount = (item.price - finalPrice) * c;
+        totalDisCount += disCount;
+
+        var final = finalPrice * c;
+        totalPrice += final;
+                                }
+
+
+                                <div class="s-cart-itemCard-body-priceSection">
+                                    <span class="s-priceSection-productLastprice">@item.price.ToString("N0") تومان</span>
+                                    <span class="s-priceSection-productOffer">تخفیف : @disCount.ToString("N0")</span>
+                                    <span class="s-priceSection-productFinalprice">@final.ToString("N0") تومان</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @if (Model.Any())
+                    {
+                        <input class="s-itemCard-updateButton" id="update" type="submit" name="name" value="بروزرسانی سبد " />
+
+                    }
+                </div>
+
+                <div class="s-cart-paymentCard">
+                    <div class="s-paymentCard-firstcol">
+                        <span class="s-allprice-name">مبلغ کل</span>
+                        <span class="s-allprice">@totalPrice.ToString("N0") تومان</span>
+                    </div>
+                    <div class="s-paymentCard-secondcol">
+                        <span class="s-offer-name">سود شما از خرید</span>
+                        <span class="s-offer">@(totalDisCount.ToString("N0")) تومان</span>
+                    </div>
+                    <div class="s-paymentCard-thirdcol">
+                        <span class="s-allprice-name">هزینه ارسال</span>
+                        <span class="s-allprice">0 تومان</span>
+                    </div>
+                    <br>
+                    <br>
+                    <span class="s-finalprice-name">مبلغ قابل پرداخت : </span>
+                    <span class="s-finalprice">@(totalPrice.ToString("N0")) تومان</span>
+                    <br>
+                    <br>
+                   <a class="s-paymentCard-button" href="/orderproduct/orderInfoes">ادامه سفارش<div class="s-paymentCard-button-animated"></div></a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+
+</section>
+
+
+
+
+
+
+
+
+@section Scripts{
+    <script>
+        function increaseValue(item) {
+            var value = parseInt(item.parentNode.nextElementSibling.value);
+            var max = parseInt(item.parentNode.nextElementSibling.max);
+            if (value<max) {
+
+            value = isNaN(value) ? 0 : value;
+            value++;
+                item.parentNode.nextElementSibling.value = value;
+            }
+
+        }
+        function decreaseValue(item) {
+            var value = parseInt(item.parentNode.previousElementSibling.value);
+            value = isNaN(value) ? 0 : value;
+            value < 1 ? value = 1 : '';
+            value--;
+                item.parentNode.previousElementSibling.value = value;
+        }
+    </script>
+
+    <script>
+                    var totalPrice =@totalPrice;
+
+                    var totalOffer=@totalDisCount;
+                        function removeOfCart(productID) {
+
+                            $.ajax({
+                                type: "POST",
+                                url: '@Url.Action("removeOfCart", "Product")',
+
+                                data: { productID: productID },
+
+                                success: function (data) {
+                                    if (data.success) {
+                                        
+                                        $("[data-id=" + data.data + "]").remove();
+                                        var price = totalPrice - data.removeProductPrice*data.removedProductCount;
+                                        $('#price').html(price);
+                                        var discount = totalOffer - data.removeProductOffer * data.removedProductCount;
+                                        $('#discount').html(discount)
+                                       // SnakeBar("با موفقیت حذف شد");
+                                        $("#cart-total").html('<span id="button-cart" style="font-size:15px;height:25px;width:25px; border-radius:50%;position:absolute;left:-10px;top:-5px;z-index:20;" class="text-center img-responsive btn-danger">'+data.counter+'</span>');
+                                        if (data.counter == 0) {
+                                            $("#itemCard").remove();
+                                            $("#update").remove();
+                                            $('#discount').remove();
+                                            $('#price').remove();
+                                        }
+
+                                    } else {
+                                        alert('A error');
+                                    }
+
+
+                                },
+                                error: function () { SnakeBar('error'); }
+                            });
+                        }
+
+
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+
+
+            var products = $("[data-id=" + data.data + "]").length;
+
+            if (products == null || products == 0) {
+                $("#update").hide(200);
+            }
+        })
+
+    </script>
+
+
+    @**@<script>
+                    var totalPrice =@totalPrice;
+
+                    var totalOffer=@totalDisCount;
+                        function removeOfCart(productID) {
+
+                            $.ajax({
+                                type: "POST",
+                                url: '@Url.Action("removeOfCart", "Product")',
+
+                                data: { productID: productID },
+
+                                success: function (data) {
+                                    if (data.success) {
+                                        $("[data-id=" + data.data + "]").remove();
+                                        var price = totalPrice - data.removeProductPrice*data.removedProductCount;
+                                        $('#price').html(price);
+                                        var discount = totalOffer - data.removeProductOffer * data.removedProductCount;
+                                        $('#discount').html(discount)
+                                        SnakeBar("با موفقیت حذف شد");
+                                        $("#cart-total").html('<span id="button-cart" style="font-size:15px;height:25px;width:25px; border-radius:50%;position:absolute;left:-10px;top:-5px;z-index:20;" class="text-center img-responsive btn-danger">'+data.counter+'</span>');
+                                        if (data.counter == 0) {
+                                            $("#table").remove();
+                                            $("#update").remove();
+                                            $('#discount').remove();
+                                            $('#price').remove();
+
+                                        }
+
+                                    } else {
+                                        alert('A error');
+                                    }
+
+
+                                },
+                                error: function () { SnakeBar('error'); }
+                            });
+                        }
+
+
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+
+
+            var products = $("[data-id=" + data.data + "]").length;
+
+            if (products == null || products == 0) {
+                $("#update").hide(200);
+            }
+        })
+
+    </script>
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*<style>
+    .turn-red {
+        color: #635858;
+        border-radius: 50%;
+        width: 33px;
+        height: 32px;
+        background-color: #dfe2e2;
+    }
+
+        .turn-red:hover {
+            background-color: #e74c3c;
+            color: white;
+        }
+</style>
+
+
+<script src="~/js/swipebox/lib/jquery-2.1.0.min.js"></script>
+
+<div class="container">
+    <div class="row">
+
+        Middle Part Start
+        <div id="content" class="col-sm-12">
+            <h1 class="title">سبد خرید</h1>
+            <div class="table-responsive">
+                <form action="/product/updateCart" method="post">
+                    <table id="table" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+
+                                <td class="text-center">نام محصول</td>
+                                <td class="text-center">تصویر</td>
+                                <td class="text-center">رنگ</td>
+                                <td class="text-center">تعداد</td>
+                                <td class="text-center">قیمت واحد</td>
+                                <td class="text-center">تخفیف</td>
+                                <td class="text-center">کل</td>
+
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr data-id="@item.productID">
+                                    @{
+                                        var x = cartProduct.First(cp => cp.productID == item.productID);
+                                        int c = x.count;
+
+                                        var color = x.color;
+                                    }
+
+                                    <td class="table-count">
+                                        <div class="col-lg-9 col-sm-9">
+                                            <a href="/product/show/@item.productID" style="color:black" class=""> @item.name</a><span data-id="@item.productID">
+                                                <input hidden name="productID" value="@item.productID" />
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td class="text-center"><a href="/product/show/@item.productID"><img style="width:5em" src="~/Images/Product/icon/@(item.productID).jpg" /></a></td>
+                                    <td class="text-center" style="vertical-align:middle">
+
+
+
+                                        @{
+                                            var productColorID = 0;
+                                            if (item.ProductColorAssinments.FirstOrDefault() != null)
+                                            {
+                                                productColorID = item.ProductColorAssinments.FirstOrDefault().ProductColor.productColorID;
+                                            }
+                                        }
+
+
+                                        @if (productColorID > 0)
+                                        {
+
+
+                                            <p class="text-center"> @color</p>
+                                        }
+                                        else
+                                        {
+                                            <p style="vertical-align:middle">-</p>
+                                        }
+                                    </td>
+
+                                    <td class="text-right " style="vertical-align:middle">
+                                        <div class="qty">
+                                            <input type="number" name="quantity" value="@c" min="1" id="input-quantity" max="@item.existingCount" class="form-control text-right" />
+                                            <div class="clear"></div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center" style="vertical-align:middle">
+                                        @{
+
+
+                                            DateTime now = Convert.ToDateTime(DateTime.Now.ToString());
+                                            var offers = item.Offers.Where(o => o.startDate < now && o.endDate > now).ToList();
+                                            decimal offPrice = 0;
+                                            decimal offPercent = 0;
+                                            foreach (var item2 in offers)
+                                            {
+                                                offPrice += (int)item2.price;
+                                                offPercent += (int)item2.offPercent;
+                                            }
+                                            decimal productPrice = item.price;
+                                            decimal finalPrice = productPrice;
+                                            if (offPercent > 0)
+                                            {
+                                                finalPrice = finalPrice - (productPrice * (offPercent / 100));
+                                            }
+                                            if (offPrice > 0)
+                                            {
+                                                finalPrice = finalPrice - offPrice;
+                                            }
+
+                                            <span class="text-center">@item.price.ToString("N0") تومان</span>
+
+                                        }
+                                    </td>@{ disCount = (item.price - finalPrice) * c;
+                                        totalDisCount += disCount;
+                                    }
+                                    <td class="text-center" style="vertical-align:middle">@(disCount.ToString("N0"))</td>
+
+                                    @{var final = finalPrice * c;}
+                                    @{totalPrice += final; }
+
+                                    <td style="vertical-align:middle"><div class="col-lg-10 text-center" data-price="price">@final.ToString("N0") تومان </div> <div class="col-lg-1"><a href="javascript:void(0)" style="" class="btn text-center turn-red" onclick="removeOfCart(@item.productID)"><i class="fa fa-times"></i></a> </div> </td>
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+                    @if (Model.Any())
+                    {
+                        <input id="update" style="float:right" type="submit" class="btn btn-primary text-right" name="name" value="بروزرسانی سبد " />
+
+                    }
+                </form>
+            </div>*@
+
+
+
+
+            @*<h2 class="subtitle">حالا مایلید چه کاری انجام دهید؟</h2>
+                <p>در صورتی که کد تخفیف در اختیار دارید میتوانید از آن در اینجا استفاده کنید.</p>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">استفاده از کوپن تخفیف</h4>
+                            </div>
+                            <div id="collapse-coupon" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <label class="col-sm-4 control-label" for="input-coupon">کد تخفیف خود را در اینجا وارد کنید</label>
+                                    <div class="input-group">
+                                        <input type="text" name="coupon" value="" placeholder="کد تخفیف خود را در اینجا وارد کنید" id="input-coupon" class="form-control" />
+                                        <span class="input-group-btn">
+                                            <input type="button" value="اعمال کوپن" id="button-coupon" data-loading-text="بارگذاری ..." class="btn btn-primary" />
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">استفاده از کارت هدیه</h4>
+                            </div>
+                            <div id="collapse-voucher" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <label class="col-sm-4 control-label" for="input-voucher">کد کارت هدیه را در اینجا وارد کنید</label>
+                                    <div class="input-group">
+                                        <input type="text" name="voucher" value="" placeholder="کد کارت هدیه را در اینجا وارد کنید" id="input-voucher" class="form-control" />
+                                        <span class="input-group-btn">
+                                            <input type="submit" value="اعمال کارت هدیه" id="button-voucher" data-loading-text="بارگذاری ..." class="btn btn-primary" />
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">پیش بینی هزینه ی حمل و نقل و مالیات</h4>
+                    </div>
+                    <div id="collapse-shipping" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <p>مقصد خود را جهت براورد هزینه ی 0 تومان وارد کنید.</p>
+                            <form class="form-horizontal">
+
+                                <div class="form-group required">
+                                    <label class="col-sm-2 control-label" for="input-postcode">کد پستی</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" name="postcode" value="" placeholder="کد پستی" id="input-postcode" class="form-control" />
+                                    </div>
+                                </div>
+                                <input type="button" value="دریافت پیش فاکتور" id="button-quote" data-loading-text="بارگذاری ..." class="btn btn-primary" />
+                            </form>
+                        </div>
+                    </div>
+                </div>*@
+
+
+            @*<div style="margin-top:20px" class="row">
+
+                </div>
+                <div class="col-sm-4 col-sm-offset-6">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td class="text-right"><strong>تخفیف کل:<span id="discount">@(totalDisCount.ToString("N0"))</span>  </strong></td>
+                            <td class="text-right "> تومان</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right"><strong>قیمت نهایی:<span id="price"> @totalPrice.ToString("N0")</span></strong></td>
+                            <td class="text-right "> تومان</td>
+                        </tr>*@
+
+
+
+            @*<tr>
+                    <td class="text-right"><strong>کسر هدیه:</strong></td>
+                    <td class="text-right"> تومان</td>
+                </tr>
+                <tr>
+                    <td class="text-right"><strong>مالیات:</strong></td>
+                    <td class="text-right"> تومان</td>
+                </tr>
+                <tr>
+                    <td class="text-right"><strong>کل :</strong></td>
+                    <td class="text-right"> تومان</td>
+                </tr>*@
+            @*</table>
+                            </div>
+                            <div style="margin-top:37px;" class="pull-left"><a href="/orderproduct/orderInfoes" class="btn btn-default">ادامه خرید</a></div>
+
+                        </div>
+                        Middle Part End
+                    </div>
+                </div>*@
+
+

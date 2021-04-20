@@ -1,0 +1,74 @@
+﻿@model Shop.Models.Orde
+
+@{
+    ViewBag.Title = "Edit";
+   
+}
+
+<h2>ویرایش</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    @*<h4>Orde</h4>*@
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.orderID)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.orderOff, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.orderOff, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.orderOff, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("نام کاربری", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("userID", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.userID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("آدرس", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("addressID", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.addressID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("وضعیت سفارش", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("orderStateID", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.orderStateID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.date ,htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.date, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.date, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="ذخیره" class="btn btn-default" />
+            |
+            @Html.ActionLink("بازگشت به لیست", "Index")
+        </div>
+    </div>
+</div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

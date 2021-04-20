@@ -1,0 +1,9 @@
+﻿@model List<Shop.Models.Product>
+ 
+    <div class="side-item">
+        @foreach (var item in Model)
+        {
+            @Html.Partial("~/Views/Partials/_ProductColumnTile.cshtml", item)
+        }
+    </div>
+ 

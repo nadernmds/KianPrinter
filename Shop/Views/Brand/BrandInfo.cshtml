@@ -1,0 +1,36 @@
+﻿@model Shop.Models.Brand
+@{
+    ViewBag.Title = "BrandInfo";
+    Layout = "~/Views/Shared/_SiteLayout.cshtml";
+}
+
+    <section id="BrandCat" >
+        <div class="s-BrandCat-head">
+            <img class="s-BrandCat-logo" style="max-width:200px;object-fit: contain" src="~/Images/Brand/@(Model.brandID).png" alt="">
+            <h1 class="s-BrandCat-title" style="text-align:right">
+                @Model.brandName
+                <br><span style="font-size: 1rem">تعداد محولات:@Model.Products.Count</span>
+            </h1>
+
+        </div>
+
+        @foreach (var item in (List<Shop.Models.ProductCategory>)ViewBag.productCategory)
+        {
+        <div class="s-BrandCat-category" >
+            <div style="display: flex;justify-content: space-between;padding:0px 10px ">
+                <h3>@item.categoryName</h3>
+                <div>
+                    <a href="/productcategory/list?c=@item.categoryID" class="s-BrandCat-button">تمام کالاها</a>
+                </div>
+            </div>
+            <div class="s-BrandCat-underline"></div>
+            <div class="s-BrandCat-list">
+                 @foreach (var item2 in item.Products.Take(4))
+                 {
+                @Html.Partial("~/Views/Partials/_ProductTileItem.cshtml", item2)
+                 }
+            </div>
+        </div>
+        }
+
+    </section>

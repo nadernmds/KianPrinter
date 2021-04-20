@@ -1,0 +1,526 @@
+﻿@model List<Shop.Models.Address>
+@{
+    ViewBag.Title = "orderInfoes";
+    Layout = "~/Views/Shared/_SiteLayout.cshtml";
+    List<Shop.Models.cartProduct> cartProduct = ViewBag.cartProduct;
+    decimal final = 0;
+}
+
+
+<style>
+    .form-control {
+        display: block;
+        width: 80%;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    .s-address-title {
+        margin-right: 5px;
+        font-size: small
+    }
+
+    .form-group {
+        margin-top: 10px;
+    }
+
+
+    .s-finalcard {
+        width: 30%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+
+    .btn-primary {
+        color: #fff;
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+
+    .btn {
+        display: inline-block;
+        font-weight: 400;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        border: 1px solid transparent;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        border-radius: 0.25rem;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+</style>
+
+<script>
+    function getCities(stateID) {
+        let obj = { stateID: stateID }
+        $.ajax({
+            type: "POST",
+            url: '/OrderProduct/getCities',
+
+            data: obj,
+            success: function (data) {
+                if (data.success) {
+
+                    if (stateID != "null") {
+                        var select = document.getElementById("city");
+                        select.options.length = 0;
+                        var cityName = data.cityName.split(",");
+                        var cityID = data.cityID.split(",");
+                        for (var i = 0; i < cityName.length; i++) {
+                            var opt = cityName[i];
+                            var val = cityID[i];
+                            var el = document.createElement("option");
+                            el.textContent = opt;
+                            el.value = val;
+                            select.appendChild(el);
+                        }
+                    }
+                    else {
+                        var select = document.getElementById("city");
+                        select.options.length = 0
+                    }
+                }
+
+            },
+
+            error: function (xpr) { alert(xpr.responseText); }
+        });
+    }
+
+
+</script>
+
+
+
+
+<script>
+    function FindCity(cityID) {
+
+        let obj = { cityID: cityID }
+        $.ajax({
+            type: "POST",
+            url: "/OrderProduct/FindCity",
+            data: obj,
+            success: function (data) {
+
+                if (data.success) {
+
+                    var city = document.getElementById("city");
+                    city.value = data.c.cityID;
+                    // city.disabled = true;
+                }
+            },
+            error: function (xpr) { alert(xpr.responseText); }
+        })
+    }
+
+</script>
+<script>
+    function newAddress() {
+        document.getElementById("input-address").disabled = false;
+        document.getElementById("input-address").value = "";
+
+        document.getElementById("input-postalCode").disabled = false;
+        document.getElementById("input-postalCode").value = "";
+
+        document.getElementById("input-phone").disabled = false;
+        document.getElementById("input-phone").value = "";
+
+        document.getElementById("input-mobile").disabled = false;
+        document.getElementById("input-mobile").value = "";
+
+        document.getElementById("state").disabled = false;
+        document.getElementById("state").selectedIndex = 0;
+
+        document.getElementById("city").disabled = false;
+        document.getElementById("city").selectedIndex = -1;
+
+        document.getElementById("chooseAddress").selectedIndex = 0;
+
+    }
+</script>
+<script>
+    function getAdresses(addressID) {
+        let obj = { addressID: addressID }
+        $.ajax({
+            type: "POST",
+            url: '/OrderProduct/getAdresses',
+            data: obj,
+            success: function (data) {
+                if (data.success) {
+                    $('#currentAddress').val(addressID);
+                    var state = document.getElementById("state");
+                    state.value = data.state;
+                    //document.getElementById("state").disabled = true;
+                    getCities(data.state);
+                    FindCity(data.city);
+                    var address = document.getElementById("input-address");
+                    address.innerHTML = data.address;
+                    address.readOnly = true;
+                    var postal = document.getElementById("input-postalCode");
+                    postal.value = data.postalCode;
+                    postal.readOnly = true;
+                    var mobile = document.getElementById("input-mobile");
+                    mobile.value = data.mobile;
+                    mobile.readOnly = true;
+                    var phone = document.getElementById("input-phone");
+                    phone.value = data.phone;
+                    phone.readOnly = true;
+                    var activeAddress = document.getElementById("activeAddress");
+                    activeAddress.value = data.state;
+                }
+            },
+
+            error: function (xpr) { alert(xpr.responseText); }
+
+        });
+    }
+
+</script>
+<style>
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>
+
+
+
+
+
+
+<div style="width:1200px;display:flex;flex-direction:row;margin-top:20px;padding:10px">
+    <!--Middle Part Start-->
+    <div class="col-sm-9" id="content" style="width:65%">
+        <span class="title" style="margin:10px">آدرس و مشخصات</span>
+        <form onsubmit="" class="form-horizontal" action="/orderProduct/saveOrderInfoes" method="post">
+            @if (Model == null)
+            {
+                <fieldset id="account">
+                    <legend>اطلاعات شما</legend>
+                    <div style="display: none;" class="form-group required">
+                        <label class="col-sm-2 control-label">گروه مشتری</label>
+                        <div class="col-sm-10">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" checked="checked" value="1" name="customer_group_id">
+                                    پیشفرض
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    @{ var address = "";
+                        var postal = "";
+                    }
+                    @foreach (var item in Model)
+                    {
+                        address += item.addressDetail + "\n";
+                        postal += item.postalCode + "\n";
+
+                    }
+                    <div class="form-group ">
+                        <label for="input-sex" class="col-sm-2 control-label s-address-title">استان <span style="color:red">*</span></label>
+                        <div class="col-sm-10">
+                            <select required class="form-control" onchange="getCities($(this).children('option:selected').val())" oninvalid="this.setCustomValidity('این فیلد را پر کنید')"
+                                    oninput="this.setCustomValidity('')">
+                                <option value="null">--لطفا شهر خود را انتخاب کنید--</option>
+                                @foreach (var item in (List<Shop.Models.State>)ViewBag.states)
+                                {
+                                    <option value="@item.stateID">@item.stateName</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group ">
+                        <label for="input-sex" class="col-sm-2 control-label s-address-title">شهر <span style="color:red">*</span></label>
+                        <div class="col-sm-10">
+                            <select required id="city" class="form-control" oninvalid="this.setCustomValidity('این فیلد را پر کنید')"
+                                    oninput="this.setCustomValidity('')" name="cityID"></select>
+                        </div>
+                    </div>
+
+                    <div class="form-group ">
+                        <label for="input-firstname" class="col-sm-2 control-label s-address-title">آدرس <span style="color:red">*</span></label>
+                        <div class="col-sm-10">
+
+                            <textarea required rows="5" oninvalid="this.setCustomValidity('این فیلد را پر کنید')"
+                                      oninput="this.setCustomValidity('')" class="form-control text-right" id="input-firstname" placeholder="آدرس" value="" name="addressDetail"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label for="input-lastname" class="col-sm-2 control-label s-address-title">کد پستی<span style="color:red">*</span></label>
+                        <div class="col-sm-10">
+                            <input rows="5" required oninvalid="this.setCustomValidity('این فیلد را پر کنید')"
+                                   oninput="this.setCustomValidity('')" type="text" class="form-control text-right" id="input-postalCode" placeholder="کد پستی" value="" name="postalCode" />
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label for="input-lastname" class="col-sm-2 control-label s-address-title">شماره موبایل<span style="color:red">*</span></label>
+                        <div class="col-sm-10">
+                            <input required oninvalid="this.setCustomValidity('این فیلد را پر کنید')"
+                                   oninput="this.setCustomValidity('')" type="number" class="form-control text-right" id="input-lastname" placeholder="شماره موبایل" value="" name="mobile">
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label for="input-lastname" class="col-sm-2 control-label s-address-title">شماره های  تماس</label>
+                        <div class="col-sm-10">
+                            <input oninvalid="this.setCustomValidity('این فیلد را پر کنید')"
+                                   oninput="this.setCustomValidity('')" type="tel" class="form-control text-right" id="input-lastname" placeholder="شماره های تماس" value="" name="phone">
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label for="input-sex" class="col-sm-2 control-label s-address-title">نحوه پرداخت <span style="color:red">*</span></label>
+                        <div class="col-sm-10">
+                            <select name="paymentTypeID" required class="form-control" oninvalid="this.setCustomValidity('این فیلد را پر کنید')"
+                                    oninput="this.setCustomValidity('')">
+                                @foreach (var item in (List<Shop.Models.PaymentType>)ViewBag.Payment)
+                                {
+                                    <option value="@item.paymentTypeID">@item.name</option>
+                                }
+
+
+                            </select>
+                        </div>
+                    </div>
+                </fieldset>
+            }
+            else
+            {
+
+
+
+
+                <div style="margin-bottom:20px;background-color:white;padding:30px;border-radius:8px;box-shadow:0 0 5px 0 rgba(0, 0, 0, 0.1)">
+                    <div class="form-group ">
+                        <label for="input-sex" class="col-sm-2 control-label s-address-title">انتخاب آدرس <span style="color:red">*</span></label>
+                        <div class="col-sm-10">
+                            <input type="hidden" id="currentAddress" name="AddressID" value="" />
+                            <select required class="form-control" id="chooseAddress" onchange="getAdresses($(this).children('option:selected').val())" oninvalid="this.setCustomValidity('این فیلد را پر کنید')"
+                                    oninput="this.setCustomValidity('')">
+                                <option value="null">--آدرس خود را انتخاب کنید--</option>
+                                @foreach (var item in Model)
+                                {
+                                    <option value="@item.addressID">@item.addressDetail</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+                <span class="text-primary" href="javacript:void(0)" onclick="newAddress()" style="margin:10px">آدرس جدید</span>
+                <div id="account" style="background-color:white;padding:30px;border-radius:8px;box-shadow:0 0 5px 0 rgba(0, 0, 0, 0.1)">
+
+                    <div style="display: none;" class="form-group required">
+                        <label class="col-sm-2 control-label s-address-title">گروه مشتری</label>
+                        <div class="col-sm-10">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" checked="checked" value="1" name="customer_group_id">
+                                    پیشفرض
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label for="input-sex" class="col-sm-2 control-label s-address-title">استان <span style="color:red">*</span></label>
+                        <div class="col-sm-10">
+                            <select required class="form-control " id="state" onchange="getCities($(this).children('option:selected').val())" oninvalid="this.setCustomValidity('این فیلد را پر کنید')"
+                                    oninput="this.setCustomValidity('')">
+                                <option value="null">--لطفا شهر خود را انتخاب کنید--</option>
+                                @foreach (var item in (List<Shop.Models.State>)ViewBag.states)
+                                {
+                                    <option value="@item.stateID">@item.stateName</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <input type="hidden" name="activeAddressID" id="activeAddress" value="" />
+
+
+                    <div class="form-group ">
+                        <label for="input-sex" class="col-sm-2 control-label s-address-title">شهر <span style="color:red">*</span></label>
+                        <div class="col-sm-10">
+                            <select required id="city" class="form-control" oninvalid="this.setCustomValidity('این فیلد را پر کنید')"
+                                    oninput="this.setCustomValidity('')" name="cityID"></select>
+                        </div>
+                    </div>
+
+                    <div class="form-group ">
+                        <label for="input-firstname" class="col-sm-2 control-label s-address-title">آدرس <span style="color:red">*</span></label>
+                        <div class="col-sm-10">
+
+                            <textarea required rows="5" oninvalid="this.setCustomValidity('این فیلد را پر کنید')"
+                                      oninput="this.setCustomValidity('')" class="form-control text-right" id="input-address" placeholder="آدرس" value="" name="addressDetail"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label for="input-lastname" class="col-sm-2 control-label s-address-title">کد پستی<span style="color:red">*</span></label>
+                        <div class="col-sm-10">
+                            <input rows="5" required oninvalid="this.setCustomValidity('این فیلد را پر کنید')"
+                                   oninput="this.setCustomValidity('')" type="text" class="form-control text-right" id="input-postalCode" placeholder="کد پستی" value="" name="postalCode" />
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label for="input-lastname" class="col-sm-2 control-label s-address-title">شماره موبایل<span style="color:red">*</span></label>
+                        <div class="col-sm-10">
+                            <input required oninvalid="this.setCustomValidity('این فیلد را پر کنید')"
+                                   oninput="this.setCustomValidity('')" type="number" class="form-control text-right" id="input-mobile" placeholder="شماره موبایل" value="" name="mobile">
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label for="input-lastname" class="col-sm-2 control-label s-address-title">شماره های  تماس</label>
+                        <div class="col-sm-10">
+                            <input oninvalid="this.setCustomValidity('این فیلد را پر کنید')"
+                                   oninput="this.setCustomValidity('')" type="tel" class="form-control text-right" id="input-phone" placeholder="شماره های تماس" value="" name="phone">
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label for="input-sex" class="col-sm-2 control-label s-address-title">نحوه پرداخت <span style="color:red">*</span></label>
+                        <div class="col-sm-10">
+                            <select name="paymentTypeID" required class="form-control" oninvalid="this.setCustomValidity('این فیلد را پر کنید')"
+                                    oninput="this.setCustomValidity('')">
+                                @foreach (var item in (List<Shop.Models.PaymentType>)ViewBag.Payment)
+                                {
+                                    <option value="@item.paymentTypeID">@item.name</option>
+                                }
+
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            }
+            @*<fieldset>
+                    <legend>خبرنامه</legend>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">اشتراک</label>
+                        <div class="col-sm-10">
+                            <label class="radio-inline">
+                                <input type="radio" value="1" name="newsletter">
+                                بله
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" checked="checked" value="0" name="newsletter">
+                                نه
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>*@
+            <div class="buttons">
+                <div class="pull-left">
+                    <p style="color:red">@ViewBag.registerMessage</p>
+                    <br />
+                    <div style="float:left">
+
+                        <input type="submit" class="btn btn-primary text-left" style="cursor:pointer;float:left" value="ادامه خرید">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!--Middle Part End -->
+    <!--Right Part Start -->
+    <aside id="column-right" class="col-sm-3 col-xs-12 s-finalcard" style="margin-top:10px">
+       
+        <div class="list-group s-cart-paymentCard" style="width:100%;margin-top:20px;height:auto;padding-bottom:15px;border-radius:0px">
+
+            @foreach (var item in (List<Shop.Models.Product>)ViewBag.products)
+        {
+            DateTime now = Convert.ToDateTime(DateTime.Now.ToString());
+            var offers = item.Offers.Where(o => o.startDate < now && o.endDate > now).ToList();
+            decimal offPrice = 0;
+            decimal offPercent = 0;
+            foreach (var item2 in offers)
+            {
+                offPrice += (int)item2.price;
+                offPercent += (int)item2.offPercent;
+            }
+            decimal productPrice = item.price;
+            decimal finalPrice = productPrice;
+            if (offPercent > 0)
+            {
+                finalPrice = finalPrice - (productPrice * (offPercent / 100));
+            }
+            if (offPrice > 0)
+            {
+                finalPrice = finalPrice - offPrice;
+                final += finalPrice;
+            }
+
+            var x = cartProduct.First(cp => cp.productID == item.productID);
+            int c = x.count;
+            @*<div class="row">
+                <div class="col-sm-6 ">
+                    <a href="/product/show/@item.productID">@item.name (@c)</a>
+                </div>
+                <div class="col-sm-6">
+                    @{ final += finalPrice * c;}
+                    @{ var total = finalPrice * c;}
+                    <p>@(total.ToString("N0"))</p>
+                </div>
+            </div>*@
+
+            <div class="s-cardpopup-body" style="width:90%;margin-top:10px;border:unset">
+                <img style="object-fit: contain;height: 100% ;"
+                     src="~/Images/Product/icon/@(item.productID).jpg" />
+                <span class="s-card-item-info">@item.name</span>
+                <span class="s-card-item-info">@c عدد</span>
+                <span class="s-card-item-info">@finalPrice تومان</span>
+            </div>
+
+
+
+            <div class="s-productlist-underline" style="width:100%" ></div>
+    }
+
+            <div class="row" style="padding-right:10px;display:flex;width:90%;justify-content:flex-end">
+                <div class="col-sm-6">قیمت کل :</div>
+                <div class="col-sm-6">@final</div>
+        </div>
+
+
+    </div>
+    </aside>
+    <!--Right Part End -->
+
+</div>
+
+
+
+
+<script type="text/javascript">
+    var objCal5 = new AMIB.persianCalendar('pcal5', {
+        extraInputID: 'extra',
+        extraInputFormat: 'YYYY/MM/DD'
+    }
+    );
+</script>
+
+

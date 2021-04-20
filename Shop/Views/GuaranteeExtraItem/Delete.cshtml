@@ -1,0 +1,33 @@
+﻿@model Shop.Models.GuaranteeExtraItem
+
+@{
+    ViewBag.Title = "حذف وسیله جانبی";
+    Layout = "~/Views/Shared/_PupularLayout.cshtml";
+}
+
+<h2>حذف</h2>
+
+<h3>آیا مطمنید که می خواهید حذف نمایید؟</h3>
+<div>
+    @*<h4>GuaranteeExtraItem</h4>*@
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.itemName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.itemName)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="حذف" class="btn btn-default" /> |
+            @Html.ActionLink("بازگشت به لیست", "Index")
+        </div>
+    }
+</div>

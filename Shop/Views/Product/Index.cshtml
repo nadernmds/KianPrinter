@@ -1,0 +1,159 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<Shop.Models.Product>
+
+@{
+    ViewBag.Title = "Index";
+
+}
+
+@*<h2>Index</h2>*@
+
+<p>
+    @Html.ActionLink("جدید", "Create")
+</p>
+<style>
+    input[type=text] {
+        width: 250px;
+        height: 35px;
+        border-radius: 4px;
+        outline: none;
+        border: 1px solid #DDDDDD;
+        padding:8px;
+    }
+        input:focus {
+            border-color: #16a7eb;
+            box-shadow: 0 0 5px rgba(81, 203, 238, 1); 
+        }
+</style>
+
+<p>
+    @using (Html.BeginForm("Index", "Product", FormMethod.Get))
+    {
+     <input  type="text" name="search"   /> <input type="submit" value="جستجو" class="btn-group btn btn-primary" />
+    }
+</p>
+@{ var sort = ViewBag.SortType;}
+<table class="table">
+    <tr>
+        <th>
+            @{ if (sort == "name")
+                {
+                <a href="/Product/Index/?sort=name_desc" style="color:white"> نام محصول   <i class="fa fa-caret-up"></i></a>
+                }
+                else
+                {
+                 <a href="/Product/Index/?sort=name" style="color:white">نام محصول   <i class="fa fa-caret-down"></i></a>
+                 }
+            }
+        </th>
+        <th>
+            @{ if (sort == "price")
+                {
+                <a href="/Product/Index/?sort=price_desc"style="color:white">قیمت <i class="fa fa-caret-up"></i></a>
+                }
+               else
+                {
+                <a href="/Product/Index/?sort=price" style="color:white"> قیمت <i class="fa fa-caret-down"></i></a>
+                }
+            }
+        </th>
+        <th>
+            @{ if (sort == "shortDescription")
+                {
+                <a href="/Product/Index/?sort=shortDescription_desc" style="color:white">توضیح مختصر <i class="fa fa-caret-up"></i></a>
+                }
+               else
+                {
+                <a href="/Product/Index/?sort=shortDescription" style="color:white">توضیح مختصر <i class="fa fa-caret-down"></i></a>
+                }
+            }
+        </th>
+        <th>
+            @{ if (sort == "existingCount")
+                {
+                <a href="/Product/Index/?sort=existingCount_desc" style="color:white">موجودی <i class="fa fa-caret-up"></i></a>
+                }
+               else
+                {
+                <a href="/Product/Index/?sort=existingCount" style="color:white">موجودی <i class="fa fa-caret-down"></i></a>
+                }
+            }
+        </th>
+        <th>
+            @{ if (sort == "brandName")
+                {
+                <a href="/Product/Index/?sort=brandName_desc" style="color:white">  برند <i class="fa fa-caret-up"></i></a>
+                }
+               else
+                {
+                <a href="/Product/Index/?sort=brandName" style="color:white">برند <i class="fa fa-caret-down"></i></a>
+                }
+            }
+        </th>
+        <th>
+            @{ if (sort == "categoryName")
+                {
+                <a href="/Product/Index/?sort=categoryName_desc" style="color:white">نام‌دسته‌بندی <i class="fa fa-caret-up"></i></a>
+                }
+               else
+                {
+                <a href="/Product/Index/?sort=categoryName" style="color:white">نام‌دسته‌بندی <i class="fa fa-caret-down"></i></a>
+                }
+            }
+        </th>
+        <th>
+            @{ if (sort == "state")
+                {
+                <a href="/Product/Index/?sort=state_desc" style="color:white"> وضعیت <i class="fa fa-caret-up"></i></a>
+                }
+               else
+                {
+                <a href="/Product/Index/?sort=state" style="color:white">وضعیت <i class="fa fa-caret-down"></i></a>
+                }
+            }
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.vitrin)
+        </th>*@
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.price)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.shortDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.existingCount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Brand.brandName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProductCategory.categoryName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProductState.state)
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.vitrin)
+        </td>*@
+        <td>
+            @Html.ActionLink("ویرایش", "Edit", new { id=item.productID }) |
+            @Html.ActionLink("مشاهده", "Details", new { id=item.productID }) |
+            @Html.ActionLink("حذف", "Delete", new { id=item.productID })
+        </td>
+    </tr>
+}
+
+</table>
+<div class="panel-body">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+</div>

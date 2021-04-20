@@ -1,0 +1,152 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<Shop.Models.Question>
+
+@{
+    ViewBag.Title = "Index";
+}
+<style>
+    input[type=text] {
+        width: 250px;
+        height: 35px;
+        border-radius: 4px;
+        outline: none;
+        border: 1px solid #DDDDDD;
+        padding: 8px;
+    }
+
+    input:focus {
+        border-color: #16a7eb;
+        box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+    }
+</style>
+
+<p>
+    @using (Html.BeginForm("Index", "Question", FormMethod.Get))
+    {
+        <input type="text" name="search" /> <input type="submit" value="جستجو" class="btn-group btn btn-primary" />
+    }
+</p>
+@{ var sort = ViewBag.SortType;}
+<table class="table">
+    <tr>
+        <th>
+            @{ if (sort == "questionText")
+                {
+                    <a href="/Question/Index/?sort=questionText_desc" style="color:white"> سوال <i class="fa fa-caret-up"></i></a>
+                }
+                else
+                {
+                    <a href="/Question/Index/?sort=questionText" style="color:white">سوال <i class="fa fa-caret-down"></i></a>
+                }
+            }
+        </th>
+        <th>
+            @{ if (sort == "questionDate")
+                {
+                    <a href="/Question/Index/?sort=questionDate_desc" style="color:white"> تاریخ  <i class="fa fa-caret-up"></i></a>
+                }
+                else
+                {
+                    <a href="/Question/Index/?sort=questionDate" style="color:white"> تاریخ <i class="fa fa-caret-down"></i></a>
+                }
+            }
+            @*@Html.DisplayNameFor(model => model[0].questionDate)*@
+        </th>
+        <th>
+            @{ if (sort == "name")
+                {
+                    <a href="/Question/Index/?sort=name_desc" style="color:white"> محصول <i class="fa fa-caret-up"></i></a>
+                }
+                else
+                {
+                    <a href="/Question/Index/?sort=name" style="color:white">محصول <i class="fa fa-caret-down"></i></a>
+                }
+            }
+        </th>
+        <th>
+            @{ if (sort == "username")
+                {
+                    <a href="/Question/Index/?sort=username_desc" style="color:white"> نام کاربری <i class="fa fa-caret-up"></i></a>
+                }
+                else
+                {
+                    <a href="/Question/Index/?sort=username" style="color:white">نام کاربری <i class="fa fa-caret-down"></i></a>
+                }
+            }
+        </th>
+        <th></th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr id="@item.questionID">
+            <td>
+                @Html.DisplayFor(modelItem => item.questionText)
+            </td>
+            <td>
+                @if (item.questionDate.HasValue)
+                {
+                    @pep.pep.toPersianDateString((DateTime)item.questionDate)
+                }
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.username)
+            </td>
+            <td>
+                @Html.ActionLink("جزئیات", "Details", new { id = item.questionID }) |
+                @Html.ActionLink("حذف", "Delete", new { id = item.questionID })
+            </td>
+            <td>
+                @{
+                    if (item.approveUserID == null)
+                    {
+                        <a data-id="p-@item.questionID" style="font-size:25px;color:green" onclick="approveQuestion(@item.questionID,true)"><i class="fa fa-check"></i></a>
+                        <a data-id="n-@item.questionID" style="font-size:25px;color:red" onclick="approveQuestion(@item.questionID,false)"><i class="fa fa-times"></i></a>
+
+                    }
+                }
+            </td>
+        </tr>
+    }
+
+</table>
+<div class="panel-body">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+</div>
+
+
+
+
+
+<script>
+
+    function approveQuestion(questionID, approve) {
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("approveQuestion", "question")',
+
+                data: { questionID: questionID , approve: approve },
+
+                success: function (data) {
+
+                    if (data.state) {
+                        $("[data-id=p-" + questionID + "]").css("color", "green");
+                        $("[data-id=p-" + questionID + "]").hide(200);
+                    }
+                    else {
+                        $("#"+questionID).hide(200);
+
+                    }
+
+                },
+                error: function () { SnakeBar("خطا "); }
+            });
+        }
+</script>

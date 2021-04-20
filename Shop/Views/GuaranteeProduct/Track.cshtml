@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "Track";
+    Layout = "~/Views/Shared/_SiteLayout.cshtml";
+}
+<style>
+    .btn-info {
+        width: 300px;
+    }
+    #data{
+        margin:30px auto
+    }
+</style>
+
+<div class="container" style="margin-top:150px">
+
+    <h3 style="text-align:center">رهگیری خدمات و تعمیرات</h3>
+
+    <p>به منظور رفاه حال همکاران و مشتریان عزیز کلیه پیگیری های لازمه جهت انجام تعمیرات  از این پس به صورت آنلاین و از طریق سایت شرکت انجام خواهد شد .لطفا کد رهگیری مندرج بر روی رسید خود را وارد نمایید</p>
+    <div id="data"></div>
+
+    <div class="col col-md-6 col-md-offset-6" dir="rtl">
+        <div class="form-group">
+            <input id="trackingCode" type="text" class="form-control" placeholder="کد رهگیری" name="name" value="" />
+        </div>
+        <div class="form-group">
+            <input type="text" pattern="^[0][9][0-9][0-9]{8,8}$" id="mobile" class="form-control" placeholder="شماره موبایل" name="name" value="" />
+        </div>
+        <input type="button" onclick="track()" style="width:50%" class="btn btn-info" name="name" value="رهگیری" />
+    </div>
+</div>
+<br /><br /><br /><br /><br /><br />
+
+@section scripts{
+<script>
+    function track() {
+        let trackingCode = $('#trackingCode').val();
+        let mobile = $('#mobile').val();
+        $.ajax({
+            url: '/GuaranteeProduct/Tracked', method: 'post', data: { trackingCode, mobile }, success: (data) => {
+                $('#data').html(data);
+            }
+        })
+    }
+</script>
+
+}

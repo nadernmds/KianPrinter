@@ -1,0 +1,115 @@
+﻿@{
+    ViewBag.Title = "cartexCards";
+}
+
+<link rel="stylesheet" href="~/css/js-persian-cal.css">
+<script type="text/javascript" src="~/js/js-persian-cal.min.js"></script>
+
+<script>
+    function getProducts(categoryID) {
+        let obj = { categoryID: categoryID }
+        $.ajax({
+            url: "/store/getProductList",
+            type: "POST",
+            data: obj,
+            success: function (data) {
+                $('#products').html(data)
+            },
+            error: function (e) {
+                alert(e.responseText);
+            }
+        })
+
+    }
+
+</script>
+<div class="row">
+    <div class="col-sm-3">
+        <div class="form-group">
+            <label class="control-label">تا تاریخ</label>
+            <input oninput="this.setCustomValidity('')" type="text" id="pcal6" class="pdate form-control" value="">
+            <input type="hidden" id="extra1" name="endDate" class="pdate endDate" value="">
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group">
+            <label class="control-label">از تاریخ</label>
+            <input oninput="this.setCustomValidity('')" type="text" id="pcal5" class="pdate  form-control" value="">
+            <input type="hidden" id="extra" name="startDate" class="pdate startDate" value="">
+        </div>
+        
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group">
+            <label class="control-label">دسته بندی</label>
+            <select class="form-control" onchange="getProducts($(this).children('option:selected').val())">
+                @foreach (var item in (List<Shop.Models.ProductCategory>)ViewBag.Category)
+                {
+                    <option value="@item.categoryID">@item.categoryName</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group">
+            <label class="control-label" >انبار</label>
+            <select class="form-control" id="store">
+                @foreach (var item in (List<Shop.Models.Store>)ViewBag.Stores)
+                {
+                    <option value="@item.storeID">@item.name</option>
+                }
+            </select>
+        </div>
+    </div>
+</div>
+<div class="row">
+
+
+    <div class="col-sm-4" style="float:right" id="products">
+    </div> 
+    <div class="col-md-8">
+        <canvas id="lineChart"></canvas>
+    </div>
+</div>
+<script src="~/js/chart/Chart.min.js"></script>
+
+<script type="text/javascript">
+    var objCal5 = new AMIB.persianCalendar('pcal5', {
+        extraInputID: 'extra',
+        extraInputFormat: 'YYYY/MM/DD',
+    }
+    );
+</script>
+<script type="text/javascript">
+    var objCal6 = new AMIB.persianCalendar('pcal6', {
+        extraInputID: 'extra1',
+        extraInputFormat: 'YYYY/MM/DD',
+    }
+    );
+</script>
+<script>
+    function sendInfo() {
+        var storeID = $('#store').children('option:selected').val();
+        var startDate = $('.startDate').val()
+        var endDate = $('.endDate').val()
+        var products = [];
+        $('#products').find('input:checked').each(function (s,e) {
+            products.push(e.value);
+        })
+        let obj = { storeID: storeID, startDate: startDate, endDate: endDate, pID: products }
+
+        console.log(obj)
+
+        $.ajax({
+            url: '/store/cartexCards',
+            data: obj,
+            type: 'POST',
+            success: function (data) {
+                $("#lineChart").html(data);
+            },
+            error: function (e) {
+                alert(e.responseText);
+            }
+        })
+    }
+</script>

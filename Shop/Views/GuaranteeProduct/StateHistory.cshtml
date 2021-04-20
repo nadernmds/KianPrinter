@@ -1,0 +1,79 @@
+﻿@model Shop.Models.GuaranteeProduct
+
+@{
+    Layout = "~/Views/Shared/_PupularLayout.cshtml";
+}
+
+<div class="head" style="width:100%; margin-right:20px;">تاریخچه وضعیت</div>
+<div style="text-align:center; margin-bottom:10px"> @Model.productName</div>
+
+
+
+
+
+
+<div class=" col-md-10">
+
+    <table class="table">
+        <thead>
+            @*<tr>
+                    <th> تاریخچه وضعیت</th>
+
+                </tr>*@
+
+            @*<tr>
+                    <th>@Model.productName</th>
+                </tr>*@
+
+            <tr>
+                <th>تاریخ</th>
+                <th>وضعیت</th>
+                <th> کاربر‌تغییر‌دهنده</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.GuaranteeProductStates.ToList())
+            {
+                <tr>
+                    <td style="width:350px;">@item.date</td>
+                    <td style="width:350px;">@item.GuaranteeState.stateName</td>
+                    <td style="width:350px;">@item.User.name</td>
+
+                </tr>
+            }
+
+
+
+
+
+        </tbody>
+    </table>
+</div>
+
+<div class="col-md-2">
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    اقلام همراه دستگاه
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <ol>
+                        @foreach (var item2 in Model.GuaranteeProductExtraItems.Select(s => s.GuaranteeExtraItem))
+                        {
+                            <li>@item2.itemName </li>
+                        }
+                    </ol>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+

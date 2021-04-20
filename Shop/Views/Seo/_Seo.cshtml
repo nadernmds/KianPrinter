@@ -1,0 +1,65 @@
+﻿
+@model Shop.Models.Seo
+
+
+<div class="col-md-11">
+    <div class="panel panel-info">
+        <div class="panel-heading">بهینه سازی سئو</div>
+        <div class="panel-body">
+
+            <div class="row">
+                <div class="col-md-2">
+                    عنوان در جستجوی گوگل
+                </div>
+                <div class="col-md-6">
+                    @if (Model != null)
+                    {
+                        <input class="form-control" type="text" name="googletitle" value="@Model.title" id="gt" />
+                    }
+                    else
+                    {
+                        <input class="form-control" type="text" name="googletitle" value="" id="gt" />
+                    }
+
+                </div>
+
+                <div class="col-md-1">
+
+                </div>
+
+                <div class="col-md-2">
+                    <h3>
+                        <a href="https://www.google.com/"> آموزش سئو</a>
+                    </h3>
+                </div>
+
+            </div>
+
+            <p>
+
+            </p>
+
+            <div class="row">
+                <div class="col-md-2">
+                    کلمات کلیدی گوگل
+                </div>
+                <div class="col-md-9">
+                    @if (Model != null)
+                    {
+                        <textarea class="form-control" name="googledescription" id="gd">@Model.description</textarea>
+                    }
+                    else
+                    {
+                        <textarea class="form-control" name="googledescription" id="gd"></textarea>
+                    }
+
+                </div>
+
+            </div>
+
+
+
+        </div>
+    </div>
+
+</div>

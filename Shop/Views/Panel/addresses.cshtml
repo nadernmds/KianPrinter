@@ -1,0 +1,60 @@
+﻿@model List<Shop.Models.Address>
+@{
+    var user = (Shop.Models.User)ViewBag.user;
+    Layout = "~/Views/Shared/_PanelLayout.cshtml";
+}
+<div id="panel-address-list">
+    <h3>آدرس های کاربر</h3>
+    <a href="/panel/addaddresses"><span class="fa fa-plus"></span> آدرس جدید</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>آدرس</th>
+                <th>استان</th>
+                <th>شهر</th>
+                <th>کد پستی</th>
+                <th>موبایل</th>
+                <th>تلفن</th>
+                <th>عملیات</th>
+            </tr>
+
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.addressDetail</td>
+                    <td>@item.City.State.stateName</td>
+                    <td>@item.City.cityName</td>
+                    <td>@item.postalCode</td>
+                    <td>@item.mobile</td>
+                    <td>@item.phone</td>
+                    <td><a onclick="deleteAddress(@item.addressID,this)" href="javascript:"><span class="fa fa-trash"></span></a></td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+
+</div>
+
+<script>
+    function deleteAddress(id, item) {
+        if (confirm('آیا می خواهید این آدرس را حذف کنید؟؟؟'))
+            fetch('/panel/deleteAddresses/' + id, { method: 'post' })
+                .then(c => c.text())
+                .then(c => {
+                    if (c == "1") {
+                        item.parentNode.parentNode.remove()
+                    } else {
+                        alert('خطایی رخ داد آدرس حذف نشد!');
+                    }
+                });
+    }
+</script>
+

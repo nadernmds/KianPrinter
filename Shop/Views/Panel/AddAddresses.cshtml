@@ -1,0 +1,103 @@
+﻿@model Shop.Models.Address
+@{
+    var user = (Shop.Models.User)ViewBag.user;
+    Layout = "~/Views/Shared/_PanelLayout.cshtml";
+}
+<div id="panel-add-address">
+    <h3>ثبت آدرس جدید</h3>
+    <form action="/panel/AddAddresses" method="post">
+        <div class="form-group">
+            <textarea name="addressDetail" placeholder="آدرس"></textarea>
+
+        </div>
+        <div class="form-group">
+            <select required class="form-control" onchange="getCities($(this).children('option:selected').val())" oninvalid="this.setCustomValidity('این فیلد را پر کنید')"
+                    oninput="this.setCustomValidity('')">
+                <option value="null">استان خود را انتخاب کنید</option>
+                @foreach (var item in (List<Shop.Models.State>)ViewBag.states)
+                {
+                    <option value="@item.stateID">@item.stateName</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+
+            <select required id="city" class="form-control" oninvalid="this.setCustomValidity('این فیلد را پر کنید')"
+                    oninput="this.setCustomValidity('')" name="cityID">
+
+                <option value="null">شهر خود را انتخاب کنید</option>
+
+            </select>
+        </div>
+        <div class="form-group">
+            <input placeholder="تلفن همراه" required type="text" class="form-control text-right" name="mobile" />
+        </div>
+        <div class="form-group">
+            <input placeholder="کد پستی" type="text" class="form-control text-right" name="postalCode" />
+        </div>
+        <div class="form-group">
+            <input required placeholder="سایر شماره های تماس" type="text" class="form-control text-right" name="phone" />
+        </div>
+        @Html.Hidden("userID",user.userID)
+        <button class="s-register-input s-register-submit" type="submit"> ثبت آدرس جدید  <div class="s-register-animated"></div></button>
+        
+    </form>
+</div>
+
+
+<script>
+    function getCities(stateID) {
+        let obj = { stateID: stateID }
+        $.ajax({
+            type: "POST",
+            url: '/OrderProduct/getCities',
+
+            data: obj,
+            success: function (data) {
+                if (data.success) {
+
+                    if (stateID != "null") {
+                        var select = document.getElementById("city");
+                        select.options.length = 0;
+                        var cityName = data.cityName.split(",");
+                        var cityID = data.cityID.split(",");
+                        for (var i = 0; i < cityName.length; i++) {
+                            var opt = cityName[i];
+                            var val = cityID[i];
+                            var el = document.createElement("option");
+                            el.textContent = opt;
+                            el.value = val;
+                            select.appendChild(el);
+                        }
+                    }
+                    else {
+                        var select = document.getElementById("city");
+                        select.options.length = 0
+                    }
+                }
+
+            },
+
+            error: function (xpr) { alert(xpr.responseText); }
+        });
+    }
+    function FindCity(cityID) {
+        let obj = { cityID: cityID }
+        $.ajax({
+            type: "POST",
+            url: "/OrderProduct/FindCity",
+            data: obj,
+            success: function (data) {
+
+                if (data.success) {
+
+                    var city = document.getElementById("city");
+                    city.value = data.c.cityID;
+                    // city.disabled = true;
+                }
+            },
+            error: function (xpr) { alert(xpr.responseText); }
+        })
+    }
+</script>
+s

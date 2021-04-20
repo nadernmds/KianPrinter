@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Shop.Models.Social>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@*<h2>Index</h2>*@
+
+<p>
+    @Html.ActionLink("جدید", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.socialIcon)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.url)
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.Content.employeText)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Employee.employeName)
+        </th>*@
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.type)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.socialIcon)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.url)
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.Content.employeText)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Employee.employeName)
+        </td>*@
+        <td>
+            @Html.ActionLink("ویرایش", "Edit", new { id=item.socialID }) |
+            @Html.ActionLink("جزئیات", "Details", new { id=item.socialID }) |
+            @Html.ActionLink("حذف", "Delete", new { id=item.socialID })
+        </td>
+    </tr>
+}
+
+</table>

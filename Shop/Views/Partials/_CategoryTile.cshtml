@@ -1,0 +1,20 @@
+﻿@model Shop.Models.ProductCategory
+@if (Model.parentCategory == null)
+{
+    
+        <div class="s-category-item">
+            <div>
+                <img class="s-category-img" src="~/Images/Category/@(Model.categoryID).jpg" alt="" />
+            </div>
+            <h2 class="s-category-title" >@Model.categoryName</h2>
+             <ul class="s-category-ul">
+                @foreach (var item in Model.ProductCategories1.Take(5))
+                {
+                    <li><a href="/productcategory/list?c=@item.categoryID   ">@item.categoryName</a></li>
+                }
+            </ul>
+        </div>
+     
+}
+
+

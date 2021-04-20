@@ -1,0 +1,76 @@
+﻿@model Shop.Models.ProductAttributeTemplateGroup
+
+    <hr  style="margin-top:30px"/>
+    <div class="col-md-12">
+
+        <div class="row" style="margin-top:20px">
+            <div class="col-lg-12 col-md-12">
+                <button type="button" onclick="CreateElementAttribute(@Model.ProductAttributeTemplateGroupID)" class="btn btn-success">افزودن ویژگی</button>
+
+                <h4 id="@Model.ProductAttributeTemplateGroupID" style="display:inline-block;margin-left:20px">@Model.name</h4>
+                <a href="#!" style="font-size:15px;color:red" onclick="this.parentNode.parentNode.remove();   document.getElementById('div@(Model.ProductAttributeTemplateGroupID)').remove(); removeTemplateAttributeGroup(@Model.ProductAttributeTemplateGroupID)">x</a>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="div@(Model.ProductAttributeTemplateGroupID)" class="col-md-12">
+
+        <table class="col-md-12" >
+
+            <thead>
+
+                @{
+                    if (ViewData["productAttributeTemplates"] != null)
+                    {
+                             <tr id="t-@Model.ProductAttributeTemplateGroupID">
+                                 <th>نام ویژگی</th>
+                                 <th>نوع مقدار  </th>
+                                 <th>واحد شمارش </th>
+                                 <th>قابل جستجو </th>
+                                 @*<th>دسته بندی ویژگی</th>*@
+                                 <th>بستن</th>
+                             </tr>
+                    }
+                    else
+                    {
+                            <tr hidden id="t-@Model.ProductAttributeTemplateGroupID">
+                                <th>نام ویژگی</th>
+                                <th>نوع مقدار  </th>
+                                <th>واحد شمارش </th>
+                                <th>قابل جستجو </th>
+                                @*<th>دسته بندی ویژگی</th>*@
+                                <th>بستن</th>
+                            </tr>
+                   }
+              }
+
+            </thead>
+
+            <tbody class="yyyyyyy" id="tbody@(Model.ProductAttributeTemplateGroupID)">
+
+                @{
+
+                    if (ViewData["productAttributeTemplates"] != null)
+                    {
+                        Shop.Models.Rizkaran_SiteEntities db = new Shop.Models.Rizkaran_SiteEntities();
+
+                        var Units = db.Units;
+                        var AttribteValueTypes = db.AttribteValueTypes;
+                        var ProductAttributeTemplateGroups = db.ProductAttributeTemplateGroups;
+
+                        List<Shop.Models.ProductAttributeTemplate> productAttributeTemplates = (List<Shop.Models.ProductAttributeTemplate>)ViewData["productAttributeTemplates"];
+                        foreach (var item in productAttributeTemplates.Where(p=>p.ProductAttributeTemplateGroupID == Model.ProductAttributeTemplateGroupID))
+                        {
+                            Shop.Models.ProductAttributeTemplate productAttributeTemplate = new Shop.Models.ProductAttributeTemplate() { searchable = false };
+                            ViewBag.unitID = new SelectList(Units, "unitID", "unitName", item.unitID);
+                            ViewBag.attributeValueTypeID = new SelectList(AttribteValueTypes, "attributeValueTypeID", "valueType", item.attributeValueTypeID);
+                            ViewBag.productAttributeTemplateGroupID = new SelectList(ProductAttributeTemplateGroups, "productAttributeTemplateGroupID", "name", item.ProductAttributeTemplateGroupID);
+
+                            @Html.Partial("~/Views/ProductCategory/_CreateElementAttribute.cshtml", item );
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+    </div>

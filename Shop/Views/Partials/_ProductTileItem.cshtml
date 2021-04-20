@@ -1,0 +1,51 @@
+﻿@model Shop.Models.Product
+@{
+    var offer = Model.GetOffer();
+    var hasOffer = Model.HasOffer();
+
+}
+<div class="s-productlist-item">
+    <a href="/product/show/@Model.productID">
+        @if (offer?.offPercent > 0 && Model.existingCount > 0)
+        {
+            <div class="s-productlist-special">
+                <p>فروش ویژه</p>
+            </div>
+        }
+        <img src="~/Images/Product/icon/@(Model.productID).jpg" alt="">
+        @if (Model.name.Length > 50)
+        {
+            <p style="text-align:right;font-size:small">@Model.name.Substring(1, 50) ....</p>
+        }
+        else
+        {
+            <p style="text-align:right;font-size:small">@Model.name</p>
+        }
+        @{
+            if (Model.existingCount > 0)
+            {
+
+                if (offer?.offPercent > 0 || offer?.price > 0)
+                {
+                    <p class="s-productlist-discount">@Model.price.ToString("N0") تومان</p>
+                    <span class="s-productlist-percent" style="position:absolute;top:50px;left:30px
+            ;background-color:#ef5661;border-radius:50%;color:white;padding:2px 7px;
+        ">%@(offer.offPercent)</span>
+    }
+    else
+    {
+        <p class="s-productlist-price">@Model.price.ToString("N0") تومان </p>
+    }
+    if (offer?.offPercent > 0)
+    {
+        <p class="s-productlist-price">@Model.CalculateOff().ToString("N0") تومان </p>
+    }
+}
+else
+{
+    <p style="color:#aaa;text-align:center" class="s-productlist-notexist">ناموجود</p>
+}
+        }
+
+    </a>
+</div>

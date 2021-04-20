@@ -1,0 +1,35 @@
+﻿@model Shop.Models.ProductCategory
+
+@{
+    ViewBag.Title = "Details";
+   
+}
+
+<h2>مشاهده</h2>
+
+<div>
+    @*<h4>ProductCategory</h4>*@
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.categoryName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.categoryName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductCategory1.parentCategory)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProductCategory1.categoryName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("ویرایش", "Edit", new { id = Model.categoryID }) |
+    @Html.ActionLink("بازگشت به لیست", "Index")
+</p>

@@ -1,0 +1,38 @@
+﻿@model Shop.Models.Question
+<div class="s-show-questionItem">
+    <div class="s-show-question">
+        <div class="s-show-qusetionuser">
+            <img src="~/Images/question-mark-icon-free-4.jpg" class="s-show-questionmark" />
+            <div>@Model.User.name</div>
+        </div>
+        <div class="s-show-qusetiontext">
+            @Model.questionText
+            <form action="/answer/create" method="post">
+                <input type="hidden" name="productID" value="@Model.productID" />
+                <input type="hidden" name="questionID" value="@Model.questionID" />
+
+                <h3 style="display:none"> ارسال پاسخ<span style="color:red">*</span>  </h3>
+                <textarea required rows="2" type="text" class="s-show-textarea" placeholder="ارسال پاسخ" style="display:none;width:100%" oninvalid="this.setCustomValidity('این فیلد الزامی است')" name="answerText"></textarea>
+                <a onclick="FormChange(@Model.questionID)" style="float:left" class="s-show-questionbutton" data-answer="@Model.questionID" href="javascript:void(0)">پاسخ</a>
+                <button type="submit" style="float:left;display:none;top:0px !important" class="s-BrandCat-button">ارسال</button>
+
+            </form>
+        </div>
+    </div>
+    @if (Model.Answers.Any())
+    {
+        foreach (var item in Model.Answers)
+        {
+            <div class="s-show-answer">
+                <div class="s-show-answernuser">
+                    <div style="width:90px"></div>
+                    @item.User.name
+                </div>
+
+                <div class="s-show-answertext">
+                    @item.answerText
+                </div>
+            </div>
+        }
+    }
+</div>

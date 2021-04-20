@@ -1,0 +1,15 @@
+﻿@model IEnumerable<Shop.Models.ProductCategory>
+@{
+    ViewBag.Title = "Category";
+    Layout = "~/Views/Shared/_SiteLayout.cshtml";
+}
+    
+    <section id="category">
+        <div class="s-category-card">
+            @foreach (var item in Model.ToList().Take(60))
+            {
+                @Html.Partial("~/Views/Partials/_CategoryTile.cshtml", item)
+            }
+            </div>
+    </section>
+

@@ -1,0 +1,196 @@
+﻿@model  List<Shop.Models.Chart>
+@using Shop.Models
+@{ Rizkaran_SiteEntities db = new Rizkaran_SiteEntities();}
+@{ 
+    var modelCount = Model.Count;
+    string p = "[";
+    string y = "[";
+    string x = "[";
+
+    bool xisnull = true;
+    int i = 0;
+    foreach (var item in Model)
+    {
+        i++;
+        if (Model.Count == i)
+        {
+            Product product = db.Products.Find(item.productID);
+            p += "'"+product.name+"'";
+        }
+        else
+        {
+            Product product = db.Products.Find(item.productID);
+            p += "'"+product.name+"'" + ",";
+        }
+
+
+
+        var xrows = Model.FirstOrDefault().xrows;
+        var yrows = item.yrows;
+
+        y += "[";
+
+        int j = 0;
+        foreach (var item2 in yrows)
+        {
+            j++;
+            if (yrows.Count == j) {
+
+                y += item2 + "";
+            }
+            else
+            {
+                y += item2 + ",";
+            }
+        }
+
+        if (Model.Count == i)
+        {
+            y += "]";
+        }
+        else
+        {
+            y += "],";
+        }
+
+
+
+
+
+        if(xisnull)
+        {
+            int k = 0;
+            foreach (var item2 in xrows)
+            {
+                k++;
+                if (xrows.Count == k)
+                {
+
+                    x += "'" + item2 + "'";
+                }
+                else
+                {
+                    x += "'" + item2  + "'" + ",";
+                }
+            }
+
+            x += "]";
+
+
+            xisnull = false;
+        }
+
+
+        //string xrow = "[";
+        //foreach (var item in xrows)
+        //{
+        //    xrow += item + ",";
+        //}
+        //xrow = xrow.Substring(0, xrow.Length - 1);
+        //xrow += "]";
+
+
+        //string yrow = "[";
+        //foreach (var item2 in yrows)
+        //{
+        //    foreach (var item3 in item2)
+        //    {
+        //        yrow += item3 + ",";
+        //    }
+        //}
+        //yrow = yrow.Substring(0, yrow.Length - 1);
+        //yrow += "]";
+
+
+
+    }
+
+
+    p += "]";
+    y += "]";
+
+}
+<script>
+    $(document).ready(function () {
+
+        var products = @Html.Raw(p);
+    var yrows =@Html.Raw(y);
+    var count=@Html.Raw(modelCount);
+        let total = "";
+        var xrows =@Html.Raw(x);
+
+        var counter = 0;
+        let data=
+       {
+        labels: [],
+        datasets: []
+        }
+
+        console.log(xrows);
+        //console.log(yrows);
+        console.log(xrows);
+        $(xrows).each(function (s, e) {
+            console.log(e);
+             data.labels.push( e )
+        });
+        //console.log( data.labels)
+
+
+
+        //data.labels.push("1","2")
+        for (var i = 0; i < count; i++) {
+
+            var yy = [];
+            $(yrows[i]).each(function (s, e) {
+            yy.push(e)
+
+        });
+
+            console.log(yy);
+
+            var color = random_rgba();
+            data.datasets.push(
+                {
+                    label: [products[i]],
+                    data: yy,
+                    backgroundColor: [
+                        "rgba(155, 102, 102 , 0)",
+                    ],
+                    borderColor: [
+                        color,
+                    ],
+                    borderWidth: 5
+                }
+            );
+
+             counter++;
+        //if (count == counter)
+        //{
+        //    total += data;
+        //}
+        //else
+        //{
+        //    total += data + ",";
+        //}
+
+    }
+       //console.log(total);
+
+         var ctxL = document.getElementById("lineChart").getContext('2d');
+        var myLineChart = new Chart(ctxL, {
+            type: 'line',
+            data: data,
+
+            options: {
+                responsive: true
+            }
+        });
+
+    })
+
+
+    function random_rgba() {
+    var o = Math.round, r = Math.random, s = 180;
+    return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + r().toFixed(1) + ')';
+}
+</script>

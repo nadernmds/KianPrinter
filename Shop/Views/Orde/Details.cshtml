@@ -1,0 +1,60 @@
+﻿@model Shop.Models.Orde
+
+@{
+    ViewBag.Title = "Details";
+    
+}
+
+<h2>مشاهده</h2>
+
+<div>
+    @*<h4>Orde</h4>*@
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.orderOff)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.orderOff)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Address.addressDetail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address.addressDetail)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderState.state)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrderState.state)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User.username)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.username)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.date)
+        </dd>
+
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("ویرایش", "Edit", new { id = Model.orderID }) |
+    @Html.ActionLink("بازگشت به لیست", "Index")
+</p>

@@ -1,0 +1,27 @@
+﻿@model Shop.Models.GuaranteeState
+
+@{
+    ViewBag.Title = "جزئیات وضعیت";
+    Layout = "~/Views/Shared/_PupularLayout.cshtml";
+}
+
+<h2>مشاهده</h2>
+
+<div>
+    @*<h4>GuaranteeState</h4>*@
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.stateName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.stateName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("ویرایش", "Edit", new { id = Model.guaranteeStateID }) |
+    @Html.ActionLink("بازگشت به لیست", "Index")
+</p>

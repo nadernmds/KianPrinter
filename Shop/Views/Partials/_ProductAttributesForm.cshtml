@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Shop.Models.ProductAttributeTemplate>
+    <div class="form-group">
+        @foreach (var item in Model)
+        {
+            int s = 0;
+            if (ViewData["productID"] != null)
+            {
+                s = Convert.ToInt32(ViewData["productID"]);
+            }
+            <div>
+
+                <div class="col-md-12" style="margin-bottom:15px">
+
+                    @*@Html.Label(item.name, htmlAttributes: new { @class = "control-label col-md-2" })*@
+
+                    @if (s != 0)
+                    {
+                        <div class="col-sm-9">
+                            <input class=@(item.attributeValueTypeID != 4 ? "form-control" : "checkbox checked") type="@(item.attributeValueTypeID != 4 ? "text" : "checkbox")" name="value" placeholder="برحسب @(item.Unit.unitName)" value="@item.ProductAttributes.FirstOrDefault(c => c.productID == s).value" />
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-sm-9">
+                            <input class=@(item.attributeValueTypeID != 4 ? " form-control" : "checkbox") type="@(item.attributeValueTypeID != 4 ? "text" : "checkbox")" name="value" placeholder="برحسب @(item.Unit.unitName)" value="" />
+                        </div>
+                    }
+                    <div class="col-sm-3">
+                        <p style="margin-top:15px">@item.name</p>
+
+
+                    </div>
+
+                    <input type="hidden" name="productAtrributeTemplateID" value="@item.productAtrributeTemplateID" />
+                </div>
+            </div>
+        }
+
+
+    </div>

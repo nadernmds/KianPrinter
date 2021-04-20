@@ -1,0 +1,26 @@
+﻿@model Shop.Models.Unit
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>مشاهده</h2>
+
+<div>
+    @*<h4>Unit</h4>*@
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.unitName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.unitName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("ویرایش", "Edit", new { id = Model.unitID }) |
+    @Html.ActionLink("بازگشت به لیست", "Index")
+</p>

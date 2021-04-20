@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Shop.Models.GuaranteeCustomer>
+
+@{
+    ViewBag.Title = "لیست مشتری های گارانتی";
+    Layout = "~/Views/Shared/_PupularLayout.cshtml";
+}
+
+@*<h2>Index</h2>*@
+
+<p>
+    @Html.ActionLink("جدید", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.phone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.nationalCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.companyName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.mobile)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.nationalCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.companyName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.mobile)
+            </td>
+            <td>
+                @Html.ActionLink("ویرایش", "Edit", new { id = item.guaranteeCustomerID }) |
+                @Html.ActionLink("مشاهده", "Details", new { id = item.guaranteeCustomerID }) |
+                @Html.ActionLink("حذف", "Delete", new { id = item.guaranteeCustomerID })
+            </td>
+        </tr>
+    }
+
+</table>

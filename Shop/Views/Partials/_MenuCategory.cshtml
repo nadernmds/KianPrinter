@@ -1,0 +1,99 @@
+﻿@{
+    var model = new Shop.Models.Rizkaran_SiteEntities().ProductCategories.Where(c => c.parentCategory == null);
+}
+@*<li class="dropdown">
+        <a>خرید بر اساس دسته بندی</a>
+        <div class="dropdown-menu">
+            <ul>
+                @foreach (var item in model)
+                {
+                    <li>
+                        @Html.Partial("~/Views/Partials/_MenuCategoryItem.cshtml", item)
+                    </li>
+                }
+            </ul>
+        </div>
+    </li>*@
+
+
+<div id="menu" style="z-index:15;">
+    <div id="shops-logo">
+        <a href="/home"><img style="margin-top: 15px;width:85%" src="~/img/logo.png" class="s-navbar-logo" /></a>
+    </div>
+    <div style="width: 90%;height: 1px;background-color: red;"></div>
+    <div style="width: 100%; height: 85%; background-color:  rgb(238, 238, 238);overflow-y: scroll;">
+        <ul class="s-burger-menu__list">
+            @{
+                var counter = 0;
+                var counter2 = 0;
+            }
+            @foreach (var item in model)
+            {
+                <li class="s-menu-li-itemlevelone">
+                    <div style="display:flex;flex-direction:row;align-items:center" onclick="openlevel2(@counter,this)">
+                        <i class="s-menu-opened fas  fa-angle-down s-categorylogo s-closemenulogo" style="padding-right:10px"></i>
+                        <i class="s-openmenulogo fas  fa-angle-left s-categorylogo s-openmenulogo" style="padding-right:10px"></i>
+                        <a href="/productcategory/list?c=@item.categoryID" class="s-burger-menu__category js-burger-item-toggle menuitemhover s-catlevelone-logo">
+                            @item.categoryName
+                        </a>
+                    </div>
+                    <ul class="s-burger-menu__sublist level2">
+
+                        @foreach (var item2 in item.ProductCategories1)
+                        {
+
+                            <li>
+
+                                @if (item2.ProductCategories1 != null && item2.ProductCategories1.Count > 0)
+                                {
+                                    <div class="s-level2icon " style="display:flex;flex-direction:row;align-items:center" onclick="openlevel3(@counter2 , this)">
+                                        <i class="s-menu-opened  fas  fa-angle-down s-categorylogo s-closemenulogol2" style="padding-left:20px;" ></i>
+                                        <i class=" fas  fa-angle-left s-categorylogo s-openmenulogol2"  style="padding-left:20px;"></i>
+                                        <a  href="/productcategory/list?c=@item2.categoryID" class=" js-burger-item-toggle menuitemhover">
+                                            @item2.categoryName
+                                        </a>
+                                    </div>
+
+                                    counter2++;
+
+                                }
+                                else
+                                {
+                                     <div class="s-level2icon "   style="display:flex;flex-direction:row;align-items:center">
+                                        <a style="padding-right:20px" href="/productcategory/list?c=@item2.categoryID" class=" js-burger-item-toggle menuitemhover">
+                                            @item2.categoryName
+                                        </a>
+                                    </div>
+
+                                }
+                               
+
+                                @*<div class="s-level2icon " style="display:flex;flex-direction:row;align-items:center" onclick="openlevel3(@counter2 , this)">
+                                        <i class="s-menu-opened  fas  fa-angle-down s-categorylogo s-closemenulogol2" style="padding-right:10px"></i>
+                                        <i class=" fas  fa-angle-left s-categorylogo s-openmenulogol2" style="padding-right:10px"></i>
+                                        <a style="padding-right:20px" href="/productcategory/list?c=@item2.categoryID" class=" js-burger-item-toggle menuitemhover">
+                                            @item2.categoryName
+                                        </a>
+                                    </div>*@
+
+
+
+                                <ul class="s-burger-menu__thirdlist level3">
+
+                                    @foreach (var item3 in item2.ProductCategories1)
+                                    {
+                                        <li>
+                                            <a href="/productcategory/list?c=@item3.categoryID" class="s-burger-menu__thirdcategory menuitemhover">@item3.categoryName</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                            
+                        }
+                    </ul>
+                </li>
+                counter++;
+            }
+        </ul>
+    </div>
+</div>

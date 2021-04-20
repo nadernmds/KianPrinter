@@ -1,0 +1,214 @@
+﻿@using Shop.Models
+@model List<Product>
+@{
+    Layout = "~/Views/Shared/_SiteLayout.cshtml";
+    List<Shop.Models.ProductAttributeTemplateGroup> template = ViewBag.AttributeGroup;
+
+    List<int> Pid = Model.Select(p => p.productID).ToList();
+
+}
+@*<div class="container">
+    <div>*@
+@if (Model.Any())
+{
+    <div>
+        <section id="compaire" style="overflow-x:auto">
+            <h1>لیست مقایسه</h1>
+
+
+            <div class="s-compaire-list">
+
+                @foreach (var item in Model)
+                {
+                    //DateTime now = Convert.ToDateTime(DateTime.Now.ToString());
+                    //var offers = item.Offers.Where(o => o.startDate < now && o.endDate > now).ToList();
+                    //decimal offPrice = 0;
+                    //decimal offPercent = 0;
+                    //foreach (var item2 in offers)
+                    //{
+                    //    offPrice += (int)item2.price;
+                    //    offPercent += (int)item2.offPercent;
+                    //}
+                    //decimal productPrice = item.price;
+                    //decimal finalPrice = productPrice;
+                    //if (offPercent > 0)
+                    //{
+                    //    finalPrice = finalPrice - (productPrice * (offPercent / 100));
+                    //}
+                    //if (offPrice > 0)
+                    //{
+                    //    finalPrice = finalPrice - offPrice;
+                    //}
+                    //var productColorID = 0;
+                    //if (item.ProductColorAssinments.FirstOrDefault() != null)
+                    //{
+                    //    productColorID = item.ProductColorAssinments.FirstOrDefault().ProductColor.productColorID;
+                    //}
+
+
+
+
+                    @*<div data-id="@item.productID" class="col-lg-3">
+
+                                        <a href="/Product/Show/@item.productID"><img style="width:8em" src="~/Images/Product/icon/@(item.productID).jpg" /></a>
+                                        <div><a style="color:black" href="/product/show/@item.productID">@item.name</a></div>
+                                        <div>
+                                            @if (item.Offers.Any())
+                                            {
+                                                <p class="price-old">@item.price.ToString("N0") تومان</p>
+                                                <p class="price-new">@finalPrice.ToString("N0") تومان</p>
+                                            }
+                                            else
+                                            {
+                                                <p>تومان @item.price.ToString("N0") </p>
+                                            }
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-2 col-sm-2 col-xs-2">
+                                                @if (item.existingCount > 0)
+                                                {
+                                                    <button onClick="addToCart(@item.productID,@(productColorID))" class="btn btn-success"><i class="fa fa-cart-plus"></i></button>
+                                                }
+                                            </div>
+                                            <div class="col-lg-1  col-sm-1 col-xs-1">
+                                                <button onclick="removeOfCompare(@item.productID)" class="btn btn-danger"><i class="fa fa-times"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            foreach (var item in (List<Shop.Models.ProductAttributeTemplateGroup>)ViewBag.AttributeGroup)
+                            {
+                        <div> <h4 ><i class="fa fa-caret-left " style="color:forestgreen"></i> @item.name</h4> </div>
+                        foreach (var item2 in item.ProductAttributeTemplates)
+                        { <div class="container-fluid" >
+                            <div data-id="@item2.name"  class="block">@item2.name</div><br />
+                            @foreach (var item3 in item2.ProductAttributes)
+                            {
+                                if (Pid.Contains((int)item3.productID))
+                                {
+                                    <div data-id="@item3.productID" style="margin-top:-10px;" class="col-lg-3">@item3.value</div>
+                                }
+
+                            }
+                          </div>
+                        }*@
+
+
+
+
+                    <div class="s-compaire-item" data-id="@item.productID">
+                        <div style="float:left;margin-left:20px;cursor:pointer;" onclick="removeOfCompare(@item.productID)"><i class="fa fa-times fa-x"></i></div>
+                        <img src="~/Images/Product/icon/@(item.productID).jpg" />
+                        <a href=""><i></i></a>
+                        <p class="s-compaire-description">
+                            @item.name
+                        </p>
+                        <p class="s-compaire-price">@item.price تومان</p>
+                        <button href="" class="s-compaire-cart">مشاهده و خرید محصول</button>
+                        <div class="s-compaire-trangle"></div>
+                    </div>
+                }
+
+            </div>
+
+            <h2 class="s-compare-h2"><i class="fa fa-caret-left"></i> مشخصات</h2>
+
+            @foreach (var item in template)
+            {
+                <h3>@item.name</h3>
+
+
+                @*foreach (var item2 in item.ProductAttributeTemplates)
+                    {
+
+                        <div class="container-fluid">
+                            <div data-id="@item2.name" class="block">@item2.name</div><br />
+                            @foreach (var item3 in item2.ProductAttributes)
+                            {
+                                if (Pid.Contains((int)item3.productID))
+                                {
+                                    <div data-id="@item3.productID" style="margin-top:-10px;" class="col-lg-3">@item3.value</div>
+                                }
+
+                            }
+                        </div>
+                    }*@
+
+
+
+
+
+
+
+
+
+
+                foreach (var item2 in item.ProductAttributeTemplates)
+                {
+                    <ul class="s-compare-ul">
+                        <li style="width:100%">@item2.name</li>
+
+
+                        @foreach (var item3 in item2.ProductAttributes)
+                        {
+                            foreach (var item4 in Pid)
+                            {
+                                if (item4 == item3.productID)
+                                {
+                                    <li data-id="@item3.productID">@item3.value </li>
+
+                                }
+                            }
+                        }
+
+
+                    </ul>
+                }
+            }
+
+            @*<h2 class="s-compare-h2"><i class="fa fa-caret-left"></i> مشخصات</h2>
+                foreach(var item2 in item.ProductAttributeTemplates)
+                {
+                    <ul class="s-compare-ul">
+                       <li>باتری</li>
+                       <li>باتری</li>
+                       <li>باتری</li>
+                    </ul>
+                }
+            *@
+        </section>
+
+    </div>
+}
+else
+{
+    <h2>محصولی برای مقایسه موجود نیست</h2>
+}
+
+
+
+@section scripts{
+    <script>
+    function removeOfCompare(productID) {
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("removeOfCompare", "Home")',
+
+            data: { productID: productID },
+
+            success: function (data) {
+                $('[data-id=' + productID + ']').remove();
+                if (data.count == 1 || data.count == null) {
+                    $("#compaire").html("<h2>محصولی برای مقایسه موجود نیست</h2>");
+                }
+
+
+            },
+            error: function () { alert('A error'); }
+        });
+    }
+
+    </script>
+}

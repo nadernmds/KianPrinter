@@ -1,0 +1,47 @@
+﻿@model List<Shop.Models.Product>
+@{
+    var user = (Shop.Models.User)ViewBag.user;
+    Layout = "~/Views/Shared/_panelLayout.cshtml";
+    ViewBag.Title = "نظرات";
+}
+<style>
+</style>
+<div class="s-show-comment">
+    @foreach (var item2 in Model)
+    {
+
+        @Html.Partial("~/Views/Partials/_ProductTileItem.cshtml", item2)
+
+
+        foreach (var item in item2.Comments)
+        {
+            <div class="s-show-commentItem">
+                <div class="s-show-userInfo">
+                    <img src="~/Images/user.png" style="border-radius:50%;max-height: 70px" />
+                    <div class="s-show-rightInfo" style="display:block;margin-right:30px;width:120px">
+                        <p style="margin-left:50px;margin:0px">@item.User.username</p>
+                        <small style="margin-left:50px;margin:0px;font-size:12px"> امتیاز ثبت شده: @item.rate</small>
+                    </div>
+                    <div class="s-show-text">
+                        <p style="margin-right:30px">@item.commentText</p>
+                    </div>
+                </div>
+                <div class="s-show-commentText">
+
+                    <p style="flex:30%">
+                        <span><i class="fa fa-circle" style="color:#00bfd5;font-size:5px"></i></span>
+                        @item.positive
+                    </p>
+                    <p style="flex:30%">
+                        <span><i class="fa fa-circle" style="color:#ef5661;font-size:5px"></i></span>
+                        @item.negative
+                    </p>
+                    <div class="s-show-underline"></div>
+                </div>
+            </div>
+        }
+
+
+
+    }
+</div>

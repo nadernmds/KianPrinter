@@ -1,0 +1,48 @@
+﻿@model IEnumerable<Shop.Models.Product>
+
+
+
+@*<div class="owl-carousel latest_category_carousel owl-theme">
+        @foreach (var item in Model)
+        {
+            <div class="item" style="padding:5px">@Html.Partial("~/Views/Partials/_ProductTileItem.cshtml", item)</div>
+        }
+
+    </div>*@
+
+
+    <style>
+        .scrolling-wrapper{
+            white-space:normal
+        }
+    </style>
+
+
+<div class="s-firstpage-title" style="direction:rtl">
+    
+    <div class="firstmainslider">
+        <div class="content" style="height: 380px">
+            <div class="slider" style="box-shadow: 2px 2px 4px 1px rgba(0,0,0,.1);border-radius: 8px">
+               
+                <div class="itemsliders" style="position:relative;display: flex ; flex-direction: column ; justify-content: center">
+                    <div style="width: 98% ; height: 97%; background-color: white ; display: flex ;justify-content: space-between ; align-items: center">
+                        <div onclick="scrollleft(this)"
+                             style="left:0;position:absolute;z-index: 5;width: 70px; height: 100px;text-align: center ;display: grid;align-items: center; background-color: white ; border-radius: 0 8px 8px 0 ; box-shadow:1.5px 0 4px 0 rgba(0,0,0,.15) ">
+                            <i class="fas fa-chevron-left" style="color: black ; font-size: 30px"></i>
+                        </div>
+                        <div class="scrolling-wrapper s-product-slider" style="transition: all 1s ease-in-out;display:flex;flex-direction:row;max-width:1298px">
+                          @foreach (var item in Model)
+                          {
+                              @Html.Partial("~/Views/Partials/_CarouselItem.cshtml",item)
+                          }
+                        </div>
+                        <div onclick="scrollright(this)"
+                             style="right:0;position:absolute;z-index: 5;width: 70px; height: 100px;text-align: center;display: grid;align-items: center;background-color: white ; border-radius: 8px 0px 0 8px ; box-shadow:  -1.5px 0 4px 0 rgba(0,0,0,.15)">
+                            <i class="fas fa-chevron-right" style="color: black ; font-size: 30px"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

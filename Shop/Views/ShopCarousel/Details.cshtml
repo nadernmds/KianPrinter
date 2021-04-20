@@ -1,0 +1,37 @@
+﻿@model Shop.Models.ShopCarousel
+
+@{
+    ViewBag.Title = "Details";
+    
+}
+
+<h2>مشاهده</h2>
+
+<div>
+    @*<h4>ShopCarousel</h4>*@
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.show)
+        </dt>
+
+        <dd>
+
+            @if ((bool)Model.show)
+            {
+        <input type="checkbox" style="" name="show" value="true" checked="checked" disabled />
+            }
+            else
+            {
+        <input type="checkbox" style="" name="show" value="false" checked="checked" disabled/>
+            }
+
+            @*@Html.DisplayFor(model => model.show)*@
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("ویرایش", "Edit", new { id = Model.shopCarouselID }) |
+    @Html.ActionLink("بازگشت به لیست", "Index")
+</p>

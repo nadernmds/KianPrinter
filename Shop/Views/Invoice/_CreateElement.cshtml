@@ -1,0 +1,110 @@
+﻿@model Shop.Models.InvoiceDetail
+@using Shop.Models
+
+
+@{
+
+    Shop.Models.Rizkaran_SiteEntities db = new Shop.Models.Rizkaran_SiteEntities();
+    User user=(User)Session["UU!#user"];
+    List<Store> accessStores = db.AccessStores.Where(a => a.userID == user.userID).Select(s=>s.Store).ToList();
+    var stores = new SelectList(accessStores, "storeID", "name", null);
+    var toStores = new SelectList(accessStores, "storeID", "name", null);
+    var products = new SelectList(new List<Shop.Models.Product>(), "productID", "name", null);
+    var productColors = new SelectList(new List<Shop.Models.ProductColor>(), "productColorID", "color", null);
+
+
+    string count = Convert.ToString(ViewBag.count);
+
+
+}
+
+@if (Model != null && Model.increaseID!=null && Model.decreaseID!=null)
+{
+    <tr>
+        <td>
+            <select class="form-control fromStore" onchange="getStores(this)">
+                <option selected="selected" value="@Model.increaseID">@Model.Store.name</option>
+                @foreach (var item in stores)
+                {
+                    <option value="@item.Value">@item.Text</option>
+                }
+            </select>
+        </td>
+        <td>
+            <select class="form-control inStore">
+                <option selected="selected" value="@Model.decreaseID">@Model.Store1.name</option>
+                @foreach (var item in toStores)
+                {
+                    <option value="@item.Value">@item.Text</option>
+                }
+            </select>
+        </td>
+
+        <td>
+            <select class="form-control product" , onchange="getcolors(this)">
+
+                <option selected="selected" value="@Model.productID">@Model.Product.name</option>
+                @foreach (var item in products)
+                {
+                    <option value="@item.Value">@item.Text</option>
+                }
+            </select>
+        </td>
+        <td>
+            <select selected="selected" class="form-control productColor" , onchange="getcounts(this)">
+                @if (Model.productColorID != null)
+                {
+                    <option value="@Model.productColorID">@Model.ProductColor.color</option>
+                }
+                @foreach (var item in productColors)
+                {
+                    <option value="@item.Value">@item.Text</option>
+                }
+            </select>
+        </td>
+
+        <td>
+            <input type="number" class="form-control count" name="count" value="@Model.count" />
+        </td>
+
+        <td>
+            <a href="javascript:void(0)" onclick="deleteRow(this)" class="danger">X</a>
+        </td>
+    </tr>
+
+}
+else { 
+<tr>
+
+    <td>
+        @{ string increaseID = "invoice.invoiceDetails[" + count + "].increaseID"; }
+        @Html.DropDownList(increaseID, stores, "", htmlAttributes: new { @class = "form-control fromStore", onchange = "getStores(this)" })
+
+    </td>
+    <td>
+        @{ string decreaseID = "invoice.invoiceDetails[" + count + "].decreaseID"; }
+        @Html.DropDownList(decreaseID, toStores, "", htmlAttributes: new { @class = "form-control inStore" })
+    </td>
+
+    <td>
+        @{ string productID = "invoice.invoiceDetails[" + count + "].productID"; }
+        @Html.DropDownList(productID, products, "", htmlAttributes: new { @class = "form-control product", onchange = "getcolors(this)" })
+
+    </td>
+    <td>
+        @{ string productColorID = "invoice.invoiceDetails[" + count + "].productColorID"; }
+        @Html.DropDownList(productColorID, productColors, "", htmlAttributes: new { @class = "form-control productColor", onchange = "getcounts(this)" })
+    </td>
+
+    <td>
+        @{ string countname = "count[" + Model.productID + "]"; }
+        @Html.EditorFor(model => model.count, new { htmlAttributes = new { @class = "form-control count", data_id = countname, Name = countname, Value = 0 } })
+
+    </td>
+    <td>
+        <a href="javascript:void(0)" onclick="deleteRow(this)" class="danger">X</a>
+    </td>
+
+</tr>
+
+}

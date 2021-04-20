@@ -1,0 +1,138 @@
+﻿@{
+    var model = new Shop.Models.Rizkaran_SiteEntities().ProductCategories.Where(c => c.parentCategory == null);
+}
+@*@if (Model.ProductCategories1.Count > 0)
+    {
+        <a href="/productcategory/list?c=@Model.categoryID">@Model.categoryName<span>&rsaquo;</span></a>
+        <div class="dropdown-menu">
+            <ul>
+                @foreach (var item in Model.ProductCategories1)
+                {
+                    <li>
+                        @Html.Partial("~/Views/Partials/_MenuCategoryItem.cshtml", item)
+
+                    </li>
+                }
+
+            </ul>
+        </div>
+    }
+    else
+    {
+        <a href="/productcategory/list?c=@Model.categoryID">@Model.categoryName</a>
+    }*@
+
+
+
+
+
+
+
+<div id="categorymenu" onmouseover="showshadow()" onmouseout="hideshadow()">
+    <div class="s-categorymenu-list-levelone">
+
+        @{
+            int counter = 0;
+        }
+
+        @foreach (var item in model)
+        {
+            <div class="s-category-firstcat s-categorymenu-list-levelone-item s-menu-hover" onmouseover="showMenu(@counter)">
+                <i class="@item.logo s-categorymenu-list-levelone-item-logo s-menu-hover-items"></i>
+                <a href="/productcategory/list?c=@item.categoryID" class="s-categorymenu-list-levelone-item-name s-menu-hover-items">@item.categoryName</a>
+            </div>
+
+
+            counter++;
+        }
+
+     
+
+
+
+
+    </div>
+
+    <div class="s-categorymenu-submenu">
+
+
+
+
+
+
+        @{
+        int counter2 = 0;
+        }
+
+
+        @foreach (var item in model)
+        {
+
+
+        <div class="s-category-secondcat">
+            <div class="s-category-secondcat-title">
+                <a href="/productcategory/list?c=@item.categoryID" class="s-category-tilte s-category-titlehover">همه دسته‌بندی‌های @item.categoryName</a>
+                <i style="margin-inline-start: 10px; font-size: larger;" class="fa fa-angle-left s-category-titlehover"></i>
+            </div>
+            <div class="s-category-secondcat-body" style="background-image:url('/img/logo.png')">
+
+                <div class="s-category-secondcat-body-firstcol">
+
+
+
+
+                    @foreach (var item2 in item.ProductCategories1)
+                    {
+                    <div>
+                        <div class="s-menu-submenu-secondtitle" style="">
+                            <a href="/productcategory/list?c=@item2.categoryID" class="seconlevelcat s-category-titlehover">    @item2.categoryName      </a>
+                            <i style="margin-inline-start: 7px;" class="fa fa-angle-left s-category-titlehover"></i>
+                        </div>
+
+
+                        @foreach (var item3 in item2.ProductCategories1)
+                        {
+                        <div class="s-category-items">
+                            <a href="/productcategory/list?c=@item3.categoryID">@item3.categoryName</a>
+
+                        </div>
+
+                        }
+
+
+                    </div>
+                    }
+
+                    @{counter2++;
+                    }
+
+
+                </div>
+
+
+                <div class="s-category-secondcat-body-imagecol">
+                    <img class="s-category-image" style="opacity:.1;filter:grayscale(100%)"
+                         src="~/img/logo.png" />
+                </div>
+            </div>
+        </div>
+
+
+}
+
+
+
+
+
+
+
+    </div>
+</div>
+
+
+
+
+
+
+
+

@@ -1,0 +1,183 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<Shop.Models.Comment>
+
+@{
+    ViewBag.Title = "Index";
+
+}
+
+@*<h2>Index</h2>*@
+
+@*<p>
+        @Html.ActionLink("جدید", "Create")
+    </p>*@
+<style>
+    input[type=text] {
+        width: 250px;
+        height: 35px;
+        border-radius: 4px;
+        outline: none;
+        border: 1px solid #DDDDDD;
+        padding: 8px;
+    }
+
+    input:focus {
+        border-color: #16a7eb;
+        box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+    }
+</style>
+<p>
+    @using (Html.BeginForm("Index", "Comment", FormMethod.Get))
+    {
+        <input type="text" name="search" /> <input type="submit" value="جستجو" class="btn-group btn btn-primary" />
+    }
+</p>
+@{ var sort = ViewBag.SortType;}
+<table class="table">
+    <tr>
+        <th>
+            @{ if (sort == "commentText")
+                {
+                    <a href="/Comment/Index/?sort=commentText_desc" style="color:white"> نظر <i class="fa fa-caret-up"></i></a>
+                }
+                else
+                {
+                    <a href="/Comment/Index/?sort=commentText" style="color:white">نظر <i class="fa fa-caret-down"></i></a>
+                }
+            }
+        </th>
+        <th>
+            @{ if (sort == "positive")
+                {
+                    <a href="/Comment/Index/?sort=positive_desc" style="color:white"> نقاط مثبت  <i class="fa fa-caret-up"></i></a>
+                }
+                else
+                {
+                    <a href="/Comment/Index/?sort=positive" style="color:white">نقاط مثبت <i class="fa fa-caret-down"></i></a>
+                }
+            }
+        </th>
+        <th>
+            @{ if (sort == "negative")
+                {
+                    <a href="/Comment/Index/?sort=negative_desc" style="color:white"> نقاط ضعف <i class="fa fa-caret-up"></i></a>
+                }
+                else
+                {
+                    <a href="/Comment/Index/?sort=negative" style="color:white">نقاط ضعف <i class="fa fa-caret-down"></i></a>
+                }
+            }
+        </th>
+        <th>
+            @{ if (sort == "rate")
+                {
+                    <a href="/Comment/Index/?sort=rate_desc" style="color:white"> امتیاز <i class="fa fa-caret-up"></i></a>
+                }
+                else
+                {
+                    <a href="/Comment/Index/?sort=rate" style="color:white">امتیاز <i class="fa fa-caret-down"></i></a>
+                }
+            }
+        </th>
+        <th>
+            @{ if (sort == "name")
+                {
+                    <a href="/Comment/Index/?sort=name_desc" style="color:white"> محصول <i class="fa fa-caret-up"></i></a>
+                }
+                else
+                {
+                    <a href="/Comment/Index/?sort=name" style="color:white">محصول <i class="fa fa-caret-down"></i></a>
+                }
+            }
+        </th>
+        <th>
+            @{ if (sort == "username")
+                {
+                    <a href="/Comment/Index/?sort=username_desc" style="color:white"> نام کاربری <i class="fa fa-caret-up"></i></a>
+                }
+                else
+                {
+                    <a href="/Comment/Index/?sort=username" style="color:white">نام کاربری <i class="fa fa-caret-down"></i></a>
+                }
+            }
+        </th>
+        <th></th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr id="@item.commentID">
+            <td>
+                @Html.DisplayFor(modelItem => item.commentText)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.positive)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.negative)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.rate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.username)
+            </td>
+            <td>
+                @Html.ActionLink("ویرایش", "Edit", new { id = item.commentID }) |
+                @Html.ActionLink("مشاهده", "Details", new { id = item.commentID }) |
+                @Html.ActionLink("حذف", "Delete", new { id = item.commentID })
+            </td>
+
+            <td>
+
+                @{
+                    if (item.approveUserID == null)
+                    {
+                        <a data-id="p-@item.commentID" style="font-size:25px;color:green" onclick="approveComment(@item.commentID,true)"><i class="fa fa-check"></i></a>
+                        <a data-id="n-@item.commentID" style="font-size:25px;color:red" onclick="approveComment(@item.commentID,false)"><i class="fa fa-times"></i></a>
+
+                    }
+                }
+            </td>
+        </tr>
+    }
+
+</table>
+
+<div class="panel-body">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+</div>
+
+
+
+<script>
+
+    function approveComment(commentID, approve) {
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("approveComment", "comment")',
+                data: { commentID: commentID, approve: approve },
+
+                success: function (data) {
+
+                    if (data.state) {
+                        $("[data-id=p-" + commentID + "]").css("color", "green");
+                        $("[data-id=p-" + commentID + "]").hide(200);
+                    }
+                    else {
+                        $("#" + commentID).hide(200);
+
+                    }
+
+
+                },
+                error: function () { SnakeBar("خطا "); }
+            });
+        }
+</script>

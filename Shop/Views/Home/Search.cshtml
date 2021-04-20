@@ -1,0 +1,396 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model PagedList<Shop.Models.Product>
+
+@{
+    List<int> productID = new List<int>();
+    if (Model != null)
+    {
+
+
+        foreach (var item in Model)
+        {
+            productID.Add(item.productID);
+        }
+    }
+    string i = "[";
+    foreach (var item in productID)
+    {
+        i += item + ",";
+    }
+    i = i.Substring(0, i.Length - 1);
+    i += "]";
+    List<int> categoryID = new List<int>();
+    string cID = "";
+    if (ViewBag.category != null)
+    {
+
+
+        cID = "[";
+        foreach (var item2 in (List<Shop.Models.ProductCategory>)ViewBag.category)
+        {
+            cID += item2.categoryID + ",";
+        }
+        cID = cID.Substring(0, cID.Length - 1);
+        cID += "]";
+    }
+    else
+    {
+        cID = "[]";
+    }
+
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/_SiteLayout.cshtml";
+}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="~/js/jquery-2.1.1.min.js"></script>
+<div class="container">
+    <div class="row">
+        <p id="test"></p>
+        <h1 style="padding:20px;">جستجو-@ViewBag.searchValue</h1>
+        <aside id="column-left" class="col-sm-3 ">
+            <div style="margin-top:20px;margin-bottom:20px">
+                <h3 class="subtitle">پرفروش ها</h3>
+                @Html.Partial("~/Views/Partials/_ProductColumn.cshtml", (List<Shop.Models.Product>)ViewBag.productsWithHighSales)
+            </div>
+            <div style="margin-top:20px;margin-bottom:20px">
+                <h3 class="subtitle"> تخفیف دار<i style="float:left"></i></h3>
+                @Html.Partial("~/Views/Partials/_ProductColumn.cshtml", (List<Shop.Models.Product>)ViewBag.productHaveOffer)
+            </div>
+
+            <div style="margin-top:20px;margin-bottom:20px">
+
+                <h3 class="subtitle ">دسته ها</h3>
+                @Html.Partial("~/Views/Partials/_CategoryTree.cshtml", (List<Shop.Models.ProductCategory>)ViewBag.category)
+            </div>
+
+            <div style="margin-top:20px;margin-bottom:20px">
+                <h3 class="subtitle">کالاهای موجود</h3>
+                <label class="switch">
+                    <input id="checkbox" type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div style="margin-top:20px;margin-bottom:20px">
+
+                <h3 class="subtitle">قیمت<i style="float:left"></i></h3>
+
+                <div style="margin-bottom:20px" class="side-item">
+                    <div id="priceSlider"></div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <br />
+                            <span>تا قیمت:</span>
+                            <br />
+                            <br />
+                            <p id="expensive" style="color:#bebebe; font-weight:bold;"></p>
+                            <span style="color:#bebebe">تومان</span>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <br />
+                            <span>از قیمت:</span>
+                            <br />
+                            <br />
+                            <p id="cheap" style="color:#bebebe; font-weight:bold;"></p>
+                            <span style="color:#bebebe">تومان</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h3 class="subtitle">برند ها</h3>
+            @Html.Partial("~/Views/Partials/_BrandList.cshtml", (List<Shop.Models.Brand>)ViewBag.brands)
+            <p id="filter" style="margin-top:10px;margin-bottom:10px;float:left;position:relative;left:20px" class="btn btn-primary text-left ">فیلتر</p>
+        </aside>
+
+        <div id="content" class="col-sm-9">
+            <br />
+            <br />
+
+            <div id="priceSlider"></div>
+
+            <div style="border-bottom:1px #ddd solid" id="filterDiv">
+                <div class="row">
+                    <div class=" col-sm-2 col-xs-12 text-right">
+                        <label class="control-label" for="input-sort">مرتب سازی :</label>
+                    </div>
+                    <div class="  col-md-2 col-sm-2 col-xs-4 text-right">
+                        <a class="filter-btn filter-btn-active" onclick="sort('price',0,@i, $('#checkbox').is(':checked'))" href="javascript:void(0)">قیمت(کمتر به بیشتر)</a>
+                    </div>
+
+                    <div class="  col-md-2 col-sm-2 col-xs-4 text-right">
+                        <a class="filter-btn col-md-12 " onclick="sort('pricedesc',0,@i, $('#checkbox').is(':checked'))" href="javascript:void(0)">قیمت(بیشتر به کمتر)</a>
+                    </div>
+
+                    <div class="  col-md-1 col-sm-2 col-xs-4 text-right">
+                        <a class="filter-btn  " onclick="sort('date',0,@i, $('#checkbox').is(':checked'))" href="javascript:void(0)">تاریخ</a>
+                    </div>
+
+                    <div class="  col-md-1 col-sm-2 col-xs-4 text-right">
+                        <a class="filter-btn  " onclick="sort('offer',0,@i, $('#checkbox').is(':checked'))" href="javascript:void(0)">تخفیف</a>
+                    </div>
+
+                    <div class="  col-md-1 col-sm-2 col-xs-4 text-right">
+                        <a class="filter-btn  " onclick="sort('sale',0,@i, $('#checkbox').is(':checked'))" href="javascript:void(0)">فروش</a>
+                    </div>
+
+                    <div class="  col-md-1 col-sm-2 col-xs-4 text-right">
+                        <a class="filter-btn  " onclick="sort('visit',0,@i, $('#checkbox').is(':checked'))" href="javascript:void(0)">بازدید</a>
+                    </div>
+
+                    <div class=" col-md-1 col-sm-2 col-xs-4 text-right">
+                        <a class="filter-btn  " onclick="sort('rate',0,@i, $('#checkbox').is(':checked'))" href="javascript:void(0)">امتیاز</a>
+                    </div>
+
+                </div>
+
+            </div>
+            <br />
+            <div id="products" class="row products-category">
+                @{
+
+                }
+                @if (Model != null)
+                {
+                    @Html.Partial("~/Views/Partials/_ProductPaginationList.cshtml", Model)
+                }
+                else
+                {
+                    <h2>محصولی یافت نشد</h2>
+                }
+
+            </div>
+
+        </div>
+
+        <script>
+        </script>
+
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+
+        var b = [];
+        function getNum(brandID) {
+            b.push(brandID);
+            //var url = window.location.href;
+            //console.log(url);
+            //window.location.href = url b.toString();
+        }
+        function remove(brandID) {
+            b.pop(brandID);
+        }
+
+    </script>
+    <script>
+        function sort(_sortType, _categoryID, productID, _justAvailable) {
+            var obj = {};
+
+            if (piddd != null) {
+                obj.productID = piddd;
+            } else {
+                obj.productID = productID;
+            }
+
+
+            obj.sortType = _sortType;
+            obj.categoryID = _categoryID;
+
+            obj.justAvailable = _justAvailable;
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("sortProductsCategory", "product")',
+
+                data: obj,
+                success: function (data) {
+                    $('#products').html(data);
+                },
+                error: function (xpr) { alert(xpr.responseText); }
+            });
+        }
+    </script>
+    <script>
+        $("#brandCollapse").click(function () {
+            $("#brand").toggle("fast");
+            $("brandCollapse", this).toggleClass("fa-caret-left fa-caret-down");
+        })
+    </script>
+    <script>
+        $(function () {
+            $("#priceSlider").slider({
+                range: true,
+                min: @ViewBag.minPrice,
+                max: @ViewBag.maxPrice,
+                values: [@ViewBag.minPrice, @ViewBag.maxPrice],
+                slide: function (event, ui) {
+                    $("#cheap").html(ui.values[0]);
+                    $("#expensive").html(ui.values[1]);
+                }
+            });
+            $("#cheap").html($("#priceSlider").slider("values", 0) + $("#priceSlider").slider("values", 1));
+
+            $("#cheap").html($("#priceSlider").slider("values", 0));
+            $("#expensive").html($("#priceSlider").slider("values", 1));
+
+        });
+    </script>
+}
+@*<script>
+        $(document).ready(function () {
+            $("#priceSlider").slider();
+        });
+    </script>*@
+<script>
+    $("#brandCollapse").click(function () {
+        $("#brand").toggle("fast");
+        $("brandCollapse", this).toggleClass("fa-caret-left fa-caret-down");
+    })
+</script>
+<script>
+        $(function () {
+            $("#priceSlider").slider({
+                range: true,
+                min: @ViewBag.minPrice,
+                max: @ViewBag.maxPrice,
+                values: [@ViewBag.minPrice,  @ViewBag.maxPrice],
+                slide: function (event, ui) {
+                    $("#cheap").html(ui.values[0]);
+                    $("#expensive").html(ui.values[1]);
+                }
+            });
+            $("#cheap").html($("#priceSlider").slider("values", 0) + $("#priceSlider").slider("values", 1));
+
+            $("#cheap").html($("#priceSlider").slider("values", 0));
+            $("#expensive").html($("#priceSlider").slider("values", 1));
+
+        });
+</script>
+@*<script>
+        var p = [];
+        function getPrice() {
+            var cheap = $("#cheap").html();
+            var expensive = $("#expensive").html();
+            p.push(cheap);
+            p.push(expensive);
+        }
+    </script>*@
+
+
+<script>
+    function sort(_sortType, _categoryID, productID, _justAvailable) {
+
+        var obj = {};
+        obj.sortType = _sortType;
+        obj.categoryID = _categoryID;
+        obj.productID = productID;
+        obj.justAvailable = _justAvailable;
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("sortProductsCategory", "product")',
+
+            data: obj,
+            success: function (data) {
+                $('#products').html(data);
+            },
+            error: function (xpr) { alert(xpr.responseText); }
+        });
+    }
+
+</script>
+
+
+
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+        $('#checkbox').change(function (e) {
+
+            $(this).is(':checked');
+            var brand = [];
+            var _dynamic = [];
+            $('#searchMenu input:checked').each(function (s, e) {
+                var b = $(this).attr('id');
+                brand.push(b);
+            });
+            $('.search-filter input:checked').each(function (s, e) {
+                var d = $(this).attr('id');
+                _dynafilterByDynamicPropertymic.push(d);
+            });
+
+
+
+            filterByDynamicProperty(@i, null, null, $("#expensive").html(), $("#cheap").html(),@cID, brand, $('#checkbox').is(':checked'))
+
+
+        });
+        });
+</script>
+<script>
+
+
+
+    function filterByDynamicProperty(productID, nameID, valueID, maxPrice, minPrice, categoryID, brandID, justAvailable) {
+
+        var obj = {
+            productID: productID, maxPrice: maxPrice, minPrice: minPrice,
+            categoryID: categoryID, brandID: brandID, justAvailable: justAvailable
+        };
+        if (categoryID != 0) {
+            obj['categoryID'] = categoryID
+        }
+        if (nameID != null) {
+            obj['nameID'] = nameID
+        }
+        if (valueID != null) {
+            obj['valueID'] = valueID
+        }
+        //alert(obj.productID);
+        //alert(obj.filters);
+        //alert(obj.maxPrice);
+        //alert(obj.minPrice);
+        //alert(obj.categoryID);
+        //alert(obj.brandID);dynamicFilter
+        //alert(obj.justAvailable);
+        $.ajax({
+            type: 'POST',
+            url: '/ProductCategory/filterByDynamicProperty',
+            data: obj,
+            success: function (data) {
+                $('#products').html(data);
+                if (data == null || data == 0) {
+                    $('#products').html("موردی یافت نشد");
+                }
+
+            },
+            error: function (xpr) { alert(xpr.responseText); }
+        });
+    }
+    $("#filter").click(function () {
+        var brand = [];
+        var _dynamic = [];
+        $('#myMenu input:checked').each(function (s, e) {
+
+            var b = $(this).attr('data-brandID');
+            brand.push(b);
+
+        });
+        $('.search-filter input:checked').each(function (s, e) {
+            var d = $(this).attr('id');
+            _dynamic.push(d);
+        });
+        filterByDynamicProperty(@i,null,null, $("#expensive").html(), $("#cheap").html(), @cID, brand, $('#checkbox').is(':checked'))
+    });
+</script>
+<script>
+    var header = document.getElementById("filterDiv");
+    var btns = header.getElementsByClassName("filter-btn");
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].addEventListener("click", function () {
+            var current = document.getElementsByClassName("filter-btn-active");
+            current[0].className = current[0].className.replace(" filter-btn-active", "");
+            this.className += " filter-btn-active";
+        });
+    }
+</script>

@@ -1,0 +1,84 @@
+﻿@model IEnumerable<Shop.Models.Brand>
+@*<div id="carousel" class="owl-carousel">
+        @foreach (var item in Model)
+        {
+            <div class="item"> <a href="ProductCategory/List?b=@item.brandID"><img src="~/Images/Brand/@(item.brandID).png" alt="@item.brandName" class="img-responsive col-xs-12 col-sm-12 text-center" style="margin:20px; "/></a> </div>
+        }
+
+    </div>*@
+
+
+@*@*<section id="s-brandBox">
+    <div class="s-brandBox">
+        @*<div class="s-brandBox-Header"> <span>برند های ویژه</span> </div>*@
+@*<div class="s-brandSlider">
+    <div class="next" onclick="scrollright()"><i class="fas fa-chevron-right"></i></div>
+    <div class="scrollingWrapper" id="leftsidescroll">
+        @foreach (var item in Model)*@
+        @* { *@
+            @*@Html.Partial("~/Views/Partials/_BrandItem.cshtml",item);*@
+            @*<div class="s-brandSlider-brand"><a href="ProductCategory/List?b=@item.brandID"><img src="~/Images/Brand/@(item.brandID).png" alt="@item.brandName"></a></div>*@
+        @*}
+    </div>
+    <div class="s-brandSlider-button-left" onclick="scrollleft()"><i class="fas fa-chevron-left"></i></div>
+</div>
+        </div>
+    </section>
+<script>
+    var s = document.getElementById("leftsidescroll").scrollTop;
+    function scrollright() {
+        s = 0;
+        var ele = document.getElementById("leftsidescroll");
+        s += 800;
+        ele.scrollBy({
+            left: s, top: 0, behavior: 'smooth'
+        });
+    }
+    function scrollleft() {
+        s = 0;
+        var ele = document.getElementById("leftsidescroll");
+        s -= 800;
+        ele.scrollBy({ left: s, top: 0, behavior: 'smooth' });
+    }
+</script>*@
+
+
+<style>
+    .scrolling-wrapper {
+        white-space: normal
+    }
+</style>
+
+
+<div class="s-firstpage-title" style="direction:rtl">
+
+    <div class="firstmainslider">
+        <div class="content" style="height: 250px">
+            <div class="slider" style="box-shadow: 2px 2px 4px 1px rgba(0,0,0,.1);border-radius: 8px">
+
+                <div class="itemsliders" style="position:relative;display: flex ; flex-direction: column ; justify-content: center">
+                    <div style="width: 98% ; height: 97%; background-color: white ; display: flex ;justify-content: space-between ; align-items: center">
+                        <div onclick="scrollleft(this)"
+                             style="left:0;position:absolute;z-index: 5;width: 70px; height: 100px;text-align: center ;display: grid;align-items: center; background-color: white ; border-radius: 0 8px 8px 0 ; box-shadow:1.5px 0 4px 0 rgba(0,0,0,.15) ">
+                            <i class="fas fa-chevron-left" style="color: black ; font-size: 30px"></i>
+                        </div>
+                        <div class="scrolling-wrapper s-product-slider" style="transition: all 1s ease-in-out;display:flex;flex-direction:row;max-width:1298px;align-items:center;">
+                            @foreach (var item in Model)
+    {
+                        <div class="s-brandSlider-brand" ><a href="ProductCategory/List?b=@item.brandID"><img src="~/Images/Brand/@(item.brandID).png" alt="@item.brandName"></a></div>
+}
+                        </div>
+                        <div onclick="scrollright(this)"
+                             style="right:0;position:absolute;z-index: 5;width: 70px; height: 100px;text-align: center;display: grid;align-items: center;background-color: white ; border-radius: 8px 0px 0 8px ; box-shadow:  -1.5px 0 4px 0 rgba(0,0,0,.15)">
+                            <i class="fas fa-chevron-right" style="color: black ; font-size: 30px"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

@@ -1,0 +1,443 @@
+﻿@model Shop.Models.ProductCategory
+
+@{
+    /**/
+
+    ViewBag.Title = "Edit";
+
+
+
+    List<Shop.Models.AttribteValueType> attribteValueType = ViewBag.attribteValueTypes;
+    List<Shop.Models.Unit> unit = ViewBag.units;
+
+    List<Shop.Models.ProductAttributeTemplateGroup> productAttributeTemplateGroup = ViewBag.productAttributeTemplateGroupID;
+    List<Shop.Models.ProductAttributeTemplate> productAttributeTemplates = ViewBag.productAttributeTemplates;
+
+}
+
+<h2>ویرایش</h2>
+
+
+
+@using (Html.BeginForm())
+{
+
+
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#t1">اطلاعات اصلی</a></li>
+        <li><a data-toggle="tab" href="#t2">ویژگی های دسته بندی</a></li>
+    </ul>
+
+
+    <div class="tab-content">
+        <div id="t1" class="tab-pane fade in active">
+
+
+            <div class="form-horizontal">
+                @*<h4>ProductCategory</h4>*@
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.categoryID, new { id = "categoryID" })
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.categoryName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.categoryName, new { htmlAttributes = new { @class = "form-control", id = "categoryName" } })
+                        @Html.ValidationMessageFor(model => model.categoryName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+
+                <div class="form-group">
+                    <div class="control-label col-md-2">
+                        کد لوگو
+                    </div>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.logo, new { htmlAttributes = new { @class = "form-control", id = "logo" } })
+                        @Html.ValidationMessageFor(model => model.logo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+
+                <div class="form-group">
+                    @Html.Label("گروه", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("parentCategory", null, " ", htmlAttributes: new { @class = "form-control", id = "parentCategory" })
+                        @Html.ValidationMessageFor(model => model.parentCategory, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+        <div id="t2" class="tab-pane fade">
+
+
+            <input hidden id="pep" name="productCategoryID" value="@Model.categoryID" />
+            <input type="text" name="productAttribiuteTemplateGroupName" value="" class="form-control col-md-6" style="margin-top:10px" />
+            <button type="button" onclick="saveAttributeGroup()" style="margin:10px" class="btn btn-success">افزودن دسته بندی ویژگی</button>
+
+
+            <div class="table" id="AttributeForm">
+
+
+                @{
+                foreach (var item in productAttributeTemplateGroup)
+                {
+                    @Html.Partial("~/Views/ProductCategory/_CreateElement.cshtml", item, new ViewDataDictionary { { "productAttributeTemplates", productAttributeTemplates } });
+            }
+                }
+
+
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+
+        @*<div id="t2" class="tab-pane fade">
+            <div class="form-horizontal">
+
+                <button type="button" onclick="CreateElement()" style="margin:10px" class="btn btn-success">افزودن ویژگی</button>
+
+                <hr />
+                <div>
+                    <table class="table" id="AttributeForm">
+                        <tr>
+                            <th>نام ویژگی</th>
+                            <th>نوع مقدار  </th>
+                            <th>واحد شمارش </th>
+                            <th>قابل جستجو </th>
+                            <th>بستن</th>
+                        </tr>
+
+                        @foreach (var item in productAttributeTemplates)
+                        {
+
+                            ViewBag.unitID = new SelectList(unit, "unitID", "unitName", item.unitID);
+                            ViewBag.attributeValueTypeID = new SelectList(attribteValueType, "attributeValueTypeID", "valueType", item.attributeValueTypeID);
+                            ViewBag.productAttributeTemplateGroupID = new SelectList(productAttributeTemplateGroup, "productAttributeTemplateGroupID", "name", item.ProductAttributeTemplateGroupID);
+
+
+                            @Html.Partial("~/Views/ProductCategory/_CreateElement.cshtml", item);
+                        }
+
+
+
+                    </table>
+                </div>
+
+
+
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="ثبت" class="btn btn-default" />
+                    </div>
+                </div>
+
+
+
+
+            </div>
+
+            <div>
+                @Html.ActionLink("بازگشت به لیست", "Index")
+            </div>
+        </div>*@
+
+
+        <div class="form-group">
+            @{
+            var seo = Model.Seos.FirstOrDefault();
+
+            }
+            @Html.Partial("~/Views/Seo/_Seo.cshtml", seo != null ? seo : new Shop.Models.Seo())
+        </div>
+
+
+
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="button" onclick="saveattribute()" value="ذخیره" class="btn btn-default" />
+                |
+                @Html.ActionLink("بازگشت به لیست", "Index")
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+                    }
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    @*<script>
+
+        function CreateElement() {
+            $.ajax({
+                url: '/productCategory/CreateAttribueFormElement',
+                method: 'get',
+                success: (data) => {
+                    $('#AttributeForm').append(data);
+                },
+                error: () => { }
+            })
+        }
+
+
+    </script>*@
+
+
+
+
+
+    <script>
+
+        function saveAttributeGroup() {
+
+          
+            var productCategoryID = $('#pep').val();
+            var productAttribiuteTemplateGroupName = $('#pep').next().val();
+
+            //alert(productCategoryID);
+            //alert(productAttribiuteTemplateGroupName);
+
+            
+
+            $.ajax({
+                type: "POST",
+                url: '/productCategory/bbb',
+                data: { productAttribiuteTemplateGroupName: productAttribiuteTemplateGroupName, productCategoryID: productCategoryID },
+                success: (data) => {
+
+                    $('#AttributeForm').append(data);
+                },
+                error: () => { }
+            })
+        }
+
+
+
+        function CreateElement() {
+            $.ajax({
+                url: '/productCategory/CreateAttribueFormElement',
+                method: 'get',
+                success: (data) => {
+                    $('#AttributeForm').append(data);
+                },
+                error: () => { }
+            })
+        }
+
+
+
+
+        function CreateElementAttribute(id) {
+
+            $('#t-' + id).removeAttr('hidden');
+
+
+            $.ajax({
+                url: '/productCategory/CreateAttribueTemplateFormElement',
+                method: 'get',
+                success: (data) => {
+                    $("#tbody" + id).append(data);
+                },
+                error: () => { }
+            })
+        }
+
+
+
+        //function completed() {
+        //    //alert('compeleted')
+        //    //document.getElementById("a2").setAttribute("href", "#t2");
+        //    document.getElementById("btnsave").remove();
+        //}
+        //function failure() {
+        //    //alert('fail')
+        //}
+
+
+
+        //function submit() {
+        //    var value = $('#pep').text();
+
+        //    if (value > 0) {
+        //        document.getElementById("a2").setAttribute("href", "#t2");
+        //        //document.getElementById('myForm').submit();
+
+        //    } else {
+        //        alert("لطفا نام دسته بندی را ذخیره کتید")
+        //        document.getElementById("a2").setAttribute("href", "#t0");
+        //    }
+        //}
+
+
+
+
+
+        function saveattribute() {
+         
+            var productAttributeTemplates = [];
+           
+
+            var productCategory = { categoryID: $("#categoryID").val(), categoryName: $("#categoryName").val(), parentCategory: $("#parentCategory").val() };
+             
+
+            var productAttribiuteTemplateGroups = [];
+            var all = document.getElementsByTagName("h4");
+            for (var i = 0, max = all.length; i < max; i++) {
+                console.log(all[i].innerHTML);
+                productAttribiuteTemplateGroups.push({ ProductAttributeTemplateGroupID: all[i].id, name: all[i].innerHTML });
+            }
+
+            //alert("aaaa");
+            $('.xxxxxxx').each(function (s, e) {
+
+                var productAtrributeTemplateID = "";
+                var name = "";
+                var attributeValueTypeID = "";
+                var unitID = "";
+                var searchable = "";
+
+
+                var parentID = this.parentElement.id;
+
+                parentID = parentID.replace('tbody', '');
+
+
+                var obj = this.children;
+                //console.log(obj[1]);
+                for (var i = 0; i < obj.length; i++) {
+                    var o = obj[i].children[0];
+
+
+                    if (o.name == "productAtrributeTemplateID") {
+                        productAtrributeTemplateID = o.value;
+                    }else if (o.name == "name") {
+                        name = o.value;
+                    } else if (o.name == "attributeValueTypeID") {
+                        attributeValueTypeID = o.value
+                    } else if (o.name == "unitID") {
+                        unitID = o.value
+                    } else if (o.name == "searchable") {
+                        searchable = o.value
+                    }
+
+                }
+
+
+
+                var ooo = {
+
+                    productAtrributeTemplateID: productAtrributeTemplateID ,
+                    categoryID: document.getElementById("pep").innerText,
+                    productAttributeTemplateGroupID: parentID,
+                    name: name, attributeValueTypeID: attributeValueTypeID,
+                    unitID: unitID, searchable: searchable
+                };
+                productAttributeTemplates.push(ooo);
+                //console.log(obj2);
+                //obj.forEach(function (item) {
+
+                //    //if (!( item.nodeName == "#text")) {
+                //    //    console.log(item.firstChild);
+                //    //}
+
+                //  //  console.log(item);
+                //    //var c = item.firstChild;
+                //    //console.log(c);
+
+                //});
+
+
+
+            });
+
+            //console.log(productAttributeTemplates)
+           // console.log(productAttribiuteTemplateGroups)
+            //console.log(productCategory)
+
+            
+            var obj = {
+                productCategory: productCategory, productAttribiuteTemplateGroups: productAttribiuteTemplateGroups,
+                productAttributeTemplates: productAttributeTemplates, logo: $("#logo").val(),
+                googletitle: $("#gt").val(), googledescription: $("#gd").val()
+            }
+
+
+            console.log(obj)
+
+
+            $.ajax({
+                url: '/productCategory/Edit',
+                method: 'post',
+                data:  obj ,
+                success: (data) => {
+                    window.location.href = data;
+
+                },
+                error: () => { }
+            })
+            
+        }
+
+
+        function removeTemplateAttributeGroup(id) {
+
+            $.ajax({
+                url: '/productCategory/deleteProductAttributeTemplatesGroups',
+                method: 'post',
+                data: { ProductAttributeTemplateGroupID: id },
+                success: (data) => {
+
+                    if (data.success) {
+                        
+                    }
+                },
+                error: () => { }
+            });
+
+
+        }
+
+        function removeTemplateAttribute (id) {
+            $.ajax({
+                url: '/productCategory/deleteProductAttributeTemplates',
+                method: 'post',
+                data: { ProductAttributeTemplateID: id },
+                success: (data) => {
+
+                },
+                error: () => { }
+            });
+        }
+
+
+
+    </script>
+
+}

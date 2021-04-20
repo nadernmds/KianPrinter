@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "پنل مدیریت";
+    Layout = "~/Views/Shared/_SiteLayout.cshtml";
+    var user = (Shop.Models.User)Session["UU!#user"] ?? new Shop.Models.User();
+}
+@RenderSection("styles", false);
+    <div id="panel-holder">
+        <div id="panel">
+            <div class="s-panel-right">
+                <div class="s-panel-user-data">
+                    <p>نام :@user.name</p>
+                    <p>نام کاربری :@user.username</p>
+                    <p>شماره موبایل :@user.mobile</p>
+                </div>
+                <div class="s-panel-links">
+                    <a class="text-primary" href="/panel"><i style="font-size:16px" class="fa fa-user "></i> &ensp; پروفایل </a>
+                    <a class="text-primary" href="/panel/changePassword"><i style="font-size:16px" class="fa fa-key "></i>   &ensp; تغییر رمز </a>
+                    <a class="text-primary" href="/panel/Orders"><i style="font-size:16px" class="fa fa-cart-arrow-down "></i> &ensp; همه ی سفارش ها </a>
+                    <a class="text-primary" href="/panel/addresses"><i style="font-size:16px" class="fa fa-map-marker "></i>   &ensp; آدرس </a>
+                    <a class="text-primary" href="/panel/comments"><i style="font-size:16px" class="fa fa-comment "></i>   &ensp; نظرات  </a>
+                    <a class="text-primary" href="/panel/questinsAnswers"><i style="font-size:16px" class="fa fa-question "></i>   &ensp; سوال و جواب  </a>
+
+                </div>
+            </div>
+            <div class="s-panel-left">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+    
+@section scripts{
+
+    @RenderSection("scripts", false)
+}

@@ -1,0 +1,22 @@
+﻿@model IEnumerable<Shop.Models.Banner> 
+<div class="marketshop-banner">
+    <div class="row">
+        @{ int counter = 0;
+            string className = "hidden-xs ";}
+        @foreach (var item in Model)
+        {
+            counter = counter + 1;
+            if (counter == 2)
+            {
+                className = "";
+            }
+            else
+            {
+                className = "hidden-xs ";
+            }
+
+
+                <div class="col-lg-4 col-md-4 @className col-sm-6 col-xs-12"><a  href = "@item.url" ><img title="" alt="" src="~/Images/Banner/@(item.bannerID).jpg"></a></div>
+        }
+    </div>
+</div>

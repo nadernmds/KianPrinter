@@ -1,0 +1,54 @@
+﻿@model Shop.Models.GuaranteeProduct
+@using pep;
+<div class="title-row"><h6> رسید تحویل به مشتری </h6></div>
+<div class="date-row">
+    <span style="position:absolute;left:30px;top:30px;">تاریخ:@(Model.deliveryDate.HasValue ? Model.deliveryDate.Value.ToPersianDateShortString() : "")</span>
+    <img src="~/img/logo.png" style="height:60px;width:60px; position:absolute;right:15px;top:0px;" />
+</div>
+<div class="info-row">
+    <div class="info-column1">
+        <span class="fild">نام و نام خانوادگی:@Model.GuaranteeCustomer.name</span>
+        <span class="fild">شماره تماس:@Model.GuaranteeCustomer.phone</span>
+        <span class="fild">اداره/شرکت/سازمان:@Model.GuaranteeCustomer.companyName</span>
+        <span class="fild">وضعیت گارانتی: @(Model.GuaranteeServiceCompany != null ? Model.GuaranteeServiceCompany.companyName : "")  </span>
+        <div class="fild" style="border-bottom:none;">
+            اقلام همراه دستگاه:
+
+            <ol style="margin-top:15px;">
+                @foreach (var item in Model.GuaranteeProductExtraItems.Select(s => s.GuaranteeExtraItem))
+                {
+                    <li>@item.itemName</li>
+                }
+            </ol>
+        </div>
+    </div>
+    <div class="info-column2">
+        <span class="fild">نام دستگاه:@Model.productName</span>
+        <span class="fild">ایراد دستگاه:@Model.result</span>
+        <span class="fild">اظهارات مشتری:@Model.customerOpinion</span>
+        <span class="fild"> ایرادات مشاهده شده:@Model.repairManOpinion</span>
+        <span class="fild">ایرادات فیزیکی:@Model.physicalProblems</span>
+        <span class="fild">سریال:@Model.serialNumber</span>
+        <span class="fild" style="border-bottom:none !important;">شماره اموال:@Model.amvalNumber</span>
+
+    </div>
+
+    <div style="border-top:1px solid;width:100%">
+        <div class="agreement-row">
+            <span>کلیه قطعات تحویل داده شده به شرکت صحیح و سالم تحویل داده شد.</span>
+            <span>کلیه اقلام همراه دستگاه تحویل داده شد.</span>
+            <span>دستگاه از نظر فیزیکی بررسی شده و صحیح و سالم تحویل داده شد.</span>
+            <span>سرویس نرم افزاری شامل 3روز گارانتی می باشد.</span>
+            <span>تعمیر سخت افزاری دارای گارانتی 7 روزه می باشد.</span>
+            <span>شرکت ریزکاران هیچگونه مسئولیتی در قبال از دست رفتن اطلاعات ندارد.</span>
+        </div>
+    </div>
+</div>
+<div class="sign-row">
+    <div class="sign-column">
+        <span>امضاء تحویل گیرنده:</span>
+    </div>
+    <div class="sign-column">
+        <span>امضاء تحویل دهنده:</span>
+    </div>
+</div>

@@ -1,0 +1,9 @@
+﻿@model Shop.Models.Content
+@{
+    Layout = "~/Views/Shared/_SiteLayout.cshtml";
+}
+    <div id="privacy" class="s-container">
+        <h1>قوانین و مقررات</h1>
+       @Html.Raw(Model.policy)
+
+    </div>

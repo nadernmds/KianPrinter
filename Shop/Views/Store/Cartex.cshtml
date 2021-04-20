@@ -1,0 +1,101 @@
+﻿
+@{
+    ViewBag.Title = "Cartex";
+    Layout = "~/Views/Shared/_PupularLayout.cshtml";
+
+}
+<link rel="stylesheet" href="~/css/js-persian-cal.css">
+ 
+<script>
+    function getProducts(date,store,color) {
+        var obj = { date: date, store: store, color: color };
+        $.ajax({
+            type: 'POST',
+            url: '/Store/getProducts',
+            data: obj,
+            success: function (data) {
+               $('#table').html(data)
+            },
+            error: (e) => { alert(JSON.stringify(e.responseText));}
+        })
+    }
+
+    function checkbox() {
+        if ($('#colorCheck').is(":checked")==true) {
+            $('#colorCheck').attr('checked','checked');
+            $('#colorCheck').val('true');
+        }
+        else {
+            $('#colorCheck').attr('checked','checked');
+            $('#colorCheck').val('false');
+        }
+    }
+    function printHref() {
+        let cal = $('#pcal5').val();
+        let store = $('#store').children('option:selected').val();
+        let colorCheck = $('#colorCheck').val();
+        let calender = cal.replace("/", "-");
+        calender = calender.replace("/", "-");
+        let address = "/report/getReports2?report=cartexReport&date=" + calender + "&color=" + colorCheck + "&store=" + store;
+        window.location.href = address;
+
+    }
+</script>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-2">
+
+        </div>
+        <div class="panel panel-default col-sm-12" style="padding-right:0px !important;padding-left:0px !important">
+            <div class="panel-heading" ><h4>کاردکس</h4></div>
+            <div class="panel-body">
+
+                <div class="col-sm-2">
+                    <button class="btn btn-default" onclick="printHref()" style="margin-top:20px">چاپ</button>
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-default" onclick="getProducts($('#pcal5').val(),$('#store').children('option:selected').val(),$('#colorCheck').val())" style="margin-top:20px">اعمال</button>
+                </div>
+                <div class="col-sm-2" style="margin-top:25px">
+                    <label><input type="checkbox" value="false" onchange="checkbox()" id="colorCheck" />  تفکیک بر اساس رنگ</label>
+
+                </div>
+                <div class="col-sm-3">
+                    <select style="margin-top:25px" id="store" class="form-control">
+                        @if (ViewBag.store != null)
+            {
+                <option disabled selected>-- انتخاب انبار --</option>
+    foreach (var item in (List<Shop.Models.Store>)ViewBag.store)
+    {
+            <option value="@item.storeID">@item.name</option>
+}
+}
+
+                    </select>
+                </div>
+
+                <div class="col-sm-3">
+                    <input style="margin-top:23px" type="text" id="pcal5" class="pdate form-control">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
+        <div class="col-sm-2"></div>
+        <div class="col-sm-10" id="table">
+
+        </div>
+    
+</div>
+<script type="text/javascript" src="~/js/js-persian-cal.min.js"></script>
+<script type="text/javascript">
+    var date = '@ViewBag.persianDate';
+    var objCal5 = new AMIB.persianCalendar('pcal5', {
+        extraInputID: 'extra',
+        extraInputFormat: 'YYYY/MM/DD',
+        initialDate: date
+    }
+    );
+</script>

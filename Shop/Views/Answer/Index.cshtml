@@ -1,0 +1,148 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<Shop.Models.Answer>
+
+@{
+    ViewBag.Title = "Index";
+
+}
+
+@*<h2>Index</h2>*@
+<style>
+    input[type=text] {
+        width: 250px;
+        height: 35px;
+        border-radius: 4px;
+        outline: none;
+        border: 1px solid #DDDDDD;
+        padding: 8px;
+    }
+
+    input:focus {
+        border-color: #16a7eb;
+        box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+    }
+</style>
+<p>
+    @Html.ActionLink("جدید", "Create")
+</p>
+<p>
+    @using (Html.BeginForm("Index", "Answer", FormMethod.Get))
+    {
+        <input type="text" name="search" /> <input type="submit" value="جستجو" class="btn-group btn btn-primary" />
+    }
+</p>
+@{ var sort = ViewBag.SortType;}
+<table class="table">
+    <tr>
+        <th>
+           
+                <a  style="color:white">جواب</a>
+                
+            
+        </th>
+        <th>
+            @{ if (sort == "answerDate")
+                {
+                <a href="/Answer/Index/?sort=answerDate_desc" style="color:white"> تاریخ  </a>
+                }
+               else
+                {
+                <a href="/Answer/Index/?sort=answerDate" style="color:white">تاریخ </a>
+                }
+            }
+        </th>
+        <th>
+           
+              
+                <a style="color:white">سوال</a>
+              
+        </th>
+        <th>
+            @{ if (sort == "username")
+                {
+                <a href="/Answer/Index/?sort=username_desc" style="color:white"> نام کاربری</a>
+                } 
+               else
+                {
+                <a href="/Answer/Index/?sort=username" style="color:white">نام کاربری</a>
+                }
+            }
+        </th>
+        <th>
+
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr id="@item.answerID">
+            <td>
+                @Html.DisplayFor(modelItem => item.answerText)
+            </td>
+            <td>
+                @if (item.answerDate.HasValue)
+                {
+                    @pep.pep.toPersianDateString((DateTime)item.answerDate)
+                }
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Question.questionText)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.username)
+            </td>
+            <td>
+                @Html.ActionLink("ویرایش", "Edit", new { id = item.answerID }) |
+                @Html.ActionLink("مشاهده", "Details", new { id = item.answerID }) |
+                @Html.ActionLink("حذف", "Delete", new { id = item.answerID })
+            </td>
+            <td>
+                @{
+                    if (item.approveUserID == null)
+                    {
+                        <a data-id="p-@item.answerID" style="font-size:25px;color:green" onclick="approveAnswer(@item.answerID,true)"><i class="fa fa-check"></i></a>
+                        <a data-id="n-@item.answerID" style="font-size:25px;color:red" onclick="approveAnswer(@item.answerID,false)"><i class="fa fa-times"></i></a>
+
+
+                    }
+                }
+
+            </td>
+        </tr>
+    }
+
+</table>
+<div class="panel-body">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+</div>
+
+
+<script>
+
+    function approveAnswer(answerID, approve) {
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("approveAnswer", "answer")',
+
+                data: { answerID: answerID , approve: approve },
+
+                success: function (data) {
+
+                    if (data.state) {
+                        $("[data-id=p-" + answerID + "]").css("color", "green");
+                        $("[data-id=p-" + answerID + "]").hide(200);
+                    }
+                    else {
+                        $("#" + answerID).hide(200);
+
+                    }
+
+                },
+                error: function () { SnakeBar("خطا "); }
+            });
+        }
+</script>

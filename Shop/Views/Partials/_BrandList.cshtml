@@ -1,0 +1,48 @@
+﻿@model IEnumerable<Shop.Models.Brand>
+
+<div class="side-item ">
+    <div class="panel panel-default" id="color" style="display:block;position:relative;">
+        <div style="position:relative">
+            <input id="searchBrand" style="padding-right:30px;margin-right:10px;text-align:right" onkeyup="searchBrandFunction()" type="search" name="text" value="" placeholder="جستجو" class="s-productlist-search" />
+            <i class="fa fa-search" style="z-index:2;padding-top:5px;padding-right:10px"></i>
+        </div>
+        <div class="panel-body mostly-customized-scrollbar" style="overflow-y: scroll;min-height:50px;max-height:300px;margin-top:30px">
+            <div>
+                <div>
+                </div>
+            </div>
+            <ul style="list-style:none;padding-right:0px;margin-top:50px" id="Brand">
+                @if (Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+                        @Html.Partial("~/Views/Partials/_BrandItem.cshtml", item)
+                    }
+                }
+
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function searchBrandFunction() {
+        var input, filter, ul, li, a, i, p;
+        input = document.getElementById("searchBrand");
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("Brand");
+        li = ul.getElementsByTagName("li");
+        for (i = 0; i < li.length; i++) {
+            a = li[i].getElementsByTagName("label")[0];
+            p = li[i].getElementsByTagName("p")[0];
+            console.log(a.innerHTML);
+            if (a.innerHTML.toUpperCase().indexOf(filter) > -1 || a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
+                li[i].style.display = "none";
+            }
+        }
+    }
+</script>

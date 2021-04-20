@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="502020840324473aab58104b05b98131" Name="Diagram1" ZoomLevel="73">
+        <EntityTypeShape EntityType="Shop_dbModel.C__EFMigrationsHistory" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Shop_dbModel.AccessStore" Width="1.5" PointX="11.25" PointY="22" />
+        <EntityTypeShape EntityType="Shop_dbModel.Address" Width="1.5" PointX="10.25" PointY="25.375" />
+        <EntityTypeShape EntityType="Shop_dbModel.Answer" Width="1.5" PointX="7.5" PointY="25.75" />
+        <EntityTypeShape EntityType="Shop_dbModel.AspNetRoleClaim" Width="1.5" PointX="14" PointY="9.5" />
+        <EntityTypeShape EntityType="Shop_dbModel.AspNetRole" Width="1.5" PointX="11.75" PointY="5.375" />
+        <EntityTypeShape EntityType="Shop_dbModel.AspNetUserClaim" Width="1.5" PointX="16.25" PointY="4.125" />
+        <EntityTypeShape EntityType="Shop_dbModel.AspNetUserLogin" Width="1.5" PointX="16.25" PointY="6.75" />
+        <EntityTypeShape EntityType="Shop_dbModel.AspNetUser" Width="1.5" PointX="14" PointY="2.75" />
+        <EntityTypeShape EntityType="Shop_dbModel.AspNetUserToken" Width="1.5" PointX="16.25" PointY="1.375" />
+        <EntityTypeShape EntityType="Shop_dbModel.AttribteValueType" Width="1.5" PointX="0.75" PointY="1.875" />
+        <EntityTypeShape EntityType="Shop_dbModel.Banner" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Shop_dbModel.Brand" Width="1.5" PointX="0.75" PointY="16.875" />
+        <EntityTypeShape EntityType="Shop_dbModel.Cart" Width="1.5" PointX="8.25" PointY="21.625" />
+        <EntityTypeShape EntityType="Shop_dbModel.City" Width="1.5" PointX="9" PointY="7.75" />
+        <EntityTypeShape EntityType="Shop_dbModel.CKEditorImageUpload" Width="1.5" PointX="6.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Shop_dbModel.Comment" Width="1.5" PointX="5.25" PointY="17.375" />
+        <EntityTypeShape EntityType="Shop_dbModel.Content" Width="1.5" PointX="16.75" PointY="10.625" />
+        <EntityTypeShape EntityType="Shop_dbModel.DeliveryCost" Width="1.5" PointX="11.25" PointY="1.875" />
+        <EntityTypeShape EntityType="Shop_dbModel.Employee" Width="1.5" PointX="16.75" PointY="15.75" />
+        <EntityTypeShape EntityType="Shop_dbModel.Faq" Width="1.5" PointX="19" PointY="15" />
+        <EntityTypeShape EntityType="Shop_dbModel.Favorite" Width="1.5" PointX="5.25" PointY="22" />
+        <EntityTypeShape EntityType="Shop_dbModel.InvoiceDetail" Width="1.5" PointX="15.75" PointY="18.75" />
+        <EntityTypeShape EntityType="Shop_dbModel.Invoice" Width="1.5" PointX="8.25" PointY="14.75" />
+        <EntityTypeShape EntityType="Shop_dbModel.InvoiceType" Width="1.5" PointX="6" PointY="11.125" />
+        <EntityTypeShape EntityType="Shop_dbModel.list" Width="1.5" PointX="7.75" PointY="2.75" />
+        <EntityTypeShape EntityType="Shop_dbModel.Offer" Width="1.5" PointX="5.25" PointY="35.625" />
+        <EntityTypeShape EntityType="Shop_dbModel.OrderProduct" Width="1.5" PointX="15.75" PointY="24" />
+        <EntityTypeShape EntityType="Shop_dbModel.OrderState" Width="1.5" PointX="11.25" PointY="14.25" />
+        <EntityTypeShape EntityType="Shop_dbModel.Orde" Width="1.5" PointX="13.5" PointY="22" />
+        <EntityTypeShape EntityType="Shop_dbModel.PaymentType" Width="1.5" PointX="11.25" PointY="29.5" />
+        <EntityTypeShape EntityType="Shop_dbModel.ProductAttribute" Width="1.5" PointX="8.25" PointY="11" />
+        <EntityTypeShape EntityType="Shop_dbModel.ProductAttributeTemplateGroup" Width="1.5" PointX="0.75" PointY="8" />
+        <EntityTypeShape EntityType="Shop_dbModel.ProductAttributeTemplate" Width="1.5" PointX="3" PointY="6.125" />
+        <EntityTypeShape EntityType="Shop_dbModel.ProductCategory" Width="1.5" PointX="0.75" PointY="10.875" />
+        <EntityTypeShape EntityType="Shop_dbModel.ProductColorAssinment" Width="1.5" PointX="14.25" PointY="15" />
+        <EntityTypeShape EntityType="Shop_dbModel.ProductColor" Width="1.5" PointX="6" PointY="29.75" />
+        <EntityTypeShape EntityType="Shop_dbModel.ProductImage" Width="1.5" PointX="5.25" PointY="33.375" />
+        <EntityTypeShape EntityType="Shop_dbModel.ProductKeyword" Width="1.5" PointX="5.25" PointY="4.875" />
+        <EntityTypeShape EntityType="Shop_dbModel.Product" Width="1.5" PointX="3" PointY="11.875" />
+        <EntityTypeShape EntityType="Shop_dbModel.ProductState" Width="1.5" PointX="0.75" PointY="14.625" />
+        <EntityTypeShape EntityType="Shop_dbModel.Question" Width="1.5" PointX="5.25" PointY="25.5" />
+        <EntityTypeShape EntityType="Shop_dbModel.ResponsibleStore" Width="1.5" PointX="8.25" PointY="18" />
+        <EntityTypeShape EntityType="Shop_dbModel.Seo" Width="1.5" PointX="11.25" PointY="10.625" />
+        <EntityTypeShape EntityType="Shop_dbModel.ShopCarousel" Width="1.5" PointX="13.75" PointY="12.75" />
+        <EntityTypeShape EntityType="Shop_dbModel.Social" Width="1.5" PointX="19" PointY="11.5" />
+        <EntityTypeShape EntityType="Shop_dbModel.State" Width="1.5" PointX="6.75" PointY="8.125" />
+        <EntityTypeShape EntityType="Shop_dbModel.Store" Width="1.5" PointX="11.25" PointY="17.125" />
+        <EntityTypeShape EntityType="Shop_dbModel.Unit" Width="1.5" PointX="0.75" PointY="5.625" />
+        <EntityTypeShape EntityType="Shop_dbModel.UserGroup" Width="1.5" PointX="0.75" PointY="22.125" />
+        <EntityTypeShape EntityType="Shop_dbModel.User" Width="1.5" PointX="3" PointY="19.875" />
+        <EntityTypeShape EntityType="Shop_dbModel.UserTracking" Width="1.5" PointX="5.25" PointY="14" />
+        <AssociationConnector Association="Shop_dbModel.FK_AccessStores_Stores" />
+        <AssociationConnector Association="Shop_dbModel.FK_AccessStores_Users" />
+        <AssociationConnector Association="Shop_dbModel.FK_Addresses_Cities" />
+        <AssociationConnector Association="Shop_dbModel.FK_Addresses_Users" />
+        <AssociationConnector Association="Shop_dbModel.FK_Ordes_Addresses" />
+        <AssociationConnector Association="Shop_dbModel.FK_answers_questions" />
+        <AssociationConnector Association="Shop_dbModel.FK_Answers_Users" />
+        <AssociationConnector Association="Shop_dbModel.FK_Answers_Users1" />
+        <AssociationConnector Association="Shop_dbModel.FK_AspNetRoleClaims_AspNetRoles_RoleId" />
+        <AssociationConnector Association="Shop_dbModel.FK_AspNetUserClaims_AspNetUsers_UserId" />
+        <AssociationConnector Association="Shop_dbModel.FK_AspNetUserLogins_AspNetUsers_UserId" />
+        <AssociationConnector Association="Shop_dbModel.FK_AspNetUserTokens_AspNetUsers_UserId" />
+        <AssociationConnector Association="Shop_dbModel.FK_ProductAttributeTemplates_AttribteValueTypes" />
+        <AssociationConnector Association="Shop_dbModel.FK_Products_Brands1" />
+        <AssociationConnector Association="Shop_dbModel.FK_Seo_Brands" />
+        <AssociationConnector Association="Shop_dbModel.FK_Carts_ProductColors" />
+        <AssociationConnector Association="Shop_dbModel.FK_Carts_Products" />
+        <AssociationConnector Association="Shop_dbModel.FK_Carts_Users" />
+        <AssociationConnector Association="Shop_dbModel.FK_Cities_States" />
+        <AssociationConnector Association="Shop_dbModel.FK_DeliveryCosts_Cities" />
+        <AssociationConnector Association="Shop_dbModel.FK_DeliveryCosts_Cities1" />
+        <AssociationConnector Association="Shop_dbModel.FK_Stores_Cities" />
+        <AssociationConnector Association="Shop_dbModel.FK_Comments_Products1" />
+        <AssociationConnector Association="Shop_dbModel.FK_comments_Users" />
+        <AssociationConnector Association="Shop_dbModel.FK_Comments_Users1" />
+        <AssociationConnector Association="Shop_dbModel.FK_faqs_Contents" />
+        <AssociationConnector Association="Shop_dbModel.FK_Socials_Contents" />
+        <AssociationConnector Association="Shop_dbModel.FK_Socials_Employes" />
+        <AssociationConnector Association="Shop_dbModel.FK_Favorites_Products1" />
+        <AssociationConnector Association="Shop_dbModel.FK_Favorites_Users1" />
+        <AssociationConnector Association="Shop_dbModel.FK_InvoiceDetails_Invoices" />
+        <AssociationConnector Association="Shop_dbModel.FK_InvoiceDetails_Ordes" />
+        <AssociationConnector Association="Shop_dbModel.FK_InvoiceDetails_ProductColors" />
+        <AssociationConnector Association="Shop_dbModel.FK_InvoiceDetails_Products" />
+        <AssociationConnector Association="Shop_dbModel.FK_InvoiceDetails_Stores" />
+        <AssociationConnector Association="Shop_dbModel.FK_InvoiceDetails_Stores1" />
+        <AssociationConnector Association="Shop_dbModel.FK_Invoices_InvoiceTypes" />
+        <AssociationConnector Association="Shop_dbModel.FK_Invoices_Users" />
+        <AssociationConnector Association="Shop_dbModel.FK_Offers_Products" />
+        <AssociationConnector Association="Shop_dbModel.FK_OrderProducts_Ordes" />
+        <AssociationConnector Association="Shop_dbModel.FK_OrderProducts_ProductColors" />
+        <AssociationConnector Association="Shop_dbModel.FK_OrderProducts_Products" />
+        <AssociationConnector Association="Shop_dbModel.FK_Ordes_OrderStates" />
+        <AssociationConnector Association="Shop_dbModel.FK_Ordes_PaymentTypes" />
+        <AssociationConnector Association="Shop_dbModel.FK_Ordes_Users" />
+        <AssociationConnector Association="Shop_dbModel.FK_ProductAttributes_ProductAttributeTemplates" />
+        <AssociationConnector Association="Shop_dbModel.FK_ProductAttributes_Products" />
+        <AssociationConnector Association="Shop_dbModel.FK_ProductAttributeTemplateGroups_ProductCategories" />
+        <AssociationConnector Association="Shop_dbModel.FK_ProductAttributeTemplates_ProductAttributeTemplateGroups" />
+        <AssociationConnector Association="Shop_dbModel.FK_ProductAttributeTemplates_ProductCategories" />
+        <AssociationConnector Association="Shop_dbModel.FK_ProductAttributeTemplates_Units" />
+        <AssociationConnector Association="Shop_dbModel.FK_ProductCategories_ProductCategories" />
+        <AssociationConnector Association="Shop_dbModel.FK_Products_ProductCategories1" />
+        <AssociationConnector Association="Shop_dbModel.FK_Seo_ProductCategories" />
+        <AssociationConnector Association="Shop_dbModel.FK_ProductColorAssinments_ProductColors" />
+        <AssociationConnector Association="Shop_dbModel.FK_ProductColorAssinments_Products" />
+        <AssociationConnector Association="Shop_dbModel.FK_ProductImages_Products1" />
+        <AssociationConnector Association="Shop_dbModel.FK_ProductKeywords_Products" />
+        <AssociationConnector Association="Shop_dbModel.FK_Products_ProductStates" />
+        <AssociationConnector Association="Shop_dbModel.FK_Questions_Products1" />
+        <AssociationConnector Association="Shop_dbModel.FK_Seo_Products" />
+        <AssociationConnector Association="Shop_dbModel.FK_UserTrackings_Products" />
+        <AssociationConnector Association="Shop_dbModel.FK_Questions_Users" />
+        <AssociationConnector Association="Shop_dbModel.FK_Questions_Users1" />
+        <AssociationConnector Association="Shop_dbModel.FK_ResponsibleStores_Stores" />
+        <AssociationConnector Association="Shop_dbModel.FK_ResponsibleStores_Users" />
+        <AssociationConnector Association="Shop_dbModel.FK_Stores_Users" />
+        <AssociationConnector Association="Shop_dbModel.FK_Users_UserGroups" />
+        <AssociationConnector Association="Shop_dbModel.FK_UserTrackings_Users" />
+        <AssociationConnector Association="Shop_dbModel.AspNetUserRoles" />
+        <EntityTypeShape EntityType="Shop_dbModel.GuaranteeCustomer" Width="1.5" PointX="6" PointY="39.625" />
+        <EntityTypeShape EntityType="Shop_dbModel.GuaranteeExtraItem" Width="1.5" PointX="8.25" PointY="37.25" />
+        <EntityTypeShape EntityType="Shop_dbModel.GuaranteeProductExtraItem" Width="1.5" PointX="10.5" PointY="33" />
+        <EntityTypeShape EntityType="Shop_dbModel.GuaranteeProduct" Width="1.5" PointX="8.25" PointY="29.875" />
+        <EntityTypeShape EntityType="Shop_dbModel.GuaranteeProductState" Width="1.5" PointX="13.5" PointY="27.5" />
+        <EntityTypeShape EntityType="Shop_dbModel.GuaranteeServiceCompany" Width="1.5" PointX="6" PointY="42.75" />
+        <EntityTypeShape EntityType="Shop_dbModel.GuaranteeState" Width="1.5" PointX="3" PointY="27.875" />
+        <AssociationConnector Association="Shop_dbModel.FK_GuaranteeProducts_GuaranteeCustomers" />
+        <AssociationConnector Association="Shop_dbModel.FK_GuaranteeProductExtraItems_GuaranteeExtraItems" />
+        <AssociationConnector Association="Shop_dbModel.FK_GuaranteeProductExtraItems_GuaranteeProducts" />
+        <AssociationConnector Association="Shop_dbModel.FK_GuaranteeProducts_GuaranteeServiceCompanies" />
+        <AssociationConnector Association="Shop_dbModel.FK_GuaranteeProducts_GuaranteeStates" />
+        <AssociationConnector Association="Shop_dbModel.FK_GuaranteeProducts_Users" />
+        <AssociationConnector Association="Shop_dbModel.FK_GuaranteeProductStates_GuaranteeProducts" />
+        <AssociationConnector Association="Shop_dbModel.FK_GuaranteeProductStates_GuaranteeStates" />
+        <AssociationConnector Association="Shop_dbModel.FK_GuaranteeProductStates_Users" />
+        <AssociationConnector Association="Shop_dbModel.FK_GuaranteeStates_UserGroups" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

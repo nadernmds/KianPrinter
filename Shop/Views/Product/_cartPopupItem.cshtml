@@ -1,0 +1,22 @@
+﻿@model Shop.Models.Cart
+@{ 
+    var pname = Model.Product.name;
+    if (pname.Length > 15)
+    {
+        pname = pname.Substring(0, 15) + "...";
+    }
+
+}
+
+<div id="cp@(Model.productID)" class="s-cardpopup-body" data-cart="@Model.productID" style=" width: 100%;height: 15vh;background-color: white;display: flex;flex-direction: row;border-radius: 8px;align-items: center;border: 1px solid rgba(202, 202, 202, 0.4);">
+    <img style="object-fit: contain;height: 100% ; max-width:25%" src="~/Images/Product/icon/@(Model.productID).jpg" />
+    <a style="font-size:small ; right:0" href="/product/show/@Model.productID" class="s-card-Model-info">@pname</a>
+    @*<span class="s-card-Model-info">@Model.count عدد</span>*@
+    @if (Model.ProductColor != null)
+    {
+        <div class="s-card-Model-info s-card-Model-color" style="background-color:@Model.ProductColor.colorCode !important;border:1px solid #ebebeb"></div>
+    }
+    <div style="padding-inline-end: 10px;margin-right:auto" class="s-card-Model-delete"> <a href="javascript:void(0)" onclick="removeOfCardPopup(@Model.productID)"><i class="fa fa-times"></i></a></div>
+</div>
+
+

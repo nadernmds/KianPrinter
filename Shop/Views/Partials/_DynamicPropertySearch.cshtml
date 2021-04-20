@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Shop.Models.filter>
+<div class="side-item col-xs-12">
+    <div class="panel panel-default" id="brand" style="display:block;position:relative;">
+        
+        <hr />
+        <div class="panel-body mostly-customized-scrollbar" style="overflow-y: scroll;height:300px">
+            
+            <ul style="list-style:none;padding-right:0px;" id="searchMenu">
+                @foreach (var item in Model)
+                {
+                    @Html.Partial("~/Views/Partials/_DynamicPropertyItem.cshtml", item)
+                }
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+ 

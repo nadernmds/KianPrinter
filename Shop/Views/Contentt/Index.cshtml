@@ -1,0 +1,106 @@
+﻿@model IEnumerable<Shop.Models.Content>
+
+@{
+    ViewBag.Title = "Index";
+
+}
+
+@*<h2>Index</h2>*@
+
+@*<p>
+    @Html.ActionLink("جدید", "Create")
+</p>*@
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.employeText)
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.aboutUs)
+        </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.title)
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.whyUs)
+        </th>*@
+        @*<th>
+            @Html.DisplayNameFor(model => model.shortDescription)
+        </th>*@
+        @*<th>
+            @Html.DisplayNameFor(model => model.policy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.rules)
+        </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.adress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.phones)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.email)
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.contactUs)
+        </th>*@
+        @*<th>
+            @Html.DisplayNameFor(model => model.hireInfo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.presentationInfo)
+        </th>*@
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.employeText)
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.aboutUs)
+        </td>*@
+        <td>
+            @Html.DisplayFor(modelItem => item.title)
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.whyUs)
+        </td>*@
+        @*<td>
+            @Html.DisplayFor(modelItem => item.shortDescription)
+        </td>*@
+        @*<td>
+            @Html.DisplayFor(modelItem => item.policy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.rules)
+        </td>*@
+        <td>
+            @Html.DisplayFor(modelItem => item.adress)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.phones)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.email)
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.contactUs)
+        </td>*@
+        @*<td>
+            @Html.DisplayFor(modelItem => item.hireInfo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.presentationInfo)
+        </td>*@
+        <td>
+            @Html.ActionLink("ویرایش", "Edit", new { id=item.contentID }) |
+            @Html.ActionLink("مشاهده", "Details", new { id=item.contentID }) |
+            @Html.ActionLink("حذف", "Delete", new { id=item.contentID })
+        </td>
+    </tr>
+}
+
+</table>

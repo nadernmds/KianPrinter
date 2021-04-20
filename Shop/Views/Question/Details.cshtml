@@ -1,0 +1,51 @@
+﻿@model Shop.Models.Question
+
+@{
+    ViewBag.Title = "Details";
+  
+}
+
+<h2>جزئیات</h2>
+
+<div>
+    @*<h4>Question</h4>*@
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.questionText)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.questionText)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.questionDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.questionDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Product.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Product.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User.username)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.username)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("ویرایش", "Edit", new { id = Model.questionID }) |
+    @Html.ActionLink("بازگشت به لیست", "Index")
+</p>

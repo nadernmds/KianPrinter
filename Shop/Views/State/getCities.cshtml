@@ -1,0 +1,18 @@
+﻿@model IEnumerable<Shop.Models.City>
+
+@{
+    Layout = null;
+}
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>@item.cityName</td>
+        <td>
+            <input class="form-control" type="number" name="cost" value="@(item.DeliveryCosts1.FirstOrDefault()?.cost)" />
+        </td>
+        <td>
+            <button onclick="saveCost(@item.cityID,this,@(item.DeliveryCosts1.FirstOrDefault()?.deliveryCostID) )" class="btn btn-default">ذخیره</button>
+        </td>
+    </tr>
+}

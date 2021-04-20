@@ -1,0 +1,37 @@
+﻿@using PagedList.Mvc
+@using PagedList
+
+@model  IPagedList<Shop.Models.Product>
+
+<script>
+
+    var sortpID = @Html.Raw(Json.Encode(ViewBag.sortedProductID));
+    if (sortpID != null) {
+        var piddd = @Html.Raw(Json.Encode(ViewBag.sortedProductID));
+    }
+
+
+</script>
+
+@{
+    //var c = Model.FirstOrDefault().categoryID;
+    if (Model != null && Model.Count > 0)
+    {
+        foreach (var item in Model)
+        {
+            @Html.Partial("~/Views/Partials/_ProductTileItem.cshtml", item)
+        }
+        <br />
+        <div style="width:100%"></div>
+        <div style="width:100%;display:block;text-align:center">
+            @Html.PagedListPager(Model, page => Url.Action("List", new {c=ViewBag.categoryID, b=ViewBag.brandID, page }), PagedListRenderOptions.Classic)
+        </div>
+    }
+    else
+    {
+        <h2>محصولی یافت نشد</h2>
+    }
+}
+
+
+

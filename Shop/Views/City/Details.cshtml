@@ -1,0 +1,35 @@
+﻿@model Shop.Models.City
+
+@{
+    ViewBag.Title = "Details";
+    
+}
+
+<h2>مشاهده</h2>
+
+<div>
+    @*<h4>City</h4>*@
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.cityName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cityName)
+        </dd>
+
+        <dt>
+            استان
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.State.stateName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("ویرایش", "Edit", new { id = Model.cityID }) |
+    @Html.ActionLink("بازگشت به لیست", "Index")
+</p>

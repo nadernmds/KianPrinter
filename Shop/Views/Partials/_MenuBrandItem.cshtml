@@ -1,0 +1,126 @@
+﻿@{
+    var model = new Shop.Models.Rizkaran_SiteEntities().Brands.ToList();
+
+}
+@*@if (Model.ProductCategories1.Count > 0)
+    {
+        <a href="/productcategory/list?c=@Model.categoryID">@Model.categoryName<span>&rsaquo;</span></a>
+        <div class="dropdown-menu">
+            <ul>
+                @foreach (var item in Model.ProductCategories1)
+                {
+                    <li>
+                        @Html.Partial("~/Views/Partials/_MenuCategoryItem.cshtml", item)
+
+                    </li>
+                }
+
+            </ul>
+        </div>
+    }
+    else
+    {
+        <a href="/productcategory/list?c=@Model.categoryID">@Model.categoryName</a>
+    }*@
+@*از اینجا*@
+@*
+
+    <div id="brandmenu"  onmouseover="showshadow()" onmouseout="hideshadow()">
+        <div class="s-categorymenu-list-levelone">
+
+            @{
+                int counter = 0;
+            }
+
+            @foreach (var item in model)
+            {
+
+
+                if (item.Products != null && item.Products.Count > 0)
+                {
+                    <div class="s-category-firstcat s-categorymenu-list-levelone-item s-menu-hover" onmouseover="showbrand(@counter)">
+
+                        <img style="max-height:30px;max-width:30px" class=" s-categorymenu-list-levelone-item-logo s-menu-hover-items" src="~/Images/Brand/@(item.brandID).png" />
+                        <a href="/brand/brandinfo/@item.brandID" class="s-categorymenu-list-levelone-item-name s-menu-hover-items">@item.brandName</a>
+                    </div>
+
+                    counter++;
+                }
+
+
+
+
+
+            }
+
+        </div>
+
+        <div class="s-categorymenu-submenu">
+
+            @foreach (var item2 in model)
+            {
+                counter++;
+                <div class="s-brand-secondcat">
+                    <div class="s-category-secondcat-title">
+                        <a href="/brand/brandinfo/@item2.brandID" class="s-category-tilte s-category-titlehover">برند @item2.brandName</a>
+                        <i style="margin-inline-start: 10px;
+                                font-size: larger;" class="fa fa-angle-left"></i>
+                    </div>
+                    <div class="s-category-secondcat-body">
+                        @{
+                            var products = item2.Products.OrderBy(a => a.productID).Take(4);
+
+                            foreach (var p in products)
+                            {
+                                <div class="banners s-brand-items-hover"
+                                     style="border-left :  1px solid #ebebeb;height: 90%;align-items: center; display: flex; flex-direction: column">
+                                    <span class="s-brand-productFinalprice" style="color:grey">@p.ProductCategory.categoryName</span>
+                                    <div style="height: 100%;width: 100% ;background-color: white; text-align: center;border-radius: 8px;">
+                                        <a href="/product/show/@p.productID">
+                                            <img style=" height: 50%; margin:20px"
+                                                 src="~/Images/Product/icon/@(p.productID).jpg" />
+                                        </a>
+                                        <div style="padding-right:5px;padding-left:5px;text-align: start; color: rgb(98, 94, 94);">
+                                            <a href="/product/show/@p.productID" style="font-family: yekan;font-size: small;">@p.name</a>
+                                        </div>
+                                        <div>
+                                            <div class="s-brand-priceSection" style="padding-left: 10px;text-align: end">
+                                                <span class="s-brand-productLastprice">@p.price تومان</span>
+                                            </div>
+
+                                            @{
+                                                DateTime now = Convert.ToDateTime(DateTime.Now.ToString());
+                                                var offers = p.Offers.Where(o => o.startDate < now && o.endDate > now).ToList();
+                                                decimal offPrice = 0;
+                                                decimal offPercent = 0;
+                                                foreach (var item in offers)
+                                                {
+                                                    offPrice += (int)item.price;
+                                                    offPercent += (int)item.offPercent;
+                                                }
+                                                decimal productPrice = p.price;
+                                                decimal finalPrice = productPrice;
+                                                if (offPercent > 0)
+                                                {
+                                                    finalPrice = finalPrice - (productPrice * (offPercent / 100));
+                                                }
+                                                if (offPrice > 0)
+                                                {
+                                                    finalPrice = finalPrice - offPrice;
+                                                }
+                                            }
+                                            <div style="padding-left: 10px;text-align: end">
+                                                <span class="s-brand-productFinalprice">@finalPrice تومان</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+*@

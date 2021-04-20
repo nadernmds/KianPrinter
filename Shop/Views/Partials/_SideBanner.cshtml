@@ -1,0 +1,19 @@
+﻿@model List<Shop.Models.Banner>
+   @{ int counter = 0;
+       string className = "hidden-xs hidden-sm";
+           }
+@foreach (var item in Model)
+{
+    counter = counter + 1;
+    if (counter==1)
+    {
+        className = "";
+    }
+    else
+    {
+        className = "hidden-xs hidden-sm";
+    }
+
+    <div  class="col-lg-12 col-md-12 @className col-sm-12 col-xs-12"> <a href="@item.url"><img style="height:200px" title="" alt="" src="~/Images/Banner/@(item.bannerID).jpg"></a></div>
+}
+

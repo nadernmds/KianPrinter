@@ -1,0 +1,190 @@
+﻿@model Shop.Models.Store
+@using Shop.Models
+@{
+    Rizkaran_SiteEntities db = new Rizkaran_SiteEntities();
+    ViewBag.Title = "Create";
+}
+
+<h2>جدید</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a id="a1" data-toggle="tab" href="#t1">اطلاعات اصلی</a></li>
+
+
+        <li id="addattribute"><a id="a2" data-toggle="tab" href="#t2">کاربران مجاز</a></li>
+
+    </ul>
+    <div class="tab-content">
+        <div id="t1" class="tab-pane fade in active">
+            <div class="form-horizontal">
+                @*<h4>Store</h4>*@
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.name, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.phone, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.phone, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.mobile, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.mobile, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.mobile, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.address, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.address, new { htmlAttributes = new { @class = "form-control", rows = "4" } })
+                        @Html.ValidationMessageFor(model => model.address, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.active, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <div class="checkbox">
+                            <input type="checkbox" id="active" onchange="IsActive(this)" name="active" value="" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-2">استان</label>
+                    <div class="col-md-10">
+                        <select class=" form-control " id="state" onchange="getCities($(this).children('option:selected').val())">
+                            <option value="null">--لطفا شهر خود را انتخاب کنید--</option>
+                            @foreach (var item in (List<Shop.Models.State>)ViewBag.states)
+                            {
+                                <option value="@item.stateID">@item.stateName</option>
+                            }
+
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">شهر </label>
+                    <div class="col-md-10">
+                        <select required id="city" class="form-control" name="cityID"></select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-horizontal">
+                        <label class="control-label col-md-2 ">مسئول انبار</label>
+
+                        <div class="col-sm-10">
+
+                            <select class="form-control" name="userID" id="userID" style="position:absolute">
+                                @foreach (var item in (List<Shop.Models.User>)ViewBag.users)
+                                {
+                                    <option value="@item.userID">@item.name</option>
+                                }
+                            </select>
+                            <br />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="ثبت" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="t2" class="tab-pane fade">
+            <div class="row">
+
+
+                <div class="form-group">
+                    <div class="form-horizontal">
+
+                        @foreach (var item in db.Users.Where(z=>z.UserGroup.usergroupID==2).ToList())
+                        {
+                        <div class="col-md-3">
+                            <label><input type="checkbox" name="accessStoreID" value="@item.userID" />@item.name</label>
+                        </div>
+                        }
+
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+}
+<br />
+<br />
+
+<div>
+    @Html.ActionLink("بازگشت به لیست", "Index")
+</div>
+<script>
+    function IsActive(active) {
+        if ($(active).is(":checked")) {
+            $(active).val("true");
+        }
+        else {
+            $(active).val("false");
+        }
+    }
+</script>
+
+
+<script>
+    function getCities(stateID) {
+        let obj = { stateID: stateID }
+        $.ajax({
+            type: "POST",
+            url: '/OrderProduct/getCities',
+
+            data: obj,
+            success: function (data) {
+                if (data.success) {
+
+                    if (stateID != "null") {
+                        var select = document.getElementById("city");
+                        select.options.length = 0;
+                        var cityName = data.cityName.split(",");
+                        var cityID = data.cityID.split(",");
+                        for (var i = 0; i < cityName.length; i++) {
+                            var opt = cityName[i];
+                            var val = cityID[i];
+                            var el = document.createElement("option");
+                            el.textContent = opt;
+                            el.value = val;
+                            select.appendChild(el);
+                        }
+                    }
+                    else {
+                        var select = document.getElementById("city");
+                        select.options.length = 0
+                    }
+                }
+
+            },
+
+            error: function (xpr) { alert(xpr.responseText); }
+        });
+    }
+
+
+</script>

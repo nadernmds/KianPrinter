@@ -1,0 +1,87 @@
+﻿@model Shop.Models.User
+
+@{
+    ViewBag.Title = "Delete";
+   
+}
+
+<h2>حذف</h2>
+
+<h3>آیا با حذف موافقید؟</h3>
+<div>
+    @*<h4>کاربر</h4>*@
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.username)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.username)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.password)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.password)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.mobile)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.mobile)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.email)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.sex)
+        </dt>
+
+        <dd>
+            @if (Model.sex == true)
+            {
+        <p>مرد</p>
+            }
+            else
+            {
+        <p>زن</p>
+            }
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserGroup.groupName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserGroup.groupName)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="حذف" class="btn btn-default" /> |
+            @Html.ActionLink("بازگشت به لیست", "Index")
+        </div>
+    }
+</div>

@@ -1,0 +1,59 @@
+﻿
+@model IEnumerable<Shop.Models.Invoice>
+
+@{
+    ViewBag.Title = "Index";
+
+}
+<h2>انتقال بین انبار</h2>
+
+<p>
+    <a class="btn btn-primary" href="/invoice/Transfer">جدید</a>
+</p>
+@if (Model != null)
+{
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User.name)
+        </th>
+
+        <th></th>
+        <th></th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.date)
+            </td>
+             
+            <td>
+                @Html.DisplayFor(modelItem => item.User.name)
+            </td>
+            <td>
+                <a href="/report/getReports?report=transferReport&id=@item.invoiceID">چاپ</a>|
+                <a href="/invoice/transfer/@item.invoiceID">نمایش جزئیات فاکتور</a>|
+                @Html.ActionLink("حذف", "Delete", new { id = item.invoiceID })
+            </td>
+        </tr>
+    }
+
+</table>
+}
+else
+{
+    <h1>اطلاعاتی موجود نیست</h1>
+}

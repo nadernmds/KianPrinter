@@ -1,0 +1,613 @@
+﻿@using Shop.Models
+
+<html>
+<head>
+    @{
+        /**/
+
+
+        User user = new Shop.Models.User();
+        if (Session["UU!#user"] != null)
+        {
+            user = (User)Session["UU!#user"];
+        }
+    }
+    <meta charset="utf-8" />
+    <meta name="author" content="نادر محمودی" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title </title>
+
+
+
+    <link href="~/css/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    @*<link href="~/Content/Panel/font-awesome.min.css" rel="stylesheet" />*@
+    <link href="~/Content/Panel/metisMenu.min.css" rel="stylesheet" />
+    <link href="~/Content/Panel/morris.css" rel="stylesheet" />
+    <link href="~/Content/Panel/sb-admin-2.min.css" rel="stylesheet" />
+
+
+   
+
+
+    @RenderSection("Styles", false)
+    <style>
+        @@font-face {
+            font-family: 'IRANSans';
+            src: url('/fonts/IRANSansWeb(FaNum).woff');
+            src: local('☺'), url('/fonts/IRANSansWeb(FaNum).woff') format('woff');
+        }
+
+        html, body, p {
+            font-family: IRANSans;
+            text-align: right;
+        }
+
+        @@media (min-width: 992px) {
+            .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9 {
+                float: right;
+            }
+        }
+
+        input, select {
+            max-width: 450px;
+        }
+
+        table, th, td, li {
+            direction: rtl !important;
+            text-align: right !important;
+        }
+
+        .navbar-fixed-top {
+            right: 0;
+        }
+
+        .sidebar .arrow {
+            float: left;
+        }
+
+        a {
+            text-decoration: none !important;
+        }
+
+        .dl-horizontal dt {
+            float: right !important;
+        }
+
+        tr th {
+            background-color: #5c63b8;
+            /*background-color: #5cb85c;*/
+            color: white;
+        }
+    </style>
+</head>
+<body style='background-color:white !important'>
+    <div id="wrapper">
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">پنل مدیریت فروشگاه </a>
+            </div>
+            <!-- /.navbar-header -->
+            <ul class="nav navbar-top-links navbar-right">
+                @*<li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-messages">
+                            <li>
+                                <a href="#">
+                                    <div>
+                                        <strong>John Smith</strong>
+                                        <span class="pull-right text-muted">
+                                            <em>Yesterday</em>
+                                        </span>
+                                    </div>
+                                    <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="#">
+                                    <div>
+                                        <strong>John Smith</strong>
+                                        <span class="pull-right text-muted">
+                                            <em>Yesterday</em>
+                                        </span>
+                                    </div>
+                                    <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="#">
+                                    <div>
+                                        <strong>John Smith</strong>
+                                        <span class="pull-right text-muted">
+                                            <em>Yesterday</em>
+                                        </span>
+                                    </div>
+                                    <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a class="text-center" href="#">
+                                    <strong>Read All Messages</strong>
+                                    <i class="fa fa-angle-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                        <!-- /.dropdown-messages -->
+                    </li>
+                    <!-- /.dropdown -->
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-tasks fa-fw"></i> <i class="fa fa-caret-down"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-tasks">
+                            <li>
+                                <a href="#">
+                                    <div>
+                                        <p>
+                                            <strong>Task 1</strong>
+                                            <span class="pull-right text-muted">40% Complete</span>
+                                        </p>
+                                        <div class="progress progress-striped active">
+                                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                                                <span class="sr-only">40% Complete (success)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="#">
+                                    <div>
+                                        <p>
+                                            <strong>Task 2</strong>
+                                            <span class="pull-right text-muted">20% Complete</span>
+                                        </p>
+                                        <div class="progress progress-striped active">
+                                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
+                                                <span class="sr-only">20% Complete</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="#">
+                                    <div>
+                                        <p>
+                                            <strong>Task 3</strong>
+                                            <span class="pull-right text-muted">60% Complete</span>
+                                        </p>
+                                        <div class="progress progress-striped active">
+                                            <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+                                                <span class="sr-only">60% Complete (warning)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="#">
+                                    <div>
+                                        <p>
+                                            <strong>Task 4</strong>
+                                            <span class="pull-right text-muted">80% Complete</span>
+                                        </p>
+                                        <div class="progress progress-striped active">
+                                            <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+                                                <span class="sr-only">80% Complete (danger)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a class="text-center" href="#">
+                                    <strong>See All Tasks</strong>
+                                    <i class="fa fa-angle-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                        <!-- /.dropdown-tasks -->
+                    </li>
+                    <!-- /.dropdown -->
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-alerts">
+                            <li>
+                                <a href="#">
+                                    <div>
+                                        <i class="fa fa-comment fa-fw"></i> New Comment
+                                        <span class="pull-right text-muted small">4 minutes ago</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="#">
+                                    <div>
+                                        <i class="fa fa-
+
+
+                    ter fa-fw"></i> 3 New Followers
+                                        <span class="pull-right text-muted small">12 minutes ago</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="#">
+                                    <div>
+                                        <i class="fa fa-envelope fa-fw"></i> Message Sent
+                                        <span class="pull-right text-muted small">4 minutes ago</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="#">
+                                    <div>
+                                        <i class="fa fa-tasks fa-fw"></i> New Task
+                                        <span class="pull-right text-muted small">4 minutes ago</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+
+
+                            <li>
+                                <a href="#">
+                                    <div>
+                                        <i class="fa fa-upload fa-fw"></i> Server Rebooted
+                                        <span class="pull-right text-muted small">4 minutes ago</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a class="text-center" href="#">
+                                    <strong>See All Alerts</strong>
+                                    <i class="fa fa-angle-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                        <!-- /.dropdown-alerts -->
+                    </li>*@
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li>
+                            <a href="#"><i class="fa fa-user fa-fw"></i>  @user.name</a>
+
+
+
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-gear fa-fw"></i> تنظیمات</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="/User/Logout"><i class="fa fa-sign-out fa-fw"></i> خروج</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+            <!-- /.navbar-top-links -->
+            <div class="navbar-default sidebar" style="right:0" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        @*<li class="sidebar-search">
+            <div class="input-group custom-search-form">
+                <input type="text" class="form-control" placeholder="Search...">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </span>
+            </div>
+             /input-group
+        </li>*@
+                        <li>
+                            <a href="~/home"><i class="fa fa-globe"></i> سایت</a>
+                        </li>
+                        @*<li>
+            <a href="~/Contentt"><i class="fa fa-home"></i> صفحه اصلی</a>
+        </li>*@
+                        <li>
+                            <a href="#"><i class="fa fa-sliders"></i> محتویای فروشگاه<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+
+                                <li>
+                                    <a href="~/Contentt"><i class="fa fa-address-book"></i>شرکت</a>
+                                </li>
+
+                                <li>
+                                    <a href="/shopcarousel"><i class="fa fa-address-book"></i> اسلایدر فروشگاه</a>
+                                </li>
+                                <li>
+                                    <a href="/banner"><i class="fa fa-address-book"></i> بنر</a>
+                                </li>
+
+                                <li>
+                                    <a href="/social"><i class="fa fa-address-book"></i> شبکه های اجتماعی</a>
+                                </li>
+
+
+                            </ul>
+                        </li>
+
+
+
+
+                        <li>
+                            <a href="#"><i class="fa fa-user"></i> کاربران<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="/user">کاربر</a>
+                                </li>
+                                <li>
+                                    <a href="/usergroup">گروه کاربری</a>
+                                </li>
+
+                                <li>
+                                    <a href="/favorite"><i class="fa fa-address-book"></i> علاقمندی</a>
+                                </li>
+
+                                <li>
+                                    <a href="/comment"><i class="fa fa-address-book"></i> نظرات</a>
+                                </li>
+
+
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="#"><i class="fa fa-shopping-bag"></i> محصول<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+
+                                <li>
+                                    <a href="/productcategory"><i class="fa fa-address-book"></i> دسته بندی محصول</a>
+                                </li>
+                                <li>
+                                    <a href="/product"><i class="fa fa-address-book"></i>  محصول</a>
+                                </li>
+                                <li>
+                                    <a href="/productstate"><i class="fa fa-address-book"></i> وضعیت محصول</a>
+                                </li>
+                                <li>
+                                    <a href="/brand"><i class="fa fa-address-book"></i> برند</a>
+                                </li>
+                                <li>
+                                    <a href="/offer"><i class="fa fa-address-book"></i> تخفیف</a>
+                                </li>
+                                <li>
+                                    <a href="/Product/Vitrin"><i class="fa fa-address-book"></i> ویترین</a>
+                                </li>
+                                <li>
+                                    <a href="/productColor"><i class="fa fa-address-book"></i> رنگ بندی محصول</a>
+                                </li>
+
+
+
+                            </ul>
+                        </li>
+
+
+
+
+                        <li>
+                            <a href="#"><i class="fa fa-user"></i>  ویژگی های محصولات<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+
+                                <li>
+                                    <a href="/unit"><i class="fa fa-address-book"></i> واحد اندازه گیری محصول</a>
+                                </li>
+                                <li>
+                                    <a href="/attribtevaluetype"><i class="fa fa-address-book"></i>  نوع ویژگی محصول</a>
+                                </li>
+
+
+                            </ul>
+                        </li>
+
+
+
+
+
+                        <li>
+                            <a href="#"><i class="fa fa-question-circle"></i> سوال جواب<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+
+                                <li>
+                                    <a href="/question"><i class="fa fa-address-book"></i> سوال</a>
+                                </li>
+                                <li>
+                                    <a href="/answer"><i class="fa fa-address-book"></i> جواب</a>
+                                </li>
+
+
+                            </ul>
+                        </li>
+
+
+
+
+
+
+                        <li>
+                            <a href="#"><i class="fa fa-clipboard"></i> فروش محصولات <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+
+                                <li>
+                                    <a href="/orde"><i class="fa fa-address-book"></i> سفارش</a>
+                                </li>
+                                <li>
+                                    <a href="/orderproduct"><i class="fa fa-address-book"></i> سفارش محصولات</a>
+                                </li>
+                                <li>
+                                    <a href="/orderstate"><i class="fa fa-address-book"></i> وضعیت سفارش</a>
+                                </li>
+
+
+                            </ul>
+                        </li>
+
+
+
+                        <li>
+                            <a href="#"><i class="fa fa-street-view"></i> آدرس<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="/city"> شهر </a>
+                                </li>
+                                <li>
+                                    <a href="/state">استان</a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-user"></i>گارانتی <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="/GuaranteeCustomer">مراجعه کنندگان</a>
+                                </li>
+                                <li>
+                                    <a href="/GuaranteeProduct">دستگاهها</a>
+                                </li>
+                                <li>
+                                    <a href="/GuaranteeServiceCompany">شرکت های ارائه خدمات گارانتی</a>
+                                </li>
+                                <li>
+                                    <a href="/GuaranteeState">وضعیت محصولات</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="#"><i class="fa fa-barcode"></i> انبار<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="/Store/index"> انبار  </a>
+                                </li>
+                                <li>
+                                    <a href="/Store/Cartex"> کاردکس </a>
+                                </li>
+                                <li>
+                                    <a href="/invoice/transferList"> انتقال </a>
+                                </li>
+                                <li>
+                                    <a href="/invoice/RemittanceList"> حواله </a>
+                                </li>
+                                <li>
+                                    <a href="/invoice/receiptList"> رسید </a>
+                                </li>
+                                <li>
+                                    <a href="/Store/cartexCards"> گزارش موجودی </a>
+                                </li>
+
+                            </ul>
+                        </li>
+
+
+
+
+
+
+
+                        @*if (user.isAdmin())
+        {
+            <li>
+                <a href="/report"><i class="fa fa-pie-chart fa-fw"></i> گزارشات </a>
+            </li>
+        }*@
+
+
+
+
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+        <div id="page-wrapper" style="padding:10px">
+            @RenderBody()
+        </div>
+    </div>
+
+
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/Panel/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/Scripts/Panel/metisMenu.min.js"></script>
+    <script src="~/Scripts/Panel/raphael.min.js"></script>
+    <script src="~/Scripts/Panel/sb-admin-2.min.js"></script>
+
+
+
+    <script src="~/Scripts/CKEDITOR/ckeditor.js"></script>
+
+    <script>
+        function CKEDITOR(controlName) {
+            ClassicEditor
+                .create(document.querySelector(controlName), {
+                    ckfinder: {
+                        uploadUrl: '/CKEditorImageUpload/Upload',
+                    },
+                    //toolbar: ['ckfinder', 'imageUpload', '|', 'heading', '|', 'bold', 'italic', '|', 'undo', 'redo']
+                    image: {
+                        // You need to configure the image toolbar, too, so it uses the new style buttons.
+                        toolbar: ['imageTextAlternative', '|', 'imageStyle:alignLeft', 'imageStyle:full', 'imageStyle:alignRight', , 'imageStyle:side'],
+                        styles: [
+                            'full',
+                            'side',
+                            'alignLeft',
+                            'alignCenter',
+                            'alignRight'
+                        ]
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+    </script>
+
+    <script>
+        $("#stateID").change(() => {
+            var selectedCountry = $("#stateID").val();
+            $('#cityID').empty();
+            $.post('/city/loadCities/', { id: selectedCountry }, (data) => {
+
+                data.map(c => {
+                    $('#cityID').append($('<option></option>').val(c.cityID).text(c.cityName));
+                });
+            });
+        });
+    </script>
+    @RenderSection("Scripts", false)
+</body>
+</html>
+

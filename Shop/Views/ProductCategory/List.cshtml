@@ -1,0 +1,910 @@
+﻿@model List<Shop.Models.ProductCategory>
+@using PagedList;
+@using PagedList.Mvc;
+@{
+    IPagedList<Shop.Models.Product> products = ViewBag.products;
+    if (products != null && products.Count > 0)
+    {
+        // if (products.FirstOrDefault().Brand.Seos != null || products.FirstOrDefault().ProductCategory.Seos != null)
+        // {
+
+        if (ViewBag.categoryID != null)
+        {
+            if (products.FirstOrDefault().ProductCategory.Seos.Count > 0)
+            {
+                ViewBag.Title = products.FirstOrDefault().ProductCategory.Seos.FirstOrDefault().title;
+                ViewBag.desc = products.FirstOrDefault().ProductCategory.Seos.FirstOrDefault().description;
+            }
+            else
+            {
+                ViewBag.Title = "خرید " + products.FirstOrDefault().ProductCategory.categoryName + " | کیان پرینتر خرید آنلاین " + products.FirstOrDefault().ProductCategory.categoryName + " | فروش آنلاین " + products.FirstOrDefault().ProductCategory.categoryName + " در ایران شهر اورجینال ";
+                ViewBag.desc = "خرید " + products.FirstOrDefault().ProductCategory.categoryName + " ... کیان پرینتر خرید آنلاین " + products.FirstOrDefault().ProductCategory.categoryName + " ... فروش آنلاین " + products.FirstOrDefault().ProductCategory.categoryName + " در ایران شهر اورجینال " + " با ارزان ترین قیمت و تخفیف ویژه و فروش ویژه به صورت نقد و اقساط از فروشگاه معتبر باچک کارمندی به همراه لوازم جانبی و خدمات پس از فروش";
+            }
+
+        }
+        if (ViewBag.brandID != null)
+        {
+            if (products.FirstOrDefault().Brand.Seos.Count > 0)
+            {
+                ViewBag.Title = products.FirstOrDefault().Brand.Seos.FirstOrDefault().title;
+                ViewBag.desc = products.FirstOrDefault().Brand.Seos.FirstOrDefault().description;
+            }
+            else
+            {
+                ViewBag.Title = "خرید محصولات " + products.FirstOrDefault().Brand.brandName + " | نمایندگی " + products.FirstOrDefault().Brand.brandName + " در ایرانشهر ایران " + " | " + products.FirstOrDefault().Brand.brandName + " buy products";
+                ViewBag.desc = "خرید محصولات " + products.FirstOrDefault().Brand.brandName + " ... نمایندگی " + products.FirstOrDefault().Brand.brandName + " در ایرانشهر ایران " + " ... " + products.FirstOrDefault().Brand.brandName + " buy products " + " با ارزان ترین قیمت و تخفیف ویژه و فروش ویژه به صورت نقد و اقساط از فروشگاه معتبر باچک کارمندی به همراه لوازم جانبی و خدمات پس از فروش";
+            }
+        }
+        //}
+    }
+
+
+
+
+    List<long?> nameID = new List<long?>();
+    var filter = ViewBag.filterItems as List<Shop.Models.filter>;
+    int? category = ViewBag.categoryID;
+    if (category == null)
+    {
+        category = 0;
+    }
+    List<int> productID = new List<int>();
+    foreach (var item in (IPagedList<Shop.Models.Product>)ViewBag.products)
+    {
+        productID.Add(item.productID);
+    }
+
+
+    string i = "[";
+    foreach (var item in productID)
+    {
+        i += item + ",";
+    }
+    i = i.Substring(0, i.Length - 1);
+    i += "]";
+
+
+
+    string brandID = "[";
+    brandID += ViewBag.brandID;
+    brandID += "]";
+}
+@{
+    Layout = "~/Views/Shared/_BaseLayout.cshtml";
+}
+
+<section id="productlist">
+    <div class="s-productlist-fullpage" id="fullpage">
+        <div><i class="fa fa-times" onclick="closebtn()" style="font-size: 2rem;position: relative;top: 0;left: 0;"></i> </div>
+        <div class="s-productlist-rescard">
+            <div style="display: flex;justify-content: space-between">
+                <div class="s-productlist-filtered">
+                    <h4 style="text-align: right;padding-right:20px;margin:4px">
+                        دسته ها:
+                    </h4>
+                    <span class="s-productlist-caret">
+                        <i class="fa fa-caret-left" onclick="showCategory(this)"></i>
+                    </span>
+                    <div class="s-productlist-underline"></div>
+                    <!--#region acardion-->
+                    <div style="max-height:300px;overflow-y:scroll" class="category">
+                        @foreach (var item in Model)
+                        {
+                            @Html.Partial("~/Views/Partials/_CategoryItem.cshtml", item)
+
+                        }
+                    </div>
+                    <!--#endregion-->
+                </div>
+            </div>
+            <div style="display: flex;justify-content: space-between">
+                <div class="s-productlist-filtered">
+                    <h4 style="text-align: right;padding-right:20px;margin:4px ;">
+                        رنگ:
+                    </h4>
+                    <span class="s-productlist-caret">
+                        <i class="fa fa-caret-left" onclick="showColor(this)"></i>
+                    </span>
+                    <div class="s-productlist-underline"></div>
+                    <div class="s-productlist-filterbutton color" style="">
+                        @Html.Partial("~/Views/Partials/_ColorList.cshtml", (List<Shop.Models.ProductColor>)ViewBag.colors)
+                    </div>
+                </div>
+            </div>
+            <div class="s-productlist-filtered">
+                <h4 style="text-align: right;padding-right:20px;margin:4px">
+                    برند:
+
+                </h4>
+                <span class="s-productlist-caret">
+                    <i class="fa fa-caret-left" onclick="showBrand(this)"></i>
+                </span>
+                <div class="s-productlist-underline"></div>
+                <div class="s-productlist-filterbutton brand" style="">
+
+                    @Html.Partial("~/Views/Partials/_BrandList.cshtml", products.Where(c => c.brandID != null).Select(u => u.Brand).Distinct().ToList())
+                </div>
+            </div>
+            <div style="display: flex;justify-content: space-between;">
+                <div class="s-productlist-filtered" style="height:100px;">
+                    <h4 style="text-align: right;padding-right:20px;margin:4px">
+                        قیمت:
+                    </h4>
+                    <span class="s-productlist-caret">
+                        <i class="fa fa-caret-left" onclick="showPrice(this)"></i>
+                    </span>
+                    <div class="s-productlist-underline"></div>
+                    <div class="s-productlist-filterbutton showprice">
+                        <div style="height:15px !important"></div>
+                        <div style="padding:10px" id="priceReplce">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="s-paymentCard-button filter" style="width:100%;outline:none">فیلتر<div class="s-paymentCard-button-animated"></div></button>
+        </div>
+    </div>
+    <div class="s-productlist-row">
+        <div class="s-productlist-filter">
+            <div class="s-productlist-filtered">
+                <h4 style="text-align: right;padding-right:20px;margin:4px">
+                    دسته ها:
+                </h4>
+                <span class="s-productlist-caret">
+                    <i class="fa fa-caret-left" onclick="showCategory(this)"></i>
+                </span>
+                <div class="s-productlist-underline"></div>
+                <!--#region acardion-->
+                <div style="max-height:300px;overflow-y:scroll" class="category">
+                    @foreach (var item in Model)
+                    {
+                        @Html.Partial("~/Views/Partials/_CategoryItem.cshtml", item)
+
+                    }
+                </div>
+                <!--#endregion-->
+            </div>
+            @{ var colors = (List<Shop.Models.ProductColor>)ViewBag.colors;}
+            @if (colors.Count > 0)
+            {
+
+                <div class="s-productlist-filtered">
+                    <h4 style="text-align: right;padding-right:20px;margin:4px;">
+                        رنگ:
+
+                    </h4>
+                    <span class="s-productlist-caret">
+                        <i class="fa fa-caret-left" onclick="showColor(this)"></i>
+                    </span>
+                    <div class="s-productlist-underline"></div>
+                    <div class="s-productlist-filterbutton color" style="">
+                        @Html.Partial("~/Views/Partials/_ColorList.cshtml", (List<Shop.Models.ProductColor>)ViewBag.colors)
+                    </div>
+                </div>
+            }
+            @{ var brands = (List<Shop.Models.Brand>)ViewBag.brands;}
+            @if (brands != null && brands.Count > 0)
+            {
+
+                <div class="s-productlist-filtered">
+                    <h4 style="text-align: right;padding-right:20px;margin:4px">
+                        برند:
+
+                    </h4>
+                    <span class="s-productlist-caret">
+                        <i class="fa fa-caret-left" onclick="showBrand(this)"></i>
+                    </span>
+                    <div class="s-productlist-underline"></div>
+                    <div class="s-productlist-filterbutton brand">
+                        @Html.Partial("~/Views/Partials/_BrandList.cshtml", (List<Shop.Models.Brand>)ViewBag.Brands)
+                    </div>
+                </div>
+            }
+
+            <div class="s-productlist-switch s-productlist-filtered">
+                <h4 style="text-align: right;padding-right:20px;margin:4px">
+                    فقط کالا های موجود:
+                </h4>
+                <div class="s-productlist-underline"></div>
+                <input type="checkbox" id="checkbox" class="s-productlist-checkbox" />
+            </div>
+
+
+
+            <div class="s-productlist-filtered" style="height:100px">
+                <h4 style="text-align: right;padding-right:20px;margin:4px">
+                    قیمت:
+
+                </h4>
+                <span class="s-productlist-caret">
+                    <i class="fa fa-caret-left" onclick="showPrice(this)"></i>
+                </span>
+                <div class="s-productlist-underline"></div>
+                <div class="s-productlist-filterbutton showprice" style="margin-top:5px">
+                    <div style="height:15px !important"></div>
+                    <div style="padding:10px" id="price">
+                        <input type="hidden" class="slider-input" value="23" />
+                    </div>
+                </div>
+            </div>
+            @if (ViewBag.categoryID != null)
+            {
+                foreach (var item in filter)
+                {
+                    <div class="s-productlist-filtered">
+                        @*<span style="display:none">@item.nameID</span>*@
+                        <h4 style="text-align: right;padding-right:20px;margin:4px">
+                            @item.name:
+                        </h4>
+                        <div>
+                        </div>
+                        <div class="s-productlist-underline"></div>
+                        <div class="s-productlist-filterbutton search-filter" style="display:block">
+                            @Html.Partial("~/Views/Partials/_DynamicPropertyItem.cshtml", item)
+                        </div>
+                    </div>
+                }
+            }
+            <button class="s-paymentCard-button filter" style="width:100%;outline:none">فیلتر<div class="s-paymentCard-button-animated"></div></button>
+        </div>
+        <div class="s-productlist-column">
+            <div class="s-productlist-resbtn" style="position:relative">
+                <button onclick="fullModal()">فیلتر</button>
+                <button onclick="resFilter()">جستجو بر اساس</button>
+                <div id="resFilter">
+                    <ul class="s-productlist-resul">
+
+                        <li onclick="sort('pricedesc',0,@i, $('#checkbox').is(':checked'))">گران ترین</li>
+                        <li onclick="sort('price',0,@i, $('#checkbox').is(':checked'))">ارزان ترین</li>
+                        <li onclick="sort('sale',0,@i, $('#checkbox').is(':checked'))">پرفروش ترین</li>
+                        <li onclick="sort('offer',0,@i, $('#checkbox').is(':checked'))">بیشترین تخفیف</li>
+                        <li onclick="sort('date',0,@i, $('#checkbox').is(':checked'))">جدید ترین</li>
+                        <li onclick="sort('visit',0,@i, $('#checkbox').is(':checked'))">بیشترین بازدید</li>
+                        <li onclick="sort('rate',0,@i, $('#checkbox').is(':checked'))">بیشترین امتیاز</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="s-productlist-product">
+
+                <ul class="s-productlist-ul">
+                    <li onclick="sort('pricedesc',0,@i, $('#checkbox').is(':checked'))">گران ترین</li>
+                    <li onclick="sort('price',0,@i, $('#checkbox').is(':checked'))">ارزان ترین</li>
+                    <li onclick="sort('sale',0,@i, $('#checkbox').is(':checked'))">پرفروش ترین</li>
+                    <li onclick="sort('offer',0,@i, $('#checkbox').is(':checked'))">بیشترین تخفیف</li>
+                    <li onclick="sort('date',0,@i, $('#checkbox').is(':checked'))">جدید ترین</li>
+                    <li onclick="sort('visit',0,@i, $('#checkbox').is(':checked'))">بیشترین بازدید</li>
+                    <li onclick="sort('rate',0,@i, $('#checkbox').is(':checked'))">بیشترین امتیاز</li>
+                </ul>
+                <div class="s-productlist-underline" style="margin: 0px !important;"></div>
+                @{
+                    var product = (IPagedList<Shop.Models.Product>)ViewBag.products;
+                }
+                @if (product.Any())
+                {
+                    <div class="s-BrandCat-list">
+
+                        @Html.Partial("~/Views/Partials/_ProductPaginationList.cshtml", (IPagedList<Shop.Models.Product>)ViewBag.products)
+                    </div>
+                }
+                else
+                {
+                    <h2>محصولی یافت نشد</h2>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section Scripts{
+    <script>
+        $("#low").on("change", function () {
+            var low = ("#low").html();
+            console.log($("#low").html(new Intl.NumberFormat({ style: 'currency' }).format(low)))
+        })
+    </script>
+    <script>
+    $(document).ready(function () {
+
+         var width = window.innerWidth;
+        if (width<950) {
+            $("#priceReplce").html('<input type="hidden" class="slider-input" style="margin-top:10px" value="23" />');
+            $("#price").html("")
+             $('.slider-input').jRange({
+    from: @ViewBag.minPrice,
+    to: @ViewBag.maxPrice,
+    step: 1,
+    format: '%s',
+    width: 300,
+    showLabels: true,
+        isRange: true,
+    theme:'theme-blue'
+});
+        }
+         if (width>950) {
+             $("#price").html('<input type="hidden" class="slider-input" style="margin-top:10px" value="23" />');
+             $("#priceReplce").html("")
+             $('.slider-input').jRange({
+    from: @ViewBag.minPrice,
+    to: @ViewBag.maxPrice,
+    step: 1,
+    format: '%s',
+    width: 300,
+    showLabels: true,
+        isRange: true,
+    theme:'theme-blue'
+});
+        }
+
+    })
+
+
+    </script>
+    <script>
+    $(window).resize(function () {
+        var width = window.innerWidth;
+        if (width<950) {
+              $("#priceReplce").html('<input type="hidden" class="slider-input" style="margin-top:10px" value="23" />');
+             $('.slider-input').jRange({
+    from: @ViewBag.minPrice,
+    to: @ViewBag.maxPrice,
+    step: 1,
+    format: '%s',
+    width: 300,
+    showLabels: true,
+        isRange: true,
+    theme:'theme-blue'
+});
+        }
+         if (width>950) {
+              $("#price").html('<input type="hidden" class="slider-input" style="margin-top:10px" value="23" />');
+             $('.slider-input').jRange({
+    from: @ViewBag.minPrice,
+    to: @ViewBag.maxPrice,
+    step: 1,
+    format: '%s',
+    width: 300,
+    showLabels: true,
+        isRange: true,
+    theme:'theme-blue'
+});
+        }
+    })
+    </script>
+    <script>
+
+        function filterByDynamicProperty(productID, productColorID, filtersJson, maxPrice, minPrice, categoryID, brandID, justAvailable) {
+            var obj = {
+                productID: productID, productColorID: productColorID, filtersJson: JSON.stringify(filtersJson), maxPrice: maxPrice, minPrice: minPrice,
+                brandID: brandID, justAvailable: justAvailable
+            };
+            if (categoryID != 0) {
+                obj['categoryID'] = categoryID
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '/ProductCategory/filterByDynamicProperty',
+                data: obj,
+                success: function (data) {
+                    if (data == null) {
+
+                        $('.s-BrandCat-list').html("موردی یافت نشد");
+                    }
+                    $('.s-BrandCat-list').html(data);
+
+
+                },
+                error: function (xpr) { alert(xpr.responseText); }
+            });
+        }
+    </script>
+    <script>
+        function resFilter() {
+            $('#resFilter').toggle();
+        }
+    </script>
+    <script>
+        function showCategory(caret) {
+            if (caret.classList.contains("fa-caret-left")) {
+                caret.classList.remove("fa-caret-left");
+                caret.classList.add("fa-caret-down");
+            }
+            else {
+                caret.classList.add("fa-caret-left");
+                caret.classList.remove("fa-caret-down");
+            }
+            $('.category').toggle()
+
+        }
+    </script>
+    <script>
+        function fullModal() {
+            let fullpage = document.getElementById("fullpage");
+            fullpage.style.display = "block";
+        }
+        function closebtn() {
+            let fullpage = document.getElementById("fullpage");
+            fullpage.style.display = "none";
+
+        }
+    </script>
+    <script>
+        function showColor(caret) {
+            if (caret.classList.contains("fa-caret-left")) {
+                caret.classList.remove("fa-caret-left");
+                caret.classList.add("fa-caret-down");
+            }
+            else {
+                caret.classList.add("fa-caret-left");
+                caret.classList.remove("fa-caret-down");
+            }
+            $('.color').toggle()
+        }
+    </script>
+    <script>
+        function showPrice(caret) {
+            if (caret.classList.contains("fa-caret-left")) {
+                caret.classList.remove("fa-caret-left");
+                caret.classList.add("fa-caret-down");
+            }
+            else {
+                caret.classList.add("fa-caret-left");
+                caret.classList.remove("fa-caret-down");
+            }
+            $('.showprice').toggle()
+        }
+    </script>
+    <script>
+        function showBrand(caret) {
+            if (caret.classList.contains("fa-caret-left")) {
+                caret.classList.remove("fa-caret-left");
+                caret.classList.add("fa-caret-down");
+            }
+            else {
+                caret.classList.add("fa-caret-left");
+                caret.classList.remove("fa-caret-down");
+            }
+            $('.brand').toggle()
+        }
+    </script>
+
+    <script>
+        $("#brandCollapse").click(function () {
+            $(".brand").toggle("fast");
+            $("brandCollapse", this).toggleClass("fa-caret-left fa-caret-down");
+        })
+    </script>
+    @*<script>
+            $(function () {
+                $("#priceSlider").slider({
+                    range: true,
+                    min: @ViewBag.minPrice,
+                    max: @ViewBag.maxPrice,
+                    values: [@ViewBag.minPrice,@ViewBag.maxPrice],
+                    slide: function (event, ui) {
+                        $("#cheap").html(ui.values[0]);
+                        $("#expensive").html(ui.values[1]);
+                    }
+                });
+                $("#cheap").html($("#priceSlider").slider("values", 0) + $("#priceSlider").slider("values", 1));
+
+                $("#cheap").html($("#priceSlider").slider("values", 0));
+                $("#expensive").html($("#priceSlider").slider("values", 1));
+            });
+        </script>*@
+    @*<script>
+            var p = [];
+            function getPrice() {
+                var cheap = $("#cheap").html();
+                var expensive = $("#expensive").html();
+                p.push(cheap);
+                p.push(expensive);
+            }
+        </script>*@
+    <script>
+        $('.s-productlist-ul li').on('click', function () {
+
+            $('.s-productlist-ul li').removeClass('s-productlist-active');
+            $(this).addClass('s-productlist-active');
+        });
+    </script>
+
+    <script>
+        function sort(_sortType, _categoryID, productID, _justAvailable) {
+            var obj = {};
+            obj.sortType = _sortType;
+            obj.categoryID = _categoryID;
+            if (piddd!= null) {
+                obj.productID = piddd;
+            } else {
+                obj.productID = productID;
+            }
+            //obj.productID = productID;
+            obj.justAvailable = _justAvailable;
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("sortProductsCategory", "product")',
+
+                data: obj,
+                success: function (data) {
+
+
+                    $('.s-BrandCat-list').html(data);
+                },
+                error: function (xpr) { alert(xpr.responseText); }
+            });
+        }
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#checkbox').change(function (e) {
+                $(this).is(':checked');
+                var brand = [];
+                var _dynamic = [];
+                $('#myMenu input:checked').each(function (s, e) {
+                    var b = $(this).attr('id');
+                    brand.push(b);
+
+                });
+                $('.color input:checked').each(function (s, e) {
+                    var c = $(this).attr('id');
+                    colorID.push(c);
+
+                });
+                $('.search-filter input:checked').each(function (s, e) {
+                    var d = $(this).attr('id');
+                    _dynamic.push(d);
+                    alert(d);
+                });
+
+                var str = [];
+                $('.aside').each(function (s, c) {
+                    var vals = [];
+                   $(this).find('input:checked').each(function (i, e) { vals.push({ value: $(e).attr('id') }); });
+
+
+                    if (vals.length > 0) {
+                        str.push({
+                            nameID: $(this).find('span').text(), productAttribute: vals
+                        });
+                    }
+
+                });
+                //var stringFilters = JSON.stringify(str);
+
+                //if (_dynamic != null && _dynamic.length>0) {
+
+
+                    var filtersJson = str;
+
+
+
+                if (@brandID.Length>2)
+                {
+                    filterByDynamicProperty(@i, [], filtersJson, $("#high").html(), $("#low").html(), @category, @brandID, $('#checkbox').is (':checked'))
+                }
+                else
+                {
+                    filterByDynamicProperty(@i, [], filtersJson,$("#high").html(), $("#low").html(), @category, brand, $('#checkbox').is (':checked'))
+                }
+
+
+            });
+        });
+    </script>
+
+    <script>
+        var coll = document.getElementsByClassName("s-productlist-collapsible");
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function () {
+                this.classList.toggle("s-productlist-active");
+                var content = this.nextElementSibling;
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
+            });
+        }
+
+
+    </script>
+    <script>
+        function changeIcon(item) {
+            var content = item.nextElementSibling.nextElementSibling;
+            if (item.classList.contains("fa-caret-left")) {
+                item.classList.remove("fa-caret-left");
+                item.classList.add("fa-caret-down");
+            }
+            else if (item.classList.contains("fa-caret-down")) {
+                item.classList.add("fa-caret-left");
+                item.classList.remove("fa-caret-down");
+            }
+            content.style.maxHeight = "auto"
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+            } else {
+                content.style.maxHeight = "900px";
+                content.style.backgroundColor = "white"
+            }
+        }
+    </script>
+    <script>
+        $(".filter").click(function () {
+            var _dynamic = [];
+            var brand = [];
+            var colorID = [];
+            $('.search-filter input:checked').each(function (s, e) {
+                var d = $(this).attr('id');
+                _dynamic.push(d);
+            });
+            $('#color input:checked').each(function (s, e) {
+                var color = $(this).attr('data-colorID');
+                colorID.push(color);
+            });
+            $('#brand input:checked').each(function (s, e) {
+
+                var b = $(this).attr('data-brandID');
+                brand.push(b);
+            });
+
+            var str = [];
+            $('.aside').each(function (s,c) {
+
+                var vals = [];
+                $(this).find('input:checked').each(function (i, e) {vals.push({ value: $(e).attr('id') });});
+                if (vals.length > 0) {
+
+                    str.push({
+                        nameID: $(this).find('span').text(), productAttribute: vals
+                    });
+                }
+
+            });
+            var filtersJson = str;
+
+            filterByDynamicProperty(@i, colorID, filtersJson, $("#high").html(), $("#low").html(), @category, brand, $('#checkbox').is(':checked'))
+        });
+
+
+
+    </script>
+
+    <script>
+        var header = document.getElementById("filterDiv");
+        var btns = header.getElementsByClassName("filter-btn");
+        for (var i = 0; i < btns.length; i++) {
+            btns[i].addEventListener("click", function () {
+                var current = document.getElementsByClassName("filter-btn-active");
+                current[0].className = current[0].className.replace(" filter-btn-active", "");
+                this.className += " filter-btn-active";
+            });
+        }
+
+
+
+
+
+    </script>
+}
+
+
+
+
+
+
+
+
+<!--#region  commented-->
+@*<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+
+
+        function filterByDynamicProperty(productID, productColorID, filtersJson, maxPrice, minPrice, categoryID, brandID, justAvailable) {
+
+            var obj = {
+                productID: productID, productColorID: productColorID, filtersJson: JSON.stringify(filtersJson), maxPrice: maxPrice, minPrice: minPrice,
+                brandID: brandID, justAvailable: justAvailable
+            };
+            if (categoryID != 0) {
+                obj['categoryID'] = categoryID
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '/ProductCategory/filterByDynamicProperty',
+                data: obj,
+                success: function (data) {
+                    if (data == null) {
+
+                        $('#products').html("موردی یافت نشد");
+                    }
+                    $('#products').html(data);
+
+
+                },
+                error: function (xpr) { alert(xpr.responseText); }
+            });
+        }
+    </script>
+
+    <div class="container">
+        <div class="row">
+            <p id="test"></p>
+            <aside id="column-left" class="col-sm-3 ">
+                <div style="margin-top:20px;margin-bottom:20px">
+
+                    <h3 class="subtitle">دسته ها</h3>
+                    @Html.Partial("~/Views/Partials/_CategoryTree.cshtml", Model)
+                </div>
+                <div style="margin-top:20px;margin-bottom:20px">
+
+                    <h3 class="subtitle">کالاهای موجود</h3>
+                    <label class="switch">
+                        <input id="checkbox" type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div style="margin-top:20px;margin-bottom:20px">
+                    <h3 class="subtitle">قیمت<i style="float:left"></i></h3>
+                    <div style="margin-bottom:20px" class="side-item">
+                        <div id="priceSlider"></div>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <br />
+                                <span>تا قیمت:</span>
+                                <br />
+                                <br />
+                                <p id="expensive" style="color:#bebebe; font-weight:bold;"></p>
+                                <span style="color:#bebebe">تومان</span>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <br />
+                                <span>از قیمت:</span>
+                                <br />
+                                <br />
+                                <p id="cheap" style="color:#bebebe; font-weight:bold;"></p>
+                                <span style="color:#bebebe">تومان</span>
+                            </div>
+                        </div>
+                    </div>
+                    @if (ViewBag.categoryID != null)
+                    {
+
+
+                        foreach (var item in filter)
+                        {
+                            <div class="aside">
+                                @{nameID.Add(item.nameID);
+                                    var colorClass = "";
+                                }
+                                @if (item.name == "رنگ")
+                                {
+                                    colorClass = "colorClass";
+                                }
+                                else
+                                {
+                                    colorClass = "search-filter";
+                                }
+                                <span style="display:none">@item.nameID</span>
+                                <h3 class="subtitle">@item.name</h3>
+                                <div class="@colorClass">
+                                    @Html.Partial("~/Views/Partials/_DynamicPropertyItem.cshtml", item)
+                                </div>
+                            </div>
+                        }
+
+                    }
+                    @if (ViewBag.colors != null)
+                    {
+                        <h3 class="subtitle">رنگ</h3>
+                        @Html.Partial("~/Views/Partials/_ColorList.cshtml", (List<Shop.Models.ProductColor>)ViewBag.colors)
+
+                    }
+
+                    @{
+                        string y = "";
+                        if (nameID != null && nameID.Count > 0)
+                        {
+                            y = "[";
+                            foreach (var item in nameID)
+                            {
+                                y += item + ",";
+                            }
+                            y = y.Substring(0, y.Length - 1);
+                            y += "]";
+                        }
+                        else
+                        {
+                            y = "[]";
+                        }
+
+
+
+                    }
+
+
+
+                    @if (ViewBag.brandID == null)
+                    {
+                        <h3 class="subtitle">برند ها</h3>
+                        @Html.Partial("~/Views/Partials/_BrandList.cshtml", (List<Shop.Models.Brand>)ViewBag.brands)
+
+                    }
+                    else
+                    {
+                        <div></div>
+
+                    }
+                    <p id="filter" style="margin-top:10px;margin-bottom:10px;float:left;position:relative;left:20px;top:-5px" class="btn btn-primary side-item">فیلتر</p>
+
+            </aside>
+
+            <div id="content" class="col-sm-9">
+                <br />
+                <br />
+                <div style="border-bottom:1px #ddd solid" id="filterDiv">
+                    <div class="row">
+                        <div class=" col-sm-2 col-xs-12 text-right">
+                            <label class="control-label" for="input-sort">مرتب سازی :</label>
+                        </div>
+                        <div class="  col-md-2 col-sm-2 col-xs-4 text-right">
+                            <a class="filter-btn filter-btn-active" onclick="sort('price',0,@i, $('#checkbox').is(':checked'))" href="javascript:void(0)">قیمت(کمتر به بیشتر)</a>
+                        </div>
+
+                        <div class="  col-md-2 col-sm-2 col-xs-4 text-right">
+                            <a class="filter-btn col-md-12 " onclick="sort('pricedesc',0,@i, $('#checkbox').is(':checked'))" href="javascript:void(0)">قیمت(بیشتر به کمتر)</a>
+                        </div>
+
+                        <div class="  col-md-1 col-sm-2 col-xs-4 text-right">
+                            <a class="filter-btn  " onclick="sort('date',0,@i, $('#checkbox').is(':checked'))" href="javascript:void(0)">تاریخ</a>
+                        </div>
+
+                        <div class="  col-md-1 col-sm-2 col-xs-4 text-right">
+                            <a class="filter-btn  " onclick="sort('offer',0,@i, $('#checkbox').is(':checked'))" href="javascript:void(0)">تخفیف</a>
+                        </div>
+
+                        <div class="  col-md-1 col-sm-2 col-xs-4 text-right">
+                            <a class="filter-btn  " onclick="sort('sale',0,@i, $('#checkbox').is(':checked'))" href="javascript:void(0)">فروش</a>
+                        </div>
+
+                        <div class="  col-md-1 col-sm-2 col-xs-4 text-right">
+                            <a class="filter-btn  " onclick="sort('visit',0,@i, $('#checkbox').is(':checked'))" href="javascript:void(0)">بازدید</a>
+                        </div>
+
+                        <div class=" col-md-1 col-sm-2 col-xs-4 text-right">
+                            <a class="filter-btn  " onclick="sort('rate',0,@i, $('#checkbox').is(':checked'))" href="javascript:void(0)">امتیاز</a>
+                        </div>
+
+                    </div>
+
+                </div>
+                <br />
+                @{
+                    var product = (IPagedList<Shop.Models.Product>)ViewBag.products;
+                }
+                <div id="products" class="row products-category">
+
+                    @if (product.Any())
+                    {
+
+                        @Html.Partial("~/Views/Partials/_ProductPaginationList.cshtml", (IPagedList<Shop.Models.Product>)ViewBag.products)
+                    }
+                    else
+                    {
+                        <h2>محصولی یافت نشد</h2>
+                    }
+                </div>
+
+
+            </div>
+        </div>
+    </div>*@
+<!--#endregion-->

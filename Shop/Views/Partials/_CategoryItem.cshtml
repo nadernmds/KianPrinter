@@ -1,0 +1,44 @@
+﻿@model Shop.Models.ProductCategory
+
+@*@if (Model.ProductCategories1.Count > 0)
+    {
+        <a class="category-text" onclick="getCategory(@Model.categoryID)" href="/productcategory/list/?c=@Model.categoryID">@Model.categoryName</a>
+        <span  class="fa fa-chevron-down accourdion-arrow"></span>
+        <ul>
+            @foreach (var item in Model.ProductCategories1)
+            {
+                <li>
+                    @Html.Partial("~/Views/Partials/_CategoryItem.cshtml", item)
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <a class="category-text" onclick="getCategory(@Model.categoryID)"  href="/productcategory/list/?c=@Model.categoryID">@Model.categoryName</a>
+    }*@
+@if (Model.ProductCategories1.Count > 0)
+{
+
+    <div class="s-productlist-categoryitem">
+        <i class="fa fa-caret-left s-productlist-plus" onclick="changeIcon(this)"></i>
+        <a href="/productcategory/list?c=@Model.categoryID" class="s-productlist-collapsible">@Model.categoryName</a>
+        <div class="s-productlist-content">
+            <div>
+                @foreach (var item in Model.ProductCategories1)
+                {
+                    @Html.Partial("~/Views/Partials/_CategoryItem.cshtml", item)
+                }
+            </div>
+        </div>
+    </div>
+}
+else
+{
+
+    <div class="s-productlist-categoryitem"> 
+        <i class="fa fa-caret-left s-productlist-plus" onclick="changeIcon(this)"></i>
+        <a href="/productcategory/list?c=@Model.categoryID" class="s-productlist-collapsible">@Model.categoryName</a>
+        
+    </div>
+}

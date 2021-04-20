@@ -1,0 +1,938 @@
+﻿@model Shop.Models.Product
+@{
+
+
+    if (Model.Seos.FirstOrDefault() != null)
+    {
+        ViewBag.Title = Model.Seos.FirstOrDefault().title;
+        ViewBag.desc = Model.Seos.FirstOrDefault().description;
+    }
+    else
+    {
+        ViewBag.Title = Model.name +" | خرید " + Model.name +" در ایران شهر تهران " +" | خرید "+ Model.name +"  از نمایندگی معتبر "+Model.Brand?.brandName  ;
+        ViewBag.desc = System.Text.RegularExpressions.Regex.Replace(Model.description, @"<(.|\n)*?>", string.Empty);
+    }
+
+    Layout = "~/Views/Shared/_SiteLayout.cshtml";
+    var comments = (List<Shop.Models.Comment>)ViewBag.comments;
+
+
+    List<Shop.Models.Answer> answers = new List<Shop.Models.Answer>();
+    List<Shop.Models.Question> questions = ViewBag.questionAnswers;
+    foreach (var item in questions)
+    {
+        //... questions
+
+        answers = item.Answers.Where(a => a.approveUserID != null).ToList();
+        foreach (var item2 in answers)
+        {
+            //... answers
+            string text = item2.answerText;
+        }
+
+
+    }
+
+}
+
+<!--#region  commented-->
+@*<link href="~/css/jquery.rateyo.css" rel="stylesheet" />
+    <p id="snackbar"></p>
+    <div class="container-fluid">
+        <div class="row">
+
+
+            @{
+                DateTime now = Convert.ToDateTime(DateTime.Now.ToString());
+                var offers = Model.Offers.Where(o => o.startDate < now && o.endDate > now).ToList();
+                decimal offPrice = 0;
+                decimal offPercent = 0;
+                foreach (var item in offers)
+                {
+                    offPrice += (int)item.price;
+                    offPercent += (int)item.offPercent;
+                }
+                decimal productPrice = Model.price;
+                decimal finalPrice = productPrice;
+                if (offPercent > 0)
+                {
+                    finalPrice = finalPrice - (productPrice * (offPercent / 100));
+                }
+                if (offPrice > 0)
+                {
+                    finalPrice = finalPrice - offPrice;
+                }
+            }
+            <!--Right Part End -->
+            <div style="padding:15px">
+                <h1 class="title" style="font-size:20px;padding:20px" itemprop="name">@Model.name</h1>
+                <div class="row product-info">
+                    <div class="col-md-4 col-sm-12 col-xs-12">
+                        <div class="image">
+                            <img class="img-responsive" itemprop="image" id="zoom_01" style="max-width:290px" src="~/Images/Product/icon/@(Model.productID).jpg" title="@Model.name" alt="@Model.name" data-zoom-image="/Images/Product/icon/@(Model.productID).jpg" />
+                            @if (offPercent > 0)
+                            {
+                                <span class="saving">%@(offPercent)</span>
+                            }
+
+
+
+                        </div>
+                        <div class="center-block text-center">
+                            <span class="zoom-gallery"><i class="fa fa-search"></i> برای مشاهده گالری روی تصویر کلیک کنید</span>
+                        </div>
+                        <div class="image-additional" id="gallery_01">
+                            @foreach (var item in Model.ProductImages)
+                            {
+                                <a class="thumbnail" href="#" data-zoom-image="/Images/Product/Images/@(item.productImageID).jpg" data-image="/Images/Product/Images/@(item.productImageID).jpg" title="@item.Product.name"><img src="~/Images/Product/Images/@(item.productImageID).jpg" title="@item.Product.name" alt="@item.Product.name" /></a>
+
+                            }
+                        </div>
+                    </div>
+                    <div class="col-md-5 col-sm-12 col-xs-12">
+                        <ul class="list-unstyled description">
+
+                            <li>
+                                <b>برند :</b>
+                                <a href="/ProductCategory/list/?b=@Model.brandID"><span itemprop="brand">@Model.Brand.brandName</span></a>
+                            </li>
+                            <li>
+                                <b>وضعیت موجودی :</b>
+                                @if (Model.existingCount > 0)
+                                {<span class="instock">
+                                        موجود
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="nostock">
+                                       @Model.ProductState.state
+                                    </span>
+                                }
+
+                            </li>
+                        </ul>
+                        <ul class="price-box">
+                            <li class="price" itemprop="offers" itemscope>
+                                <span itemprop="price">
+                                    @if (offPercent > 0 || offPrice > 0)
+                                    {
+
+                                        <span data-price="p-@Model.productID" style="font-weight:bold" class="price-new">@finalPrice.ToString("N0") تومان</span>
+                                        <span class="price-old">@Model.price.ToString("N0") تومان</span>
+
+                                    }
+                                    else
+                                    {
+                                        <span style="font-weight:bold" data-price=p-@Model.productID> @Model.price.ToString("N0") تومان</span>
+                                    }
+                                    <span itemprop="availability" content="@Model.ProductState"></span>
+                                </span>
+                            </li>
+                            <li></li>
+
+                        </ul>
+                        <div style="padding:10px" id="product">
+
+
+                            @{
+                                var productColorID = 0;
+                                if (Model.ProductColorAssinments.FirstOrDefault() != null)
+                                {
+                                    productColorID = Model.ProductColorAssinments.FirstOrDefault().ProductColor.productColorID;
+                                }
+
+                            }
+
+
+                            @if (productColorID > 0)
+                            {
+                                <h3 class="subtitle">انتخاب های در دسترس</h3>
+                                <div class="form-group ">
+                                    <label class="control-label">رنگ</label>
+                                    <select class="form-control" id="input-option">
+                                        @foreach (var item in (List<Shop.Models.ProductColor>)ViewBag.productColors)
+                                        {  <option value="@item.productColorID">@item.color </option>
+                        }
+
+                                </select>
+
+
+                            </div>
+                        }
+
+                            <div class="cart">
+                                <div>
+                                    @if (Model.existingCount > 0)
+                                    {
+                                        <button type="button" id="button-cart" onclick="addToCart(@Model.productID,$( '#input-option option:selected' ).val())" class="btn btn-primary btn-lg">افزودن به سبد</button>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" id="button-cart" style="background-color: #cccccc;color: #666666;cursor:default"  class="btn btn-primary btn-lg">@Model.ProductState.state</button>
+                                    }
+                                </div>
+                                <div>
+                                    <button type="button" class="wishlist" onClick="Favorite(@Model.productID)"><i class="fa fa-heart"></i> افزودن به علاقه مندی ها</button>
+                                    <br />
+                                    <button type="button" class="wishlist" onClick="addToCompare(@Model.productID)"><i class="fa fa-exchange"></i> مقایسه این محصول</button>
+                                </div>
+                            </div>
+                        </div>
+                        <meta itemprop="ratingValue" content="0" />
+
+                    </div>
+                    <!-- AddThis Button BEGIN -->
+                    <div class="addthis_toolbox addthis_default_style">
+                        <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+                        <a class="addthis_button_tweet"></a>
+                        <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+                        <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal" pi:pinit:url="http://www.addthis.com/features/pinterest" pi:pinit:media="http://www.addthis.com/cms-content/images/features/pinterest-lg.png"></a>
+                        <a class="addthis_counter addthis_pill_style"></a>
+                    </div>
+                    <!-- AddThis Button END -->
+                </div>
+                @if (ViewBag.message != null)
+                {
+                    <p style="color:red">@ViewBag.message</p>
+                }
+
+                <div class="" style="width:100%">
+
+                    <div id="nav" class="tab" style="background-color:#555;width:100%">
+                        <button style="float:right" class="tablinks" onclick="openCity(event, 'Description')" id="defaultOpen">توضیحات</button>
+                        <button style="float:right" class="tablinks" onclick="openCity(event, 'Detail')">مشخصات</button>
+                        <button style="float:right" class="tablinks" onclick="openCity(event, 'Review')">بررسی</button>
+                        <button style="float:right" class="tablinks" onclick="openCity(event, 'Question')">پرسش و پاسخ</button>
+                    </div>
+
+                    <div id="Description" class="tabcontent" style="padding:10px">
+                        <div class="container-fluid" style="font-size:1.6em">
+                            @Html.Raw(Model.description)
+                        </div>
+                    </div>
+
+                    <div id="Detail" class="tabcontent row" style="position:relative;height:auto">
+                        @foreach (var item in (List<Shop.Models.ProductAttributeTemplateGroup>)ViewBag.AttributeGroup)
+                        {<h4 style="padding-right:2rem;font-weight:bold"><i class="fa fa-caret-left" style="color:#01a161"></i> @item.name</h4>
+
+                            foreach (var item2 in (List<Shop.Models.ProductAttribute>)ViewBag.productInfoes)
+                                                    {
+                                                        if (item2.ProductAttributeTemplate.ProductAttributeTemplateGroupID == item.ProductAttributeTemplateGroupID)
+                                                        {
+                                                            <div class="col-lg-12">
+                                                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 block">
+                                                                    <p style="padding-right:10px;">@item2.ProductAttributeTemplate.name</p>
+                                                                </div>
+                                                                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 block-item">
+                                                                    <p style="padding-right:10px">@item2.value</p>
+                                                                </div>
+                                                            </div>
+                                                        }
+
+                                                    }
+
+                                                }
+
+
+            </div>
+
+            <div id="Review" class="tabcontent">
+                <form method="post" action="/comment/create" class="form-horizontal">
+
+                    <h2 style="color:black">یک بررسی بنویسید</h2>
+                    <div class="form-group required">
+                        <div class="col-sm-12">
+                            <input type="hidden" name="productID" value="@Model.productID" />
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <div class="col-sm-12">
+                            <label for="input-review" class="control-label"> بررسی شما <span style="color:red" class="required">*</span></label>
+                            <textarea class="form-control" oninvalid="this.setCustomValidity('این فیلد الزامی است')" required id="input-review" rows="5" name="commentText"></textarea>
+                            <label for="" class="">نقاط مثبت</label>
+                            <textarea class="form-control" id="input-review" rows="1" name="positive"></textarea>
+                            <label for="" class="">نقاط منفی</label>
+                            <textarea class="form-control" id="input-review" rows="1" name="negative"></textarea>
+
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <div class="col-sm-12">
+                            <p>امتیاز </p>
+                            <div id="rateyo">
+                            </div>
+                            <input id="ratenumber" type="hidden" name="rate" value="" />
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <div class="pull-right">
+                            <input class="btn btn-primary" value="ارسال" id="button-review" type="submit">
+                        </div>
+                    </div>
+                </form>
+                <hr />
+                @foreach (var item in comments)
+                {
+                    <div class="panel panel-default" style="background-color:#fcfcfc;border-radius:5px">
+                        <div class="panel-body">
+                            <h4 class="col-lg-12 col-sm-12">کاربر @item.User.username: </h4>
+                            <div class="col-lg-3 col-sm-12">
+                                @if (item.positive != null)
+                                {
+                                    <p class="col-sm-12"><i data-toggle="tooltip" data-original-title="نقاط مثبت" style="color:#01a161;font-size:5px" class="fa fa-circle"></i>&nbsp;&nbsp;@item.positive</p>
+                                }
+                                @if (item.negative != null)
+                                {
+                                    <p class=" col-sm-12"><i data-toggle="tooltip" data-original-title="نقاط منفی" style="color:red;font-size:5px" class="fa fa-circle"></i>&nbsp;&nbsp;@item.negative</p>
+                                }
+                                <div class="col-lg-12">
+                                    <div class="rating">
+
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            <span class="fa fa-stack">
+                                                @if (item.rate >= i)
+                                                {
+                                                    <i class="fa fa-star fa-stack-2x"></i>
+                                                }
+                                                <i class="fa fa-star-o fa-stack-2x"></i>
+                                            </span>
+                                        }
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class=" col-lg-9 col-sm-12" style="font-size:14px"><p>@item.commentText</p></div>
+
+
+                        </div>
+                    </div>
+                }
+
+            </div>
+            <div id="Question" class="tabcontent">
+                <form method="post" action="/question/create">
+                    <div class="container">
+                        <h3>ارسال پرسش</h3>
+                        <input type="hidden" name="productID" value="@Model.productID" />
+                        <label for="" class="">پرسش خود را مطرح کنید <span style="color:red">*</span> </label>
+                        <textarea oninvalid="this.setCustomValidity('این فیلد الزامی است')" required class="form-control" id="input-review" rows="2" name="questionText"></textarea>
+                        <div class="buttons">
+                            <div class="pull-right">
+                                <input class="btn btn-primary" value="ارسال" id="button-review" type="submit">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <hr />
+                @foreach (var item in questions)
+                {
+                    <div class="container " style="position:relative;">
+                        <h4 style="padding-right:20px">پرسش</h4>
+                        <div class="col-lg-2">@item.User.name </div>
+                        <div class="panel padding-top-0 col-lg-10" style="background-color:#fcfcfc;min-height:200px;border:1px solid #dbdbdb;border-radius:4px">
+
+                            <div class="panel-body">
+                                <p style="min-height:120px;font-size:1.5rem">@item.questionText</p>
+                                <div style="position:relative;left:0;bottom:0">
+
+                                </div>
+                            </div>
+                            <form action="/answer/create" method="post">
+                                <input type="hidden" name="productID" value="@item.productID" />
+                                <input type="hidden" name="questionID" value="@item.questionID" />
+
+                                <h3 style="display:none"> ارسال پاسخ<span style="color:red">*</span>  </h3>
+                                <textarea required rows="2" type="text" class="form-control text-right" placeholder="ارسال پاسخ" style="display:none" oninvalid="this.setCustomValidity('این فیلد الزامی است')" name="answerText"></textarea>
+                                <a onclick="FormChange(@item.questionID)" style="float:left" class="btn btn-primary " data-answer="@item.questionID" href="javascript:void(0)">پاسخ</a>
+                                <button type="submit" style="float:left;display:none; " class="btn  btn-primary">ارسال</button>
+
+                            </form>
+                        </div>
+
+                    </div>
+                    foreach (var item2 in item.Answers.Where(a => a.approveUserID != null).ToList())
+                    {
+                        <div class="container " style="position:relative">
+
+                            <div class="col-lg-2"><h5 style="padding-right:20px;">پاسخ</h5> @item2.User.name </div>
+                            <div class="panel padding-top-0 col-lg-10" style="border:1px solid #dbdbdb;border-radius:3px">
+
+                                <div class="panel-body " style="min-height:200px;font-size:1.5rem">
+                                    @item2.answerText
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+
+        </div>
+    </div>
+    </div>
+    <div id="stop"></div>
+    <div class="container">
+        <h3 class="subtitle">محصولات مرتبط</h3>
+        @Html.Partial("~/Views/Partials/_ProductCarousel.cshtml", (List<Shop.Models.Product>)ViewBag.relatedProducts)
+    </div>
+    </div>*@
+<!--#endregion-->
+@{
+    var offer = Model.GetOffer();
+    var hasOffer = Model.HasOffer();
+}
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    .img-zoom-container {
+        position: relative;
+    }
+
+    .img-zoom-lens {
+        border-radius: 10px;
+        position: absolute;
+        /*set the size of the lens:*/
+        width: 70px;
+        height: 70px;
+    }
+
+    .img-zoom-result {
+        border-radius: 10px;
+        position: fixed;
+        visibility: hidden;
+        top: 100px;
+        background-repeat: no-repeat;
+        left: 250px;
+        border: 1px solid #d4d4d4;
+        /*set the size of the result div:*/
+        width: 300px;
+        height: 300px;
+    }
+
+    @@media screen and (max-width:768px) {
+        figure.image img {
+            max-width: 80%;
+        }
+    }
+</style>
+<section id="show">
+    <div class="s-show-main">
+        <div class="s-show-images">
+            <div class="img-zoom-container">
+                <div class="s-show-img" style="display:block; margin:0 auto">
+                    <div style="display:block">
+                        <img id="myimage" style="width:250px;object-fit:contain;display:block;margin:0 auto" src="~/Images/Product/icon/@(Model.productID).jpg" title="@Model.name" alt="@Model.name" />
+                    </div>
+                </div>
+            </div>
+
+            <div id="myresult" class="img-zoom-result"></div>
+            <div class="s-show-scroll" style="display:block;">
+                <div class="s-show-imglist">
+                    <img onclick="replaceImage(this)" style="max-width:100px;display:block; margin:0 auto" src="~/Images/Product/icon/@(Model.productID).jpg" title="@Model.name" alt="@Model.name" />
+                    @foreach (var item in Model.ProductImages)
+                    {
+                        <img class="img-responsive" onclick="replaceImage(this)" style="max-width:100px;display:block; margin:0 auto" src="~/Images/Product/Images/@(item.productImageID).jpg" title="@Model.name" />
+                    }
+                </div>
+            </div>
+            @*<div class="image-additional" id="gallery_01">
+                    @foreach (var item in Model.ProductImages)
+                    {
+                        <a class="thumbnail img-responsive" href="#!" style="width:150px !important;height:100px" data-zoom-image="/Images/Product/Images/@(item.productImageID).jpg" data-image="/Images/Product/Images/@(item.productImageID).jpg" title="@item.Product.name"><img src="~/Images/Product/Images/@(item.productImageID).jpg" title="@item.Product.name" alt="@item.Product.name" /></a>
+
+                    }
+                </div>*@
+        </div>
+        <div class="s-show-info">
+            <h3 class="s-show-name" style="font-weight:500">@Model.name</h3>
+            <p class="s-show-compare">
+                @{
+                    int rate = 0;
+                    float average = 0;
+                    foreach (var item in Model.Comments)
+                    {
+                        if (item.rate != null)
+                        {
+                            rate += item.rate.Value;
+                        }
+                    }
+                    if (rate > 0)
+                    {
+                        average = rate / Model.Comments.Count;
+                    }
+                    else
+                    {
+                        average = 0;
+                    }
+                }
+                @if (average >= 0.1 && average <= 2.5)
+                {
+                    <span class="s-show-star" style="background-color:#ff3f34">@average</span>
+                }
+                else if (average >= 2.5 && average <= 3.5)
+                {
+                    <span class="s-show-star" style="background-color:#ffa801">@average</span>
+                }
+                else if (average == 0)
+                {
+                    <span class="s-show-star" style="background-color:#7f8c8d">-</span>
+                }
+                else
+                {
+                    <span class="s-show-star" style="background-color:#0be881">@average</span>
+                }
+                تعداد نقد و بررسی (@Model.Comments.Count)
+            </p>
+            <div style="display: flex;margin-top: 20px;" id="input-option">
+                @{ bool check = false;}
+                @foreach (var item in (List<Shop.Models.ProductColor>)ViewBag.productColors)
+                {
+                    if (check == true)
+                    {
+                        <abbr title="@item.color">
+                            <input type="radio" name="color" value="@item.productColorID" class="s-show-color" style="background: @item.colorCode;" />
+                        </abbr>
+                    }
+                    else
+                    {
+                        <abbr title="@item.color">
+                            <input type="radio" name="color" value="@item.productColorID" checked class="s-show-color" style="background: @item.colorCode;" />
+                        </abbr>
+                        check = true;
+                    }
+                }
+
+            </div>
+            <p>دسته بندی :<a style="border-bottom: 2.4px dotted #00bfd6;color:#00bfd6" href="/productcategory/list?c=@Model.ProductCategory.categoryID"> @Model.ProductCategory.categoryName</a></p>
+            <div class="s-show-shortdescription">
+                @if (Model.description.Length > 120)
+                {
+                    <p>@Model.description.Substring(0, 105).ToNormalString() ...</p>
+                }
+                else
+                {
+                    @Html.Raw(Model.description)
+                }
+            </div>
+            @if (Model.existingCount > 0)
+            {
+
+                if (offer?.offPercent > 0 || offer?.price > 0)
+                {
+
+                    <p class="s-show-discount">@Model.price.ToString("N0") تومان</p>
+                    <span class="s-show-percent">@offer.offPercent%</span>
+                    <p class="s-show-price">@Model.CalculateOff().ToString("N0") تومان</p>
+                }
+                else
+                {
+                    <p class="s-show-price">@Model.price.ToString("N0") تومان</p>
+                }
+
+            }
+            @if (Model.existingCount > 0)
+            {
+                <button class="s-show-addcart" onclick="addToCart(@Model.productID,$('input[type=radio]:checked').val())">افزودن به سبد</button>
+            }
+            else
+            {
+                <h3 style="color:#bbb">ناموجود</h3>
+            }
+            <div style="display: flex;flex-wrap: wrap;margin-bottom: 20px;">
+                <a href="javascript:void(0)" class="s-show-a" onClick="Favorite(@Model.productID)"><i style="margin-left:2px" class="fa fa-heart"></i> افزودن به علاقه مندی </a>
+                <a href="javascript:void(0)" class="s-show-a" onClick="addToCompare(@Model.productID)"><i style="margin-left:2px" class="fa fa-balance-scale"></i> افزودن به مقایسه </a>
+            </div>
+        </div>
+    </div>
+    <div class="s-show-offer">
+        محصولات مرتبط
+
+        @Html.Partial("~/Views/Partials/_ProductCarousel.cshtml", (List<Shop.Models.Product>)ViewBag.relatedProducts)
+    </div>
+    <div class="s-show-mainreview">
+        <ul class="s-show-ul">
+            <li id="description" onclick="description()" class="s-show-active" style="background-color:white;">توضیحات</li>
+            <li id="specification" onclick="specification()">مشخصات</li>
+            <li id="review" onclick="showComments()">بررسی</li>
+            <li id="question" onclick="showQuestions()">سوالات</li>
+        </ul>
+        <div class="s-show-decription" id="showDescription">
+            <h1 style="font-size: 2.2rem; color: #6f6f6f;margin: 0px;">
+                توضیحات محصول
+            </h1>
+            <p style="color: #6f6f6f;">@Model.name</p>
+            @Html.Raw(Model.description)
+        </div>
+        <div id="showSpecification">
+            @foreach (var item in (List<Shop.Models.ProductAttributeTemplateGroup>)ViewBag.AttributeGroup)
+            {
+                <h3 style="text-align:right">@item.name</h3>
+                <table class="s-show-property">
+                    @foreach (var item2 in (List<Shop.Models.ProductAttribute>)ViewBag.productInfoes)
+                    {
+
+
+                        <tr>
+                            <td class="s-show-key">@Html.Raw(item2.ProductAttributeTemplate.name)</td>
+                            <td class="s-show-value" style="direction:rtl;text-align:right">@Html.Raw(item2.value)</td>
+                        </tr>
+
+                    }
+                </table>
+            }
+        </div>
+        <div id="showComments">
+            <form action="/comment/create" method="post">
+                <input type="hidden" name="productID" value="@Model.productID" />
+                <div class="s-show-group" style="margin-top:20px">
+                    <label for="textarea" style="margin:0px 30px 10px 10px;">نظر شما:</label>
+                    <textarea name="commentText" id="textarea" class="s-show-textarea" rows="2"></textarea>
+                </div>
+                <div class="s-show-group">
+                    <label for="positive" style="margin:0px 20px 10px 10px">نقاط مثبت :</label>
+                    <input type="text" name="positive" id="positive">
+                </div>
+                <div class="s-show-group">
+                    <label for="negative" style="margin:0px 20px 10px 10px">نقاط منفی :</label>
+                    <input type="text" name="negative" id="negative">
+                </div>
+                <div class="s-show-group">
+                    <div style="display:flex">
+                        <input type="submit" value="ارسال" class="s-BrandCat-button" style="margin:-30px 90px 0px 0px;cursor:pointer;padding:0px 15px  ">
+                        <span style="margin-right:10px">امتیاز شما برای این محصول </span>
+                        <input type="number" min="1" max="5" name="rate" style="margin-right:10px" />
+
+
+                    </div>
+                </div>
+
+                <div class="s-show-comment">
+                    @foreach (var item in Model.Comments)
+                    {
+                        <div class="s-show-commentItem">
+                            <div class="s-show-userInfo">
+                                <img src="~/Images/user.png" style="border-radius:50%;max-height: 70px" />
+                                <div class="s-show-rightInfo" style="display:block;margin-right:30px;width:120px">
+                                    <p style="margin-left:50px;margin:0px">@item.User.username</p>
+                                    <small style="margin-left:50px;margin:0px;font-size:12px"> امتیاز ثبت شده: @item.rate</small>
+                                </div>
+                                <div class="s-show-text">
+                                    <p style="margin-right:30px">@item.commentText</p>
+                                </div>
+                            </div>
+                            <div class="s-show-commentText">
+
+                                <p style="flex:30%">
+                                    <span><i class="fa fa-circle" style="color:#00bfd5;font-size:5px"></i></span>
+                                    @item.positive
+                                </p>
+                                <p style="flex:30%">
+                                    <span><i class="fa fa-circle" style="color:#ef5661;font-size:5px"></i></span>
+                                    @item.negative
+                                </p>
+                                <div class="s-show-underline"></div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+            </form>
+        </div>
+
+        <div id="showQuestions">
+            <div style="padding:50px;">
+                <form method="post" action="/question/create">
+                    <div style="display:block;margin-bottom:20px;">
+                        <h3>ارسال پرسش</h3>
+                        <input type="hidden" name="productID" value="@Model.productID" />
+                        <label>پرسش خود را مطرح کنید <span style="color:red">*</span> </label>
+                        <textarea oninvalid="this.setCustomValidity('این فیلد الزامی است')" required class="s-show-textarea" style="width:100%" id="input-review" rows="2" name="questionText"></textarea>
+                        <div class="buttons">
+                            <div class="pull-right">
+                                <input class="s-BrandCat-button" style="top:0px !important" value="ارسال" id="button-review" type="submit">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                @foreach (var item in Model.Questions)
+                {
+                    <div class="s-show-questionItem">
+                        <div class="s-show-question">
+                            <div class="s-show-qusetionuser">
+                                <img src="~/Images/question-mark-icon-free-4.jpg" class="s-show-questionmark" />
+                                <div>@item.User.name</div>
+                            </div>
+                            <div class="s-show-qusetiontext">
+                                @item.questionText
+                                <form action="/answer/create" method="post">
+                                    <input type="hidden" name="productID" value="@item.productID" />
+                                    <input type="hidden" name="questionID" value="@item.questionID" />
+
+                                    <h3 style="display:none"> ارسال پاسخ<span style="color:red">*</span>  </h3>
+                                    <textarea required rows="2" type="text" class="s-show-textarea" placeholder="ارسال پاسخ" style="display:none;width:100%" oninvalid="this.setCustomValidity('این فیلد الزامی است')" name="answerText"></textarea>
+                                    <a onclick="FormChange(@item.questionID)" style="float:left" class="s-show-questionbutton" data-answer="@item.questionID" href="javascript:void(0)">پاسخ</a>
+                                    <button type="submit" style="float:left;display:none;top:0px !important" class="s-BrandCat-button">ارسال</button>
+
+                                </form>
+                            </div>
+                        </div>
+                        @if (item.Answers.Any())
+                        {
+                            foreach (var item2 in item.Answers)
+                            {
+                                <div class="s-show-answer">
+                                    <div class="s-show-answernuser">
+                                        <div style="width:90px"></div>
+                                        @item2.User.name
+                                    </div>
+
+                                    <div class="s-show-answertext">
+                                        @item2.answerText
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+    @{
+        var offers = (IEnumerable<Shop.Models.Product>)ViewBag.offerForCustomer;
+        if (offer!=null && offers.Count() > 0)
+        {
+            <div class="s-show-offer">
+                محصولات پیشنهادی
+                @Html.Partial("~/Views/Partials/_ProductCarousel.cshtml", offer)
+            </div>
+        }
+    }
+
+</section>
+
+
+<script src="~/js/jquery.min.js"></script>
+<script src="~/Scripts/ImageZoom.js"></script>
+<script>
+
+    function FormChange(num) {
+        $('[data-answer=' + num + ']').css('display', 'none');
+        $('[data-answer=' + num + ']').next().css('display', 'block');
+        $('[data-answer=' + num + ']').prev().css('display', 'block');
+        $('[data-answer=' + num + ']').prev().prev().css('display', 'block');
+    }
+</script>
+<script src="~/Scripts/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.rawgit.com/igorlino/elevatezoom-plus/1.1.6/src/jquery.ez-plus.js"></script>
+<script>
+    function replaceImage(image) {
+        document.querySelector("#myimage").src = image.src;
+    }
+</script>
+<script>
+    function openCity(evt, cityName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen").click();
+</script>
+<script>
+    $("#myimage").hover(function () {
+        imageZoom("myimage", "myresult");
+    })
+</script>
+
+@section scripts{
+    <script>
+        function addToCompare(productID) {
+
+            $.ajax({
+                type: "POST",
+                url: '/Home/addToCompare',
+
+                data: { productID: productID },
+
+                success: function (data) {
+                    SnakeBar(data.data);
+                    //addToCompare
+
+                },
+                error: function () { SnakeBar("خطا "); }
+            });
+        }
+
+        function Favorite(productID) {
+
+            $.ajax({
+                type: "POST",
+                url: '/Favorite/Favorite',
+                data: { productID: productID },
+
+                success: function (data) {
+                    if (data.success) {
+                        if (data.data == 1) {
+                            SnakeBar("به لیست علاقه مندی اضافه شد");
+                            $("[data-heart=" + productID + "]").css("color", "red");
+                        }
+                    }
+                    else {
+                        SnakeBar("ابتدا باید وارد حساب کاربری شوید");
+                    }
+                },
+                error: function () { alert('A error'); }
+            });
+
+
+        }
+
+    </script>
+
+    @*<script type="text/javascript">
+            // Elevate Zoom for Product Page image
+            $("#zoom_01").elevateZoom({
+                gallery: 'gallery_01',
+                cursor: 'pointer',
+                galleryActiveClass: 'active',
+                zoomType: 'lens',
+                lensShape: 'round',
+                lensSize: 200
+            });
+            //////pass the images to swipebox
+            $("#zoom_01").bind("click", function (e) {
+                var ez = $('#zoom_01').data('elevateZoom');
+                $.fancybox(ez.getGalleryList());
+                return false;
+            });
+        </script>*@
+
+    <script>
+
+        function SnakeBar(messege) {
+            var x = document.getElementById("snackbar");
+            x.className = "show";
+            x.innerHTML = messege;
+            setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+        }
+        function addToCart(productID, color) {
+            $.ajax({
+                type: "POST",
+                url: '/Product/addToCart',
+
+                data: { productID: productID, count: 1, colorID: color },
+
+                success: function (data) {
+                    $("#cart-total").html('<span id="button-cart" style="font-size:15px;height:25px;width:25px; border-radius:50%;position:absolute;left:-10px;top:-5px;z-index:20;" class="text-center btn-danger">' + data.data + '</span>');
+                    SnakeBar('با موفقیت به سبد اضافه شد')
+                    // addToCart
+                },
+                error: function () { alert('A error'); }
+            });
+        }
+        function description() {
+            let question = document.getElementById("question");
+            question.style.backgroundColor = "#f8f8f8";
+            question.classList.remove("s-show-active");
+            let showQuestions = document.getElementById("showQuestions");
+            showQuestions.style.display = "none"
+            let review = document.getElementById("review");
+            review.classList.remove("s-show-active");
+            document.getElementById("showSpecification").style.display = "none"
+            review.style.backgroundColor = "#f8f8f8";
+            let showComments = document.getElementById("showComments");
+            showComments.style.display = "none"
+            let specification = document.getElementById("specification");
+            specification.style.backgroundColor = "#f8f8f8";
+            specification.classList.remove("s-show-active");
+            let description = document.getElementById("description");
+            description.style.backgroundColor = "white";
+            let descriptionClass = document.getElementById("showDescription");
+            descriptionClass.style.display = "block";
+            description.classList.add("s-show-active");
+        }
+
+        function specification() {
+            let question = document.getElementById("question");
+            question.style.backgroundColor = "#f8f8f8";
+            question.classList.remove("s-show-active");
+            let showQuestions = document.getElementById("showQuestions");
+            showQuestions.style.display = "none"
+            let review = document.getElementById("review");
+            review.classList.remove("s-show-active");
+            review.style.backgroundColor = "#f8f8f8";
+            let showComments = document.getElementById("showComments");
+            showComments.style.display = "none"
+            let description = document.getElementById("description");
+            description.style.backgroundColor = "#f8f8f8";
+            description.classList.remove("s-show-active");
+            let descriptionClass = document.getElementById("showDescription");
+            descriptionClass.style.display = "none";
+            let specification = document.getElementById("specification");
+            specification.style.backgroundColor = "white";
+            let showspecification = document.getElementById("showSpecification");
+            showspecification.style.display = "block";
+            specification.classList.add("s-show-active");
+        }
+
+        function showComments() {
+            let question = document.getElementById("question");
+            question.style.backgroundColor = "#f8f8f8";
+            question.classList.remove("s-show-active");
+            let showQuestions = document.getElementById("showQuestions");
+            showQuestions.style.display = "none"
+            document.getElementById("showSpecification").style.display = "none"
+            let description = document.getElementById("description");
+            description.style.backgroundColor = "#f8f8f8";
+            description.classList.remove("s-show-active");
+            let descriptionClass = document.getElementById("showDescription");
+            descriptionClass.style.display = "none";
+            let specification = document.getElementById("specification");
+            specification.style.backgroundColor = "#f8f8f8";
+            specification.classList.remove("s-show-active");
+            let review = document.getElementById("review");
+            review.classList.add("s-show-active");
+            review.style.backgroundColor = "white";
+            let showComments = document.getElementById("showComments");
+            showComments.style.display = "block"
+        }
+
+        function showQuestions() {
+            let review = document.getElementById("review");
+            review.classList.remove("s-show-active");
+            document.getElementById("showSpecification").style.display = "none"
+            review.style.backgroundColor = "#f8f8f8";
+            let showComments = document.getElementById("showComments");
+            showComments.style.display = "none"
+            let specification = document.getElementById("specification");
+            specification.style.backgroundColor = "#f8f8f8";
+            specification.classList.remove("s-show-active");
+            let descriptionClass = document.getElementById("showDescription");
+            descriptionClass.style.display = "none";
+            document.getElementById("description").classList.remove("s-show-active");
+            document.getElementById("description").style.backgroundColor = "#f8f8f8";
+            let question = document.getElementById("question");
+            question.style.backgroundColor = "white";
+            question.classList.add("s-show-active");
+            let showQuestions = document.getElementById("showQuestions");
+            showQuestions.style.display = "block"
+        }
+    </script>
+}

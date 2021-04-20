@@ -1,0 +1,521 @@
+﻿@{
+
+    Layout = "~/Views/Shared/_SiteLayout.cshtml";
+}
+
+@*<div id="container">
+        <div class="container">
+            <div class="row">
+
+                <!--Middle Part Start-->
+                <div id="content" class="col-xs-12">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <!-- Slideshow Start-->
+                            @Html.Partial("~/Views/Partials/_ResponsiveCarousel.cshtml", (List<Shop.Models.ShopCarousel>)ViewBag.shopCarousel)
+                            <!-- Slideshow End-->
+                        </div>
+                        <div class="col-sm-4 pull-right flip">
+                            <div class="marketshop-banner">
+                                <div class="row">
+                                    @Html.Partial("~/Views/Partials/_SideBanner.cshtml", (List<Shop.Models.Banner>)ViewBag.sidebanner)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- پرفروش ها محصولات Start-->
+                    <h3 class="subtitle">پرفروش ها</h3>
+                    @Html.Partial("~/Views/Partials/_ProductCarousel.cshtml", (List<Shop.Models.Product>)ViewBag.productsWithHighSales)
+                    @Html.Partial("~/Views/Partials/_Banner.cshtml", (List<Shop.Models.Banner>)ViewBag.banner)
+                    <h3 class="subtitle">محصولات تخفیف دار</h3>
+                    @Html.Partial("~/Views/Partials/_ProductCarousel.cshtml", (List<Shop.Models.Product>)ViewBag.productHaveOffer)
+
+                    <!-- Featured محصولات End-->
+                    <!-- Banner Start-->
+                    <h3 class="subtitle"> برند ها</h3>
+                    @Html.Partial("~/Views/Partials/_BrandCarousel.cshtml", (List<Shop.Models.Brand>)ViewBag.brands)
+                    <!-- Banner End-->
+                    <!-- دسته ها محصولات Slider Start-->
+                    <div class="category-module" id="latest_category">
+                        <h3 class="subtitle">محصولات جدید</h3>
+                        <div class="category-module-content">
+                            <ul id="sub-cat" class="tabs">
+                                @{
+                                    int counter = 0;
+                                    bool sayer = false;
+                                    foreach (var item in (List<Shop.Models.ProductCategory>)ViewBag.newProductCategories)
+                                    {
+                                        counter++;
+                                        if (counter < 5)
+                                        {
+                                            <li><a href="#tab-cat@(item.categoryID)">@item.categoryName</a></li>
+                                        }
+                                        else
+                                        {
+                                            if (!sayer)
+                                            {
+                                                <li><a href="#tab-cat-sayer">سایر</a></li>
+                                                sayer = true;
+                                            }
+
+                                        }
+                                    }
+                                }
+                            </ul>
+
+                            @{
+                                counter = 0;
+                                sayer = false;
+                                List<Shop.Models.Product> pppppp = new List<Shop.Models.Product>();
+                                List<Shop.Models.Product> products = ViewBag.newProducts;
+                                foreach (var item in (List<Shop.Models.ProductCategory>)ViewBag.newProductCategories)
+                                {
+                                    counter++;
+                                    if (counter < 5)
+                                    {
+                                        var product = products.Where(p => p.categoryID == item.categoryID).ToList();
+                                        <div id="tab-cat@(item.categoryID)" class="tab_content">
+                                        @Html.Partial("~/Views/Partials/_ProductCarousel.cshtml", product)
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        var product = products.Where(p => p.categoryID == item.categoryID).ToList();
+                                        pppppp.AddRange(product);
+                                    }
+                                }
+                                <div id="tab-cat-sayer" class="tab_content">
+                                @Html.Partial("~/Views/Partials/_ProductCarousel.cshtml", pppppp)
+                                </div>
+                                }
+                        </div>
+                        </div>
+                    <!-- دسته ها محصولات Slider End-->
+
+                    <h3 class="subtitle">ویترین</h3>
+                    @Html.Partial("~/Views/Partials/_ProductCarousel.cshtml", (List<Shop.Models.Product>)ViewBag.vitrinProducts)
+
+                    <!-- دسته ها محصولات Slider End-->
+                    <!-- دسته ها محصولات Slider Start -->
+                    <h3 class="subtitle">محصولات پیشنهادی</h3>
+                    @Html.Partial("~/Views/Partials/_ProductCarousel.cshtml", (List<Shop.Models.Product>)ViewBag.offerForCustomer)
+                    <!-- دسته ها محصولات Slider End -->
+                    <!-- Banner Start -->
+                    <div class="marketshop-banner">
+                        <div class="row">
+                            @{var largeBanner = (List<Shop.Models.Banner>)ViewBag.largeBanner;
+                            }
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><a href="@largeBanner.FirstOrDefault().url"><img title="" Block Banner" alt="" src="~/Images/Banner/@(largeBanner.FirstOrDefault().bannerID).jpg"></a></div>
+                        </div>
+                    </div>
+                    <!-- Banner End -->
+                    <!-- برند Logo Carousel Start-->
+                    <!-- برند Logo Carousel End -->
+                </div>
+                <!--Middle Part End-->
+            </div>
+        </div>
+    </div>
+    <!-- Feature Box Start-->
+    <div class="container">
+        <div class="custom-feature-box row">
+            <div class="col-sm-4 col-xs-12">
+                <div class="feature-box fbox_1">
+                    <div class="title">ارسال رایگان</div>
+                    <p>برای خرید های بیش از 100 هزار تومان</p>
+                </div>
+            </div>
+            <div class="col-sm-4 col-xs-12">
+                <div class="feature-box fbox_3">
+                    <div class="title">کارت هدیه</div>
+                    <p>بهترین هدیه برای عزیزان شما</p>
+                </div>
+            </div>
+            <div class="col-sm-4 col-xs-12">
+                <div class="feature-box fbox_4">
+                    <div class="title">امتیازات خرید</div>
+                    <p>از هر خرید امتیاز کسب کرده و از آن بهره بگیرید</p>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+@*<script>
+         function formatNumber(num) {
+            return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+        }
+        $(document).ready(function () {
+            var x = $("[data-price=price-@Model.productID]").html();
+            $('[data-price=price-@Model.productID]').html(formatNumber(x));
+
+        });
+    </script>*@
+<!-- Feature Box End-->
+
+
+@{
+    var banners = new Shop.Models.Rizkaran_SiteEntities().Banners.ToList();
+}
+@*<div id="site" style="display: flex ; flex-direction: row ; justify-content: space-between ; ">*@
+
+    <div dir="ltr" id="bannercarousel">
+        <div id="mainheader">
+            @*<div id="leftsidebanner">
+                <div class="s-hoveropacity" id="smallbanner">
+                    <div id="smallbanner-text">
+                        <a style="color:white;font-size:smaller" href="/">
+                            برای خرید عمده کلیک کنید
+                        </a>
+                    </div>
+                </div>
+
+                @if ((bool)banners[2].show)
+                {
+                    <div class="s-hoveropacity" id="banner3">
+
+                        <a href="@banners[2].url" class="s-banner-link">
+                            <img id="banner3-img"
+                                 src="~/Images/Banner/@(banners[2].bannerID).jpg" />
+                        </a>
+
+                    </div>
+                }
+
+
+
+            </div>*@
+
+
+            <div id="side-banners">
+                @if ((bool)banners[0].show)
+                {
+                    <a href="@banners[0].url">
+                        <img src="~/Images/Banner/@(banners[0].bannerID).jpg" />
+                    </a>
+                }
+                @if ((bool)banners[1].show)
+                {
+
+                    <a href="@banners[1].url" class="s-banner-link">
+                        <img src="~/Images/Banner/@(banners[1].bannerID).jpg">
+                    </a>
+                }
+
+            </div>
+            <!-- Slideshow Start-->
+            <div id="slider-holder">
+                @Html.Partial("~/Views/Partials/_ResponsiveCarousel.cshtml", (List<Shop.Models.ShopCarousel>)ViewBag.shopCarousel)
+
+
+            </div>
+            <!-- Slideshow End-->
+            @*<div id="rightbanners">
+                <div id="rightbanneritems">
+                    @if ((bool)banners[0].show)
+                    {
+                        <a href="@banners[0].url" class="s-banner-link">
+                            <img class="s-banner s-rightbanner" style="height:98% ; width:100% !important"
+                                 src="~/Images/Banner/@(banners[0].bannerID).jpg" />
+                        </a>
+                    }
+                    @if ((bool)banners[1].show)
+                    {
+
+                        <a href="@banners[1].url" class="s-banner-link">
+                            <img class="s-banner s-rightbanner" style="height:98% ;  width:100% !important"
+                                 src="~/Images/Banner/@(banners[1].bannerID).jpg">
+                        </a>
+                    }
+
+                </div>
+            </div>*@
+        </div>
+        <div class="s-expert-requets">
+            سرویس اعزام کارشناس فنی یکی از اهداف مجموع کیان پرینتر در خصوص رضایت مشتریان و رفع خرابی های به وجود آمده در پرینتر و اسکنر
+            بوده که با کمترین زمان و هزینه برای شما مشتریان قابل استفاده می باشد.
+            <a href="#">درخواست کارشناس فنی</a>
+        </div>
+
+        <div class="s-firstpage-title">
+
+            @if (ViewBag.productHaveOffer != null)
+            {
+                <div>
+                    <div class="box">
+                        <div class="product">
+                            <div class="special-offer">
+                                پیشنهاد شگفت انگیز
+                            </div>
+                            @foreach (Shop.Models.Offer item in ViewBag.productHaveOffer)
+                            {
+                                //var offers = item.Offers.Where(o => o.startDate < DateTime.Now && o.endDate > DateTime.Now).ToList();
+                                //decimal offPrice = 0;
+                                //decimal offPercent = 0;
+                                //foreach (var item2 in offers)
+                                //{
+                                //    offPrice += (int)item2.price;
+                                //    offPercent += (int)item2.offPercent;
+                                //}
+                                //decimal productPrice = item.price;
+                                //decimal finalPrice = productPrice;
+                                //if (offPercent > 0)
+                                //{
+                                //    finalPrice = finalPrice - (productPrice * (offPercent / 100));
+                                //}
+                                //if (offPrice > 0)
+                                //{
+                                //    finalPrice = finalPrice - offPrice;
+                                //}
+                                <a href="/product/show/@item.productID">
+                                    <div class="product-flex">
+                                        <div>
+                                            <img src="~/Images/Product/icon/@(item.productID).jpg" class="product-img">
+
+                                        </div>
+                                        <div>
+                                            <div class="total">
+                                                <p class="discount">@item.Product.price.ToString("N0")  تومان</p>
+                                                <p class="price">@(item.Product.CalculateOff().ToString("N0")) تومان </p>
+                                                @if ((item.offPercent ?? 0) > 0)
+                                                {
+                                                    <div class="discount-percent"> @item.offPercent ٪ تخفیف</div>
+
+                                                }
+                                                @if ((item.price ?? 0) > 0)
+                                                {
+                                                    <div class="discount-percent">
+                                                        @item.price تومان
+                                                    </div>
+
+                                                }
+
+                                                <p class="product-name">@item.Product.name</p>
+                                            </div>
+                                            @if ((item.Product.shortDescription ?? "").Length >= 120)
+                                            {
+                                                <p class="feature" style="width:200px">@Html.Raw(item.Product.shortDescription.Substring(0, 120)) ....</p>
+                                            }
+                                            else
+                                            {
+                                                @*<p class="feature" style="width:200px">@Html.Raw(item.description)</p>*@
+                                            }
+                                        </div>
+                                    </div>
+                                </a>
+
+
+                            }
+                        </div>
+
+                        <div class="list" style="width:30%">
+                            <ul>
+                                @{ int counter = 0;}
+                                @foreach (Shop.Models.Product item in ((IEnumerable<Shop.Models.Offer>)ViewBag.productHaveOffer).Select(c => c.Product))
+                                {
+                                    if (counter == 0)
+                                    {
+                                        <li class="link active" onclick="openLink(@counter)">@item.ProductCategory.categoryName</li>
+                                    }
+                                    else
+                                    {
+                                        <li class="link" onclick="openLink(@counter)">@item.ProductCategory.categoryName</li>
+                                    }
+                                    counter++;
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            }
+
+            @if (((bool)banners[3].show || (bool)banners[4].show || (bool)banners[5].show))
+            {
+                <div id="firstlevelbanners" class="s-centerbanners">
+                    <div class="s-tworightbanner">
+
+                        @if ((bool)banners[3].show)
+                        {
+
+                            <div id="banner4" class="s-centerbanneritem s-twocenterbanneritem s-hoveropacity">
+
+                                <a href="@banners[3].url" class="s-banner-link">
+                                    <img id="banner4-img"
+                                         src="~/Images/Banner/@(banners[3].bannerID).jpg" />
+                                </a>
+
+                            </div>
+                        }
+
+                        @if ((bool)banners[4].show)
+                        {
+                            <div id="banner5" class="s-centerbanneritem s-twocenterbanneritem s-hoveropacity">
+
+
+
+
+                                <a href="@banners[4].url" class="s-banner-link">
+                                    <img id="banner5-img"
+                                         src="~/Images/Banner/@(banners[4].bannerID).jpg" />
+                                </a>
+
+                            </div>
+                        }
+
+
+                    </div>
+
+
+                    @if ((bool)banners[5].show)
+                    {
+                        <div id="banner6" class="s-centerbanneritem s-hoveropacity">
+                            <a href="@banners[5].url" class="s-banner-link">
+                                <img id="banner6-img"
+                                     src="~/Images/Banner/@(banners[5].bannerID).jpg" />
+                            </a>
+                        </div>
+                    }
+                </div>
+            }
+
+            @{
+                if (((List<Shop.Models.Product>)ViewBag.vitrinProducts).Count > 0)
+                {
+                    <div class="s-productSlider-title" style="text-align:right;margin-bottom:1%;font-size:large">
+                        <span>ویترین</span>
+                    </div>
+                    @Html.Partial("~/Views/Partials/_ProductCarousel.cshtml", (IEnumerable<Shop.Models.Product>)ViewBag.vitrinProducts)
+
+
+                }
+            }
+            @{
+                if (((List<Shop.Models.Product>)ViewBag.productsWithHighSales).Count > 0)
+                {
+
+                    <div class="s-productSlider-title" style="text-align:right;margin-bottom:1%;font-size:large">
+                        <span>محصولات پرفروش</span>
+                    </div>
+                    @Html.Partial("~/Views/Partials/_ProductCarousel.cshtml", (IEnumerable<Shop.Models.Product>)ViewBag.productsWithHighSales)
+
+
+
+                }
+            }
+
+
+            @if ((bool)banners[6].show)
+            {
+
+                <div class="s-centerbanners">
+                    <div class="s-centerbanneritem s-hoveropacity" id="banner-7">
+
+
+
+                        <a href="@banners[6].url" class="s-banner-link">
+                            <img id="banner7-img" src="~/Images/Banner/@(banners[6].bannerID).jpg" />
+                        </a>
+                    </div>
+                </div>
+            }
+
+
+
+
+
+
+
+
+            @{
+                if (((List<Shop.Models.Product>)ViewBag.newProducts).Count > 0)
+                {
+                    <div class="s-productSlider-title" style="text-align:right;margin-bottom:1%;font-size:large">
+                        <span>محصولات جدید</span>
+                    </div>
+                    @Html.Partial("~/Views/Partials/_ProductCarousel.cshtml", (IEnumerable<Shop.Models.Product>)ViewBag.newProducts)
+
+
+                }
+            }
+
+
+
+
+            <div class="s-productSlider-title" style="text-align:right;margin-bottom:1%;font-size:large">
+                <span>برند های ویژه</span>
+            </div>
+            @Html.Partial("~/Views/Partials/_BrandCarousel.cshtml", (IEnumerable<Shop.Models.Brand>)ViewBag.brands)
+
+
+
+
+            @{
+                if (ViewBag.productHaveOffer != null)
+                {
+
+
+                    if (((IEnumerable<Shop.Models.Offer>)ViewBag.productHaveOffer).Count() > 0)
+                    {
+                        <div class="s-productSlider-title" style="text-align:right;margin-bottom:1%;font-size:large">
+                            <span>محصولات تخفیف دار</span>
+                        </div>
+                        @Html.Partial("~/Views/Partials/_ProductCarousel.cshtml", ((IEnumerable<Shop.Models.Offer>)ViewBag.productHaveOffer).Select(c => c.Product).Distinct())
+
+
+                    }
+                }
+            }
+
+
+
+
+
+
+
+            @{
+                if (((List<Shop.Models.Product>)ViewBag.offerForCustomer).Count > 0)
+                {
+                    <div class="s-productSlider-title" style="text-align:right;margin-bottom:1%;font-size:large">
+                        <span>محصولات پیشنهادی</span>
+                    </div>
+                    @Html.Partial("~/Views/Partials/_ProductCarousel.cshtml", (IEnumerable<Shop.Models.Product>)ViewBag.offerForCustomer)
+
+
+                }
+            }
+
+
+
+        </div>
+
+    </div>
+
+
+
+
+@section scripts{
+
+
+    <script>
+        function openLink(product) {
+            var links = document.getElementsByClassName('link');
+            var productFlex = document.getElementsByClassName("product-flex");
+            for (let i = 0; i < productFlex.length; i++) {
+                productFlex[i].className = productFlex[i].className.replace(" unnone ", " none ")
+            }
+            for (let i = 0; i < links.length; i++) {
+                links[i].className = links[i].className.replace('active', '');
+            }
+            links[product].className += " active";
+            productFlex[product].className = productFlex[product].className.replace(" none ", " unnone ")
+        }
+        window.onload = function () {
+            var productFlex = document.getElementsByClassName("product-flex");
+            for (let i = 0; i < productFlex.length; i++) {
+                productFlex[i].className += " none "
+            }
+            productFlex[0].className = productFlex[0].className.replace(" none ", " unnone ")
+        }
+    </script>
+
+}

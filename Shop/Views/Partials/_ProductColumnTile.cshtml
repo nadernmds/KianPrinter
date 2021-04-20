@@ -1,0 +1,58 @@
+﻿@model Shop.Models.Product
+
+
+@{ 
+    DateTime now = Convert.ToDateTime(DateTime.Now.ToString());
+    var offers = Model.Offers.Where(o => o.startDate < now && o.endDate > now).ToList();
+    decimal offPrice = 0;
+    decimal offPercent = 0;
+    foreach (var item in offers)
+    {
+        offPrice += (int)item.price;
+        offPercent += (int)item.offPercent;
+    }
+    decimal productPrice = Model.price;
+    decimal finalPrice = productPrice;
+    if (offPercent > 0)
+    {
+        finalPrice = finalPrice - (productPrice * (offPercent / 100));
+    }
+    if (offPrice > 0)
+    {
+        finalPrice = finalPrice - offPrice;
+    }
+}
+
+
+<div class="product-thumb clearfix">
+    <div class="image">
+        <a href="/product/show/@Model.productID"><img src="~/Images/Product/icon/@(Model.productID).jpg" alt="@Model.name" title="@Model.name" class="img-responsive" /></a>
+    </div>
+    <div class="caption">
+        <h4>
+            <a href="/product/show/@Model.productID">@Model.name</a>
+        </h4>
+        <p class="price">
+            @{
+
+
+                if (offPercent > 0)
+                {
+            <span class="saving">%@(offPercent)</span>
+            <br/>
+
+                }
+
+                if (offPercent > 0 || offPrice > 0)
+                {
+        <span class="price-new" style="color:#01a161">@finalPrice.ToString("N0") تومان</span>
+        <span class="price-old">@Model.price.ToString("N0") </span>
+                }
+                else
+                {
+<p>  @Model.price.ToString("N0") تومان</p>
+                    }
+                }
+        </p>
+    </div>
+</div>
